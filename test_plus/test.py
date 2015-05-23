@@ -3,7 +3,13 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.test import TestCase
-from django.test.utils import CaptureQueriesContext
+
+
+if django.VERSION[0:2] >= 1.6:
+    from django.test.utils import CaptureQueriesContext
+    CAPTURE = True
+else:
+    CAPTURE = False
 
 
 class login(object):
@@ -124,14 +130,17 @@ class TestCase(TestCase):
             return test_user
 
     def assertNumQueriesLessThan(self, num, func=None, *args, **kwargs):
-        using = kwargs.pop("using", DEFAULT_DB_ALIAS)
-        conn = connections[using]
+        if CAPTURE:
+            using = kwargs.pop("using", DEFAULT_DB_ALIAS)
+            conn = connections[using]
 
-        context = _AssertNumQueriesLessThanContext(self, num, conn)
-        if func is None:
-            return context
+            context = _AssertNumQueriesLessThanContext(self, num, conn)
+            if func is None:
+                return context
 
-        with context:
+            with context:
+                func(*args, **kwargs)
+        else:
             func(*args, **kwargs)
 
     def assertGoodView(self, url_name, *args, **kwargs):
