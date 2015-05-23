@@ -10,15 +10,19 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
 BASE_DIR = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(BASE_DIR, 'test_project'))
 
-f = open(os.path.join(os.path.dirname(__file__), 'README.md'))
-readme = f.read()
-f.close()
+try:
+    from pypandoc import convert
+    read_md = lambda f: convert(f, 'rst')
+except ImportError:
+    print("Warning: pypandoc not found, will not convert README markdown to RST")
+    read_md = lambda f: open(f, 'r').read()
+
 
 setup(
     name='django-test-plus',
     version=".".join(map(str, VERSION)),
     description="django-test-plus provides useful additions to Django's default TestCase",
-    long_description=readme,
+    long_description=read_md('README.md'),
     author='Frank Wiles',
     author_email='frank@revsys.com',
     url='https://github.com/revsys/django-test-plus/',

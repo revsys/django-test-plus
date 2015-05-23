@@ -1,0 +1,10 @@
+Changes
+=======
+
+version 1.0.1 - May 23rd, 2015
+------------------------------
+  - Fixing README markdown on PyPI issue
+
+version 1.0.0 - May 23rd, 2015
+------------------------------
+  - Initial release
