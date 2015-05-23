@@ -5,7 +5,7 @@ import warnings
 
 from distutils.version import LooseVersion
 
-from test_plus.test import TestCase
+from test_plus.test import TestCase, NoPreviousResponse
 
 DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
 
@@ -133,3 +133,7 @@ class TestPlusViewTests(TestCase):
     def test_assertnotincontext(self):
         self.get('view-context-without')
         self.assertInContext('testvalue')
+
+    def test_no_response(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.assertInContext('testvalue')

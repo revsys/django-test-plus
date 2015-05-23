@@ -6,6 +6,10 @@ from django.db import connections, DEFAULT_DB_ALIAS
 from django.test import TestCase
 from distutils.version import LooseVersion
 
+
+class NoPreviousResponse(Exception):
+    pass
+
 # Build a real context in versions of Django greater than 1.6
 # On versions below 1.6, create a context that simply warns that
 # the query number assertion is not happening
@@ -192,5 +196,7 @@ class TestCase(TestCase):
         return response
 
     def assertInContext(self, key):
-        if self.last_response:
+        if self.last_response is not None:
             self.assertTrue(key in self.last_response.context)
+        else:
+            raise NoPreviousResponse("There isn't a previous response to query")
