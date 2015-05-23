@@ -1,6 +1,11 @@
 Changes
 =======
 
+version 1.0.2 - May 23rd, 2015
+------------------------------
+  - Actually fixing README by moving README.md to README.rst
+  - Added docs for assertNuMQueriesLessThan()
+
 version 1.0.1 - May 23rd, 2015
 ------------------------------
   - Fixing README markdown on PyPI issue

@@ -252,7 +252,13 @@ Django provides
 which is great when your code generates generates a specific number of
 queries. However, if due to the nature of your data this number can vary
 you often don't attempt to ensure the code doesn't start producing a ton
-more queries than you expect.
+more queries than you expect::
+
+    def test_something_out(self):
+
+        with self.assertNumQueriesLessThan(7):
+            self.get('some-view-with-6-queries')
+
 
 **NOTE:** This isn't possible in versions of Django prior to 1.6, so the
 context will run your code and assertions and issue a warning that it
