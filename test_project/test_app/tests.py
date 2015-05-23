@@ -1,8 +1,13 @@
+import django
 import factory
 
-from django.contrib.auth import get_user_model
-
 from test_plus.test import TestCase
+
+if django.VERSION[0:2] >= 1.6:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+else:
+    from django.contrib.auth.models import User
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -10,7 +15,7 @@ class UserFactory(factory.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'user{}@example.com'.format(n))
 
     class Meta:
-        model = get_user_model()
+        model = User
 
 
 class TestPlusUserFactoryOption(TestCase):
