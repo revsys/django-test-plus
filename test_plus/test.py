@@ -11,6 +11,10 @@ from distutils.version import LooseVersion
 # the query number assertion is not happening
 if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
     from django.test.utils import CaptureQueriesContext
+    from django.contrib.auth import get_user_model
+
+    User = get_user_model()
+
     CAPTURE = True
 
     class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
@@ -31,6 +35,8 @@ if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
             )
 
 else:
+    from django.contrib.auth.models import User
+
     CAPTURE = False
 
     class _AssertNumQueriesLessThanContext(object):
@@ -45,8 +51,23 @@ else:
 
 
 class login(object):
-    def __init__(self, testcase, **credentials):
+    """
+    A useful login context for Django tests.  If the first argument is
+    a User, we will login with that user's username.  If no password is
+    given we will use 'password'.
+    """
+    def __init__(self, testcase, *args, **credentials):
         self.testcase = testcase
+
+        if args and isinstance(args[0], User):
+            credentials.update({
+                'username': args[0].username,
+                'password': 'password',
+            })
+
+        if not credentials.get('password', False):
+            credentials['password'] = 'password'
+
         success = testcase.client.login(**credentials)
         self.testcase.assertTrue(
             success,
@@ -111,9 +132,9 @@ class TestCase(TestCase):
         expected_url = "{0}?next={1}".format(settings.LOGIN_URL, reversed_url)
         self.assertRedirects(res, expected_url)
 
-    def login(self, **credentials):
+    def login(self, *args, **credentials):
         """ Login a user """
-        return login(self, **credentials)
+        return login(self, *args, **credentials)
 
     def reverse(self, name, *args, **kwargs):
         """ Reverse a url, convience to avoid having to import reverse in tests """
@@ -130,12 +151,6 @@ class TestCase(TestCase):
             test_user.save()
             return test_user
         else:
-            if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
-                from django.contrib.auth import get_user_model
-                User = get_user_model()
-            else:
-                from django.contrib.auth.models import User
-
             test_user = User.objects.create_user(
                 username,
                 '{0}@example.com'.format(username),
@@ -157,13 +172,14 @@ class TestCase(TestCase):
     def assertGoodView(self, url_name, *args, **kwargs):
         """
         Quick-n-dirty testing of a given url name.
-        Ensures URL returns a 200 status and that generates less than 100
+        Ensures URL returns a 200 status and that generates less than 50
         database queries.
         """
-        query_count = kwargs.pop('test_query_count', 100)
+        query_count = kwargs.pop('test_query_count', 50)
 
         with self.assertNumQueriesLessThan(query_count):
             response = self.get(url_name, *args, **kwargs)
 
         self.response_200(response)
 
+        return response

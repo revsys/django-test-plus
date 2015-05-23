@@ -71,6 +71,18 @@ class TestPlusViewTests(TestCase):
         with self.login(username='test', password='password'):
             self.get_check_200('view-needs-login')
 
+    def test_login_no_password(self):
+
+        user = self.make_user('test')
+        with self.login(username=user.username):
+            self.get_check_200('view-needs-login')
+
+    def test_login_user_object(self):
+
+        user = self.make_user('test')
+        with self.login(user):
+            self.get_check_200('view-needs-login')
+
     def test_reverse(self):
         self.assertEqual(self.reverse('view-200'), '/view/200/')
 
