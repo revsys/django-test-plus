@@ -1,6 +1,26 @@
+import factory
+
+from django.contrib.auth import get_user_model
+
 from test_plus.test import TestCase
 
 from .models import Data
+
+
+class UserFactory(factory.DjangoModelFactory):
+    username = factory.Sequence(lambda n: 'user{}'.format(n))
+    email = factory.Sequence(lambda n: 'user{}@example.com'.format(n))
+
+    class Meta:
+        model = get_user_model()
+
+
+class TestPlusUserFactoryOption(TestCase):
+    user_factory = UserFactory
+
+    def test_make_user_factory(self):
+        u1 = self.make_user('factory')
+        self.assertEqual(u1.username, 'factory')
 
 
 class TestPlusViewTests(TestCase):
@@ -35,6 +55,11 @@ class TestPlusViewTests(TestCase):
     def test_response_404(self):
         res = self.get('view-404')
         self.response_404(res)
+
+    def test_make_user(self):
+        """ Test make_user using django.contrib.auth defaults """
+        u1 = self.make_user('u1')
+        self.assertEqual(u1.username, 'u1')
 
     def test_login_required(self):
         self.assertLoginRequired('view-needs-login')

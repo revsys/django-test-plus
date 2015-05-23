@@ -44,6 +44,7 @@ class TestCase(TestCase):
     """
     Django TestCase with helpful additional features
     """
+    user_factory = None
 
     def tearDown(self):
         self.client.logout()
@@ -68,6 +69,10 @@ class TestCase(TestCase):
     def response_302(self, response):
         """ Given response has status_code 302 """
         self.assertEqual(response.status_code, 302)
+
+    def response_403(self, response):
+        """ Given response has status_code 403 """
+        self.assertEqual(response.status_code, 403)
 
     def response_404(self, response):
         """ Given response has status_code 404 """
@@ -99,14 +104,19 @@ class TestCase(TestCase):
         Build a user with <username> and password of 'password' for testing
         purposes.  Exposes the user as self.user_<username>
         """
-        User = get_user_model()
-        test_user = User.objects.create_user(
-            username,
-            '{0}@example.com'.format(username),
-            'password',
-        )
-
-        setattr(self, "user_{0}".format(username), test_user)
+        if self.user_factory:
+            test_user = self.user_factory(username=username)
+            test_user.set_password('password')
+            test_user.save()
+            return test_user
+        else:
+            User = get_user_model()
+            test_user = User.objects.create_user(
+                username,
+                '{0}@example.com'.format(username),
+                'password',
+            )
+            return test_user
 
     def assertNumQueriesLessThan(self, num, func=None, *args, **kwargs):
         using = kwargs.pop("using", DEFAULT_DB_ALIAS)
