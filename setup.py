@@ -1,8 +1,14 @@
 import os
+import sys
 from setuptools import setup, find_packages
 
 from test_plus import VERSION
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
+
+# Add test_plus to Python path
+BASE_DIR = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(BASE_DIR, 'test_project'))
 
 f = open(os.path.join(os.path.dirname(__file__), 'README.md'))
 readme = f.read()
@@ -34,5 +40,5 @@ setup(
         'Programming Language :: Python :: 3',
         'Framework :: Django',
     ],
-    test_suite='test_project.runtests.runtests'
+    test_suite='runtests.runtests'
 )
