@@ -1,6 +1,5 @@
 import django
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.test import TestCase
@@ -112,6 +111,7 @@ class TestCase(TestCase):
             return test_user
         else:
             if django.VERSION[0:2] >= 1.6:
+                from django.contrib.auth import get_user_model
                 User = get_user_model()
             else:
                 from django.contrib.auth.models import User
