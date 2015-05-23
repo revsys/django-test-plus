@@ -40,7 +40,7 @@ class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
         )
 
 
-class TestPlusCase(TestCase):
+class TestCase(TestCase):
     """
     Django TestCase with helpful additional features
     """

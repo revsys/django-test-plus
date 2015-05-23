@@ -1,0 +1,4 @@
+# Requirements necessary for running the tests
+-r requirements.txt
+
+
