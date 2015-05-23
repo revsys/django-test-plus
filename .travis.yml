@@ -8,8 +8,11 @@ install:
   - pip install -e .
   - pip install $DJANGO
   - pip install -r requirements-travisci.txt
+  - pip install coveralls
 script:
-  - python test_project/runtests.py
+  - coverage run python test_project/runtests.py
+after_success:
+  - coveralls
 env:
   - DJANGO="Django==1.4.20"
   - DJANGO="Django==1.5.12"

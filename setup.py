@@ -19,6 +19,11 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     zip_safe=False,
+    install_requires=['Django>=1.4.20'],
+    tests_require=[
+        'Django>=1.4.20',
+        'factory-boy>=2.5.2',
+    ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',

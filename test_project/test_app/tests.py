@@ -25,13 +25,6 @@ class TestPlusUserFactoryOption(TestCase):
 
 class TestPlusViewTests(TestCase):
 
-    def _make_data_rows(self, num=5):
-        items = []
-        for i in range(num):
-            items.append(Data.objects.create(name='data-{}'.format(i)))
-
-        return items
-
     def test_get(self):
         res = self.get('view-200')
         self.assertTrue(res.status_code, 200)
