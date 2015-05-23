@@ -6,6 +6,9 @@ from django.db import connections, DEFAULT_DB_ALIAS
 from django.test import TestCase
 from distutils.version import LooseVersion
 
+# Build a real context in versions of Django greater than 1.6
+# On versions below 1.6, create a context that simply warns that
+# the query number assertion is not happening
 if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
     from django.test.utils import CaptureQueriesContext
     CAPTURE = True
@@ -29,6 +32,16 @@ if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
 
 else:
     CAPTURE = False
+
+    class _AssertNumQueriesLessThanContext(object):
+        def __init__(self, test_case, num, connection):
+            pass
+
+        def __enter__(self):
+            pass
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            warnings.warn("assertNumQueriesLessThan being skipped, does not work prior to Django 1.6")
 
 
 class login(object):
@@ -131,18 +144,14 @@ class TestCase(TestCase):
             return test_user
 
     def assertNumQueriesLessThan(self, num, func=None, *args, **kwargs):
-        if CAPTURE:
-            using = kwargs.pop("using", DEFAULT_DB_ALIAS)
-            conn = connections[using]
+        using = kwargs.pop("using", DEFAULT_DB_ALIAS)
+        conn = connections[using]
 
-            context = _AssertNumQueriesLessThanContext(self, num, conn)
-            if func is None:
-                return context
+        context = _AssertNumQueriesLessThanContext(self, num, conn)
+        if func is None:
+            return context
 
-            with context:
-                func(*args, **kwargs)
-        else:
-            warnings.warn("assertNumQueriesLessThan being skipped, does not work prior to Django 1.6")
+        with context:
             func(*args, **kwargs)
 
     def assertGoodView(self, url_name, *args, **kwargs):
