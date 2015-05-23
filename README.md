@@ -7,6 +7,12 @@ Useful additions to Django's default TestCase from [Revolution Systems](http://w
 
 Let's face it, writing tests isn't always fun.  Part of the reason for that is all of the boilerplate you end up writing.  django-test-plus is an attempt to cut down on some of that when writing Django tests. We guarantee it will increase the time before you get carpal tunnel by at least 3 weeks!
 
+## Support
+
+Supports: Python 2 and Python 3
+
+Supports Django Versions: 1.4, 1.5, 1.6, 1.7, and 1.8
+
 ## Usage
 
 Using django-test-plus is pretty easy, simply have your tests inherit from test_plus.test.TestCase rather than the normal django.test.TestCase like so:
@@ -172,6 +178,8 @@ We can also derive the username if we're using ```make_user()``` so we can short
 ### assertNumQueriesLessThan(number) - context
 
 Django provides [assertNumQueries](https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries) which is great when your code generates generates a specific number of queries. However, if due to the nature of your data this number can vary you often don't attempt to ensure the code doesn't start producing a ton more queries than you expect.
+
+**NOTE:** This isn't possible in versions of Django prior to 1.6, so the context will run your code and assertions and issue a warning that it cannot check the number of queries generated.
 
 ### assertGoodView(url_name, **args, ***kwargs)
 

@@ -1,0 +1,1 @@
+django-test-plus was originally created by Frank Wiles <frank@revsys.com>
