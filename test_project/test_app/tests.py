@@ -121,3 +121,15 @@ class TestPlusViewTests(TestCase):
                 self.assertTrue('skipped' in str(w[-1].message))
         else:
             return unittest.skip("Only useful for Django 1.6 and before")
+
+    def test_assertincontext(self):
+        response = self.get('view-context-with')
+        self.assertTrue('testvalue' in response.context)
+
+        self.assertInContext('testvalue')
+        self.assertTrue(self.context['testvalue'], response.context['testvalue'])
+
+    @unittest.expectedFailure
+    def test_assertnotincontext(self):
+        self.get('view-context-without')
+        self.assertInContext('testvalue')

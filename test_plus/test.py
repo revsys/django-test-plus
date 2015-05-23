@@ -87,17 +87,24 @@ class TestCase(TestCase):
     """
     user_factory = None
 
+    def __init__(self, *args, **kwargs):
+        self.last_response = None
+        super(TestCase, self).__init__(*args, **kwargs)
+
     def tearDown(self):
         self.client.logout()
 
     def get(self, url_name, *args, **kwargs):
         """ GET url by name using reverse() """
-        return self.client.get(reverse(url_name, args=args, kwargs=kwargs))
+        self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs))
+        self.context = self.last_response.context
+        return self.last_response
 
     def post(self, url_name, *args, **kwargs):
         """ POST to url by name using reverse() """
         data = kwargs.pop("data", None)
-        return self.client.post(reverse(url_name, args=args, kwargs=kwargs), data)
+        self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data)
+        return self.last_response
 
     def response_200(self, response):
         """ Given response has status_code 200 """
@@ -183,3 +190,7 @@ class TestCase(TestCase):
         self.response_200(response)
 
         return response
+
+    def assertInContext(self, key):
+        if self.last_response:
+            self.assertTrue(key in self.last_response.context)

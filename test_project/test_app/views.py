@@ -1,5 +1,6 @@
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render
 
 from .models import Data
 
@@ -29,6 +30,7 @@ def data_1(request):
     list(Data.objects.all())
     return HttpResponse('', status=200)
 
+
 def data_5(request):
     list(Data.objects.all())
     list(Data.objects.all())
@@ -36,3 +38,11 @@ def data_5(request):
     list(Data.objects.all())
     list(Data.objects.all())
     return HttpResponse('', status=200)
+
+
+def view_context_with(request):
+    return render(request, 'base.html', {'testvalue': True})
+
+
+def view_context_without(request):
+    return render(request, 'base.html', {})

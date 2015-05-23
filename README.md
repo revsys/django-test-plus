@@ -60,6 +60,21 @@ Another thing you do often is HTTP get urls, our ```get()``` method assumes you 
     def test_get_named_url(self):
         response = self.get('my-url-name')
 
+When using this get method two other things happen for you, we store the last
+response in ``self.last_response``` and the response's Context in ```self.context```. So instead of:
+
+    def test_default_django(self):
+        response = self.client.get(reverse('my-url-name'))
+        self.assertTrue('foo' in response.context)
+        self.assertEqual(response.context['foo'], 12)
+
+You can instead write:
+
+    def test_testplus_get(self):
+        self.get('my-url-name')
+        self.assertInContext('foo')
+        self.assertEqual(self.context['foo'], 12)
+
 ### post(url_name, data, **args, ***kwargs)
 
 Our ```post()``` method takes a named URL, the dictionary of data you wish to post and any args or kwargs necessary to reverse the url_name.
@@ -67,6 +82,14 @@ Our ```post()``` method takes a named URL, the dictionary of data you wish to po
 
     def test_post_named_url(self):
         response = self.post('my-url-name', data={'coolness-factor': 11.0})
+
+### assertInContext(key)
+
+You can ensure a specific key exists in the last response's context by using:
+
+    def test_in_context(self):
+        self.get('my-view-with-some-context')
+        self.assertInContext('some-key')
 
 ### response_XXX(response) - status code checking
 
