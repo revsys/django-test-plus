@@ -1,9 +1,10 @@
 import django
 import factory
+from distutils.version import LooseVersion
 
 from test_plus.test import TestCase
 
-if django.VERSION[0:2] >= 1.6:
+if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
     from django.contrib.auth import get_user_model
     User = get_user_model()
 else:

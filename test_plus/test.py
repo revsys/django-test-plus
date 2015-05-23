@@ -3,9 +3,9 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.test import TestCase
+from distutils.version import LooseVersion
 
-
-if django.VERSION[0:2] >= 1.6:
+if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
     from django.test.utils import CaptureQueriesContext
     CAPTURE = True
 else:
@@ -116,7 +116,7 @@ class TestCase(TestCase):
             test_user.save()
             return test_user
         else:
-            if django.VERSION[0:2] >= 1.6:
+            if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
                 from django.contrib.auth import get_user_model
                 User = get_user_model()
             else:
