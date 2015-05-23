@@ -4,8 +4,6 @@ from django.contrib.auth import get_user_model
 
 from test_plus.test import TestCase
 
-from .models import Data
-
 
 class UserFactory(factory.DjangoModelFactory):
     username = factory.Sequence(lambda n: 'user{}'.format(n))

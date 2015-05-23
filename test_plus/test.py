@@ -1,3 +1,4 @@
+import django
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
@@ -110,7 +111,11 @@ class TestCase(TestCase):
             test_user.save()
             return test_user
         else:
-            User = get_user_model()
+            if django.VERSION[0:2] >= 1.6:
+                User = get_user_model()
+            else:
+                from django.contrib.auth.models import User
+
             test_user = User.objects.create_user(
                 username,
                 '{0}@example.com'.format(username),
