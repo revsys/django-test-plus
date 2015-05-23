@@ -128,7 +128,7 @@ class TestCase(TestCase):
         query_count = kwargs.pop('test_query_count', 100)
 
         with self.assertNumQueriesLessThan(query_count):
-            response = self.get(url_name, args=args, kwargs=kwargs)
+            response = self.get(url_name, *args, **kwargs)
 
         self.response_200(response)
 
