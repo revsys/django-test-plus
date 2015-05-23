@@ -10,7 +10,7 @@ install:
   - pip install -r requirements-travisci.txt
   - pip install coveralls
 script:
-  - coverage run python test_project/runtests.py
+  - coverage run test_project/runtests.py
 after_success:
   - coveralls
 env:
