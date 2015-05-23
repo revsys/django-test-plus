@@ -1,3 +1,4 @@
+import warnings
 import django
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -8,6 +9,24 @@ from distutils.version import LooseVersion
 if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
     from django.test.utils import CaptureQueriesContext
     CAPTURE = True
+
+    class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
+        def __init__(self, test_case, num, connection):
+            self.test_case = test_case
+            self.num = num
+            super(_AssertNumQueriesLessThanContext, self).__init__(connection)
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            super(_AssertNumQueriesLessThanContext, self).__exit__(exc_type, exc_value, traceback)
+            if exc_type is not None:
+                return
+            executed = len(self)
+            self.test_case.assertTrue(
+                executed <= self.num, "%d queries executed, expected less than %d" % (
+                    executed, self.num
+                )
+            )
+
 else:
     CAPTURE = False
 
@@ -26,24 +45,6 @@ class login(object):
 
     def __exit__(self, *args):
         self.testcase.client.logout()
-
-
-class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
-    def __init__(self, test_case, num, connection):
-        self.test_case = test_case
-        self.num = num
-        super(_AssertNumQueriesLessThanContext, self).__init__(connection)
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        super(_AssertNumQueriesLessThanContext, self).__exit__(exc_type, exc_value, traceback)
-        if exc_type is not None:
-            return
-        executed = len(self)
-        self.test_case.assertTrue(
-            executed <= self.num, "%d queries executed, expected less than %d" % (
-                executed, self.num
-            )
-        )
 
 
 class TestCase(TestCase):
@@ -141,6 +142,7 @@ class TestCase(TestCase):
             with context:
                 func(*args, **kwargs)
         else:
+            warnings.warn("assertNumQueriesLessThan being skipped, does not work prior to Django 1.6")
             func(*args, **kwargs)
 
     def assertGoodView(self, url_name, *args, **kwargs):

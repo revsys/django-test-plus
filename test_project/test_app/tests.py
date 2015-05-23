@@ -1,10 +1,15 @@
-import django
 import factory
+import django
+import unittest
+import warnings
+
 from distutils.version import LooseVersion
 
 from test_plus.test import TestCase
 
-if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
+DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
+
+if DJANGO_16:
     from django.contrib.auth import get_user_model
     User = get_user_model()
 else:
@@ -83,3 +88,24 @@ class TestPlusViewTests(TestCase):
     def test_assertnumqueries_data_5(self):
         with self.assertNumQueriesLessThan(5):
             self.get('view-data-5')
+
+    @unittest.expectedFailure
+    def test_assertnumqueries_failure(self):
+        if not DJANGO_16:
+            return unittest.skip("Does not work before Django 1.6")
+
+        with self.assertNumQueriesLessThan(1):
+            self.get('view-data-5')
+
+    def test_assertnumqueries_warning(self):
+        if not DJANGO_16:
+            with warnings.catch_warnings(record=True) as w:
+                warnings.simplefilter("always")
+
+                with self.assertNumQueriesLessThan(1):
+                    self.get('view-data-1')
+
+                self.assertEqual(len(w), 1)
+                self.assertTrue('skipped' in str(w[-1].message))
+        else:
+            return unittest.skip("Only useful for Django 1.6 and before")
