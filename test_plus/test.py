@@ -100,14 +100,16 @@ class TestCase(TestCase):
 
     def get(self, url_name, *args, **kwargs):
         """ GET url by name using reverse() """
-        self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs))
+        extra = kwargs.pop("extra", {})
+        self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), **extra)
         self.context = self.last_response.context
         return self.last_response
 
     def post(self, url_name, *args, **kwargs):
         """ POST to url by name using reverse() """
         data = kwargs.pop("data", None)
-        self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data)
+        extra = kwargs.pop("extra", {})
+        self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, **extra)
         return self.last_response
 
     def response_200(self, response):

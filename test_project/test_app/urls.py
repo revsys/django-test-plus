@@ -5,7 +5,7 @@ except ImportError:
 
 from .views import (
     view_200, view_201, view_302, view_404, needs_login, data_1,
-    data_5, view_context_with, view_context_without
+    data_5, view_context_with, view_context_without, view_is_ajax
 )
 
 
@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^view/data5/$', data_5, name='view-data-5'),
     url(r'^view/context/with/$', view_context_with, name='view-context-with'),
     url(r'^view/context/without/$', view_context_without, name='view-context-without'),
+    url(r'^view/isajax/$', view_is_ajax, name='view-is-ajax'),
 )
