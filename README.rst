@@ -72,11 +72,17 @@ to pass in.
 get(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Another thing you do often is HTTP get urls, our ``get()`` method
-assumes you are passing in a named URL with any arguments necessary::
+Another thing you do often is HTTP get urls. Our ``get()`` method
+assumes you are passing in a named URL with any args or kwargs necessary
+to reverse the url\_name.
+If needed, place kwargs for ``TestClient.get()`` in an 'extra' dictionary.::
 
     def test_get_named_url(self):
         response = self.get('my-url-name')
+        # Get XML data via AJAX request
+        xml_response = self.get(
+            'my-url-name',
+            extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
 When using this get method two other things happen for you, we store the
 last response in
@@ -99,10 +105,12 @@ post(url\_name, data, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Our ``post()`` method takes a named URL, the dictionary of data you wish
-to post and any args or kwargs necessary to reverse the url\_name.::
+to post and any args or kwargs necessary to reverse the url\_name.
+If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
 
     def test_post_named_url(self):
-        response = self.post('my-url-name', data={'coolness-factor': 11.0})
+        response = self.post('my-url-name', data={'coolness-factor': 11.0},
+                             extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
 assertInContext(key)
 ~~~~~~~~~~~~~~~~~~~~
