@@ -1,6 +1,12 @@
 Changes
 =======
 
+version 1.0.3 - May 28th, 2015
+------------------------------
+  - Added extras kwargs to be able to pass to url resolution
+  - Added response_403
+  - README typo
+
 version 1.0.2 - May 23rd, 2015
 ------------------------------
   - Actually fixing README by moving README.md to README.rst

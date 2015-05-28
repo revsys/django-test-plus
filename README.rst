@@ -64,7 +64,7 @@ When testing views you often find yourself needing to reverse the URL's name. Wi
     def test_something(self):
         url = self.reverse('my-url-name')
         slug_url = self.reverse('name-takes-a-slug', slug='my-slug')
-        pk_url self.reverse('name-takes-a-pk', pk=12)
+        pk_url = self.reverse('name-takes-a-pk', pk=12)
 
 As you can see our reverse also passes along any args or kwargs you need
 to pass in.
