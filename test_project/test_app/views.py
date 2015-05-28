@@ -17,6 +17,10 @@ def view_302(request):
     return HttpResponse('', status=302)
 
 
+def view_403(request):
+    return HttpResponse('', status=403)
+
+
 def view_404(request):
     return HttpResponse('', status=404)
 

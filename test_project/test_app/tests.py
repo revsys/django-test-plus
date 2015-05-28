@@ -54,6 +54,10 @@ class TestPlusViewTests(TestCase):
         res = self.get('view-302')
         self.response_302(res)
 
+    def test_response_403(self):
+        res = self.get('view-403')
+        self.response_403(res)
+
     def test_response_404(self):
         res = self.get('view-404')
         self.response_404(res)
