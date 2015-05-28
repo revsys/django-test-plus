@@ -137,3 +137,14 @@ class TestPlusViewTests(TestCase):
     def test_no_response(self):
         with self.assertRaises(NoPreviousResponse):
             self.assertInContext('testvalue')
+
+    def test_get_is_ajax(self):
+        response = self.get('view-is-ajax',
+                            extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        self.response_200(response)
+
+    def test_post_is_ajax(self):
+        response = self.post('view-is-ajax',
+                             data={'item': 1},
+                             extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+        self.response_200(response)

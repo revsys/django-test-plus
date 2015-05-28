@@ -46,3 +46,7 @@ def view_context_with(request):
 
 def view_context_without(request):
     return render(request, 'base.html', {})
+
+
+def view_is_ajax(request):
+    return HttpResponse('', status=200 if request.is_ajax() else 404)
