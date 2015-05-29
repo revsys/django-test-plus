@@ -122,7 +122,7 @@ using::
         self.assertInContext('some-key')
 
 get_context(key)
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
 Often you need to get things out of the template context, so let's make that
 easy::
