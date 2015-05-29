@@ -121,6 +121,16 @@ using::
         self.get('my-view-with-some-context')
         self.assertInContext('some-key')
 
+get_context(key)
+~~~~~~~~~~~~
+
+Often you need to get things out of the template context, so let's make that
+easy::
+
+    def test_context_data(self):
+        self.get('my-view-with-some-context')
+        slug = self.get_context('slug')
+
 response\_XXX(response) - status code checking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
