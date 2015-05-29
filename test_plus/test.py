@@ -209,3 +209,9 @@ class TestCase(TestCase):
             return self.last_response.context[key]
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
+
+    def assertContext(self, key, value):
+        if self.last_response is not None:
+            self.assertEqual(self.last_response.context[key], value)
+        else:
+            raise NoPreviousResponse("There isn't a previous response to query")

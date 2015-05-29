@@ -139,6 +139,11 @@ class TestPlusViewTests(TestCase):
         value = self.get_context('testvalue')
         self.assertEqual(value, True)
 
+    def test_assert_context(self):
+        response = self.get('view-context-with')
+        self.assertTrue('testvalue' in response.context)
+        self.assertContext('testvalue', True)
+
     @unittest.expectedFailure
     def test_assertnotincontext(self):
         self.get('view-context-without')

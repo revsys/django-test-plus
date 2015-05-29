@@ -111,6 +111,16 @@ If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
         response = self.post('my-url-name', data={'coolness-factor': 11.0},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
+get_context(key)
+~~~~~~~~~~~~~~~~
+
+Often you need to get things out of the template context, so let's make that
+easy::
+
+    def test_context_data(self):
+        self.get('my-view-with-some-context')
+        slug = self.get_context('slug')
+
 assertInContext(key)
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -121,15 +131,15 @@ using::
         self.get('my-view-with-some-context')
         self.assertInContext('some-key')
 
-get_context(key)
-~~~~~~~~~~~~~~~~
+assertContext(key, value)
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Often you need to get things out of the template context, so let's make that
-easy::
+We can get context values and ensure they exist, but so let's also test
+equality while we're at it. This asserts that key == value::
 
-    def test_context_data(self):
+    def test_in_context(self):
         self.get('my-view-with-some-context')
-        slug = self.get_context('slug')
+        self.assertContext('some-key', 'expected value')
 
 response\_XXX(response) - status code checking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
