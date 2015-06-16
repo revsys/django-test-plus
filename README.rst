@@ -53,6 +53,11 @@ And then in your tests use::
     class MyViewTests(TestCase):
         ...
 
+Note that you can also option to import it like this if you want, which is
+more similar to the regular importing of Django's TestCase::
+
+    from test_plus import TestCase
+
 Methods
 -------
 
