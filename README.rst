@@ -105,6 +105,13 @@ You can instead write::
         self.assertInContext('foo')
         self.assertEqual(self.context['foo'], 12)
 
+It's also smart about already reversed URLs so you can be lazy and do::
+
+    def test_testplus_get(self):
+        url = self.reverse('my-url-name')
+        self.get(url)
+        self.response_200()
+
 post(url\_name, data, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

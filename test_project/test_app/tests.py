@@ -38,6 +38,16 @@ class TestPlusViewTests(TestCase):
         res = self.get('view-200')
         self.assertTrue(res.status_code, 200)
 
+        url = self.reverse('view-200')
+        res = self.get(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_post(self):
+        url = self.reverse('view-200')
+        data = {'testing': True}
+        res = self.post(url, data=data)
+        self.assertTrue(res.status_code, 200)
+
     def test_get_check_200(self):
         res = self.get_check_200('view-200')
         self.assertTrue(res.status_code, 200)
