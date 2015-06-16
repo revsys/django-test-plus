@@ -46,21 +46,36 @@ class TestPlusViewTests(TestCase):
         res = self.get('view-200')
         self.response_200(res)
 
+        # Test without response option
+        self.response_200()
+
     def test_response_201(self):
         res = self.get('view-201')
         self.response_201(res)
+
+        # Test without response option
+        self.response_201()
 
     def test_response_302(self):
         res = self.get('view-302')
         self.response_302(res)
 
+        # Test without response option
+        self.response_302()
+
     def test_response_403(self):
         res = self.get('view-403')
         self.response_403(res)
 
+        # Test without response option
+        self.response_403()
+
     def test_response_404(self):
         res = self.get('view-404')
         self.response_404(res)
+
+        # Test without response option
+        self.response_404()
 
     def test_make_user(self):
         """ Test make_user using django.contrib.auth defaults """

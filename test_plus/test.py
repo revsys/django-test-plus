@@ -112,24 +112,35 @@ class TestCase(TestCase):
         self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, **extra)
         return self.last_response
 
-    def response_200(self, response):
+    def _which_response(self, response=None):
+        if response is None and self.last_response is not None:
+            return self.last_response
+        else:
+            return response
+
+    def response_200(self, response=None):
         """ Given response has status_code 200 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 200)
 
-    def response_201(self, response):
+    def response_201(self, response=None):
         """ Given response has status_code 201 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 201)
 
-    def response_302(self, response):
+    def response_302(self, response=None):
         """ Given response has status_code 302 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 302)
 
-    def response_403(self, response):
+    def response_403(self, response=None):
         """ Given response has status_code 403 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 403)
 
-    def response_404(self, response):
+    def response_404(self, response=None):
         """ Given response has status_code 404 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 404)
 
     def get_check_200(self, url, *args, **kwargs):
