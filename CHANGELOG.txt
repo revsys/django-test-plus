@@ -1,6 +1,14 @@
 Changes
 =======
 
+version 1.0.5 - June 16th, 2015
+-------------------------------
+
+  - Allow 'from test_plus import TestCase'
+  - Make response_XXX() be able to use last_response
+  - Add extra lazy option of passing full URL to get() and post()
+  - Pass along QUERY_STRING information via data kwargs on gets()
+
 version 1.0.4 - May 29th, 2015
 ------------------------------
 
