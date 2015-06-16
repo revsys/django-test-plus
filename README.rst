@@ -172,7 +172,15 @@ django-test-plus provides the following response method checks for you::
     - response_403()
     - response_404()
 
-All of which take a Django test client response as their only argument.
+All of which take an option Django test client response as their only argument.
+If it's available, the response_XXX methods will use the last response. So you
+can do::
+
+    def test_status(self):
+        self.get('my-url-name')
+        self.response_200()
+
+Which is a bit shorter.
 
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
