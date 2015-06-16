@@ -36,11 +36,16 @@ class TestPlusViewTests(TestCase):
 
     def test_get(self):
         res = self.get('view-200')
-        self.assertTrue(res.status_code, 200)
+        self.assertEqual(res.status_code, 200)
 
         url = self.reverse('view-200')
         res = self.get(url)
-        self.assertTrue(res.status_code, 200)
+        self.assertEqual(res.status_code, 200)
+
+    def test_get_query(self):
+        res = self.get('view-200', data={'query': 'foo'})
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.request['QUERY_STRING'], 'query=foo')
 
     def test_post(self):
         url = self.reverse('view-200')

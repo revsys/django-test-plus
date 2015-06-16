@@ -105,10 +105,11 @@ class TestCase(TestCase):
         If reverse raises NoReverseMatch attempt to use it as a URL.
         """
         extra = kwargs.pop("extra", {})
+        data = kwargs.pop("data", None)
         try:
-            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), **extra)
+            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), data=data, **extra)
         except NoReverseMatch:
-            self.last_response = self.client.get(url_name, **extra)
+            self.last_response = self.client.get(url_name, data=data, **extra)
 
         self.context = self.last_response.context
         return self.last_response

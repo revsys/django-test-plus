@@ -112,6 +112,13 @@ It's also smart about already reversed URLs so you can be lazy and do::
         self.get(url)
         self.response_200()
 
+If you need to pass query string parameters to your url name, you can do so like this. Assuming the name 'search' maps to '/search/' then::
+
+    def test_testplus_get_query(self):
+        self.get('search', data={'query': 'testing'})
+
+Would GET /search/?query=testing
+
 post(url\_name, data, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
