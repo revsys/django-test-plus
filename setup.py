@@ -2,8 +2,6 @@ import os
 import sys
 from setuptools import setup, find_packages
 
-from test_plus import VERSION
-
 os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
 
 # Add test_plus to Python path
@@ -16,7 +14,7 @@ f.close()
 
 setup(
     name='django-test-plus',
-    version=".".join(map(str, VERSION)),
+    version="1.0.5",
     description="django-test-plus provides useful additions to Django's default TestCase",
     long_description=readme,
     author='Frank Wiles',

@@ -36,6 +36,21 @@ class TestPlusViewTests(TestCase):
 
     def test_get(self):
         res = self.get('view-200')
+        self.assertEqual(res.status_code, 200)
+
+        url = self.reverse('view-200')
+        res = self.get(url)
+        self.assertEqual(res.status_code, 200)
+
+    def test_get_query(self):
+        res = self.get('view-200', data={'query': 'foo'})
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.request['QUERY_STRING'], 'query=foo')
+
+    def test_post(self):
+        url = self.reverse('view-200')
+        data = {'testing': True}
+        res = self.post(url, data=data)
         self.assertTrue(res.status_code, 200)
 
     def test_get_check_200(self):
@@ -46,17 +61,36 @@ class TestPlusViewTests(TestCase):
         res = self.get('view-200')
         self.response_200(res)
 
+        # Test without response option
+        self.response_200()
+
     def test_response_201(self):
         res = self.get('view-201')
         self.response_201(res)
+
+        # Test without response option
+        self.response_201()
 
     def test_response_302(self):
         res = self.get('view-302')
         self.response_302(res)
 
+        # Test without response option
+        self.response_302()
+
+    def test_response_403(self):
+        res = self.get('view-403')
+        self.response_403(res)
+
+        # Test without response option
+        self.response_403()
+
     def test_response_404(self):
         res = self.get('view-404')
         self.response_404(res)
+
+        # Test without response option
+        self.response_404()
 
     def test_make_user(self):
         """ Test make_user using django.contrib.auth defaults """
@@ -128,6 +162,17 @@ class TestPlusViewTests(TestCase):
 
         self.assertInContext('testvalue')
         self.assertTrue(self.context['testvalue'], response.context['testvalue'])
+
+    def test_get_context(self):
+        response = self.get('view-context-with')
+        self.assertTrue('testvalue' in response.context)
+        value = self.get_context('testvalue')
+        self.assertEqual(value, True)
+
+    def test_assert_context(self):
+        response = self.get('view-context-with')
+        self.assertTrue('testvalue' in response.context)
+        self.assertContext('testvalue', True)
 
     @unittest.expectedFailure
     def test_assertnotincontext(self):

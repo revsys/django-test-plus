@@ -53,6 +53,11 @@ And then in your tests use::
     class MyViewTests(TestCase):
         ...
 
+Note that you can also option to import it like this if you want, which is
+more similar to the regular importing of Django's TestCase::
+
+    from test_plus import TestCase
+
 Methods
 -------
 
@@ -64,7 +69,7 @@ When testing views you often find yourself needing to reverse the URL's name. Wi
     def test_something(self):
         url = self.reverse('my-url-name')
         slug_url = self.reverse('name-takes-a-slug', slug='my-slug')
-        pk_url self.reverse('name-takes-a-pk', pk=12)
+        pk_url = self.reverse('name-takes-a-pk', pk=12)
 
 As you can see our reverse also passes along any args or kwargs you need
 to pass in.
@@ -85,8 +90,7 @@ If needed, place kwargs for ``TestClient.get()`` in an 'extra' dictionary.::
             extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
 When using this get method two other things happen for you, we store the
-last response in
-\`\`self.last\_response\ ``and the response's Context in``\ self.context\`\`\`.
+last response in ``self.last\_response`` and the response's Context in ``self.context``.
 So instead of::
 
     def test_default_django(self):
@@ -101,6 +105,20 @@ You can instead write::
         self.assertInContext('foo')
         self.assertEqual(self.context['foo'], 12)
 
+It's also smart about already reversed URLs so you can be lazy and do::
+
+    def test_testplus_get(self):
+        url = self.reverse('my-url-name')
+        self.get(url)
+        self.response_200()
+
+If you need to pass query string parameters to your url name, you can do so like this. Assuming the name 'search' maps to '/search/' then::
+
+    def test_testplus_get_query(self):
+        self.get('search', data={'query': 'testing'})
+
+Would GET /search/?query=testing
+
 post(url\_name, data, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -112,6 +130,16 @@ If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
         response = self.post('my-url-name', data={'coolness-factor': 11.0},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
+get_context(key)
+~~~~~~~~~~~~~~~~
+
+Often you need to get things out of the template context, so let's make that
+easy::
+
+    def test_context_data(self):
+        self.get('my-view-with-some-context')
+        slug = self.get_context('slug')
+
 assertInContext(key)
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -121,6 +149,16 @@ using::
     def test_in_context(self):
         self.get('my-view-with-some-context')
         self.assertInContext('some-key')
+
+assertContext(key, value)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can get context values and ensure they exist, but so let's also test
+equality while we're at it. This asserts that key == value::
+
+    def test_in_context(self):
+        self.get('my-view-with-some-context')
+        self.assertContext('some-key', 'expected value')
 
 response\_XXX(response) - status code checking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,7 +186,15 @@ django-test-plus provides the following response method checks for you::
     - response_403()
     - response_404()
 
-All of which take a Django test client response as their only argument.
+All of which take an option Django test client response as their only argument.
+If it's available, the response_XXX methods will use the last response. So you
+can do::
+
+    def test_status(self):
+        self.get('my-url-name')
+        self.response_200()
+
+Which is a bit shorter.
 
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

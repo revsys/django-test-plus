@@ -1,6 +1,27 @@
 Changes
 =======
 
+version 1.0.5 - June 16th, 2015
+-------------------------------
+
+  - Allow 'from test_plus import TestCase'
+  - Make response_XXX() be able to use last_response
+  - Add extra lazy option of passing full URL to get() and post()
+  - Pass along QUERY_STRING information via data kwargs on gets()
+
+version 1.0.4 - May 29th, 2015
+------------------------------
+
+  - README formatting fixes
+  - Added get_context() method
+  - Added assertContext() method
+
+version 1.0.3 - May 28th, 2015
+------------------------------
+  - Added extras kwargs to be able to pass to url resolution
+  - Added response_403
+  - README typo
+
 version 1.0.2 - May 23rd, 2015
 ------------------------------
   - Actually fixing README by moving README.md to README.rst

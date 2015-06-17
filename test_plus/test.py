@@ -1,7 +1,7 @@
 import warnings
 import django
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve, NoReverseMatch
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.test import TestCase
 from distutils.version import LooseVersion
@@ -99,37 +99,65 @@ class TestCase(TestCase):
         self.client.logout()
 
     def get(self, url_name, *args, **kwargs):
-        """ GET url by name using reverse() """
+        """
+        GET url by name using reverse()
+
+        If reverse raises NoReverseMatch attempt to use it as a URL.
+        """
         extra = kwargs.pop("extra", {})
-        self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), **extra)
+        data = kwargs.pop("data", {})
+        try:
+            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), data=data, **extra)
+        except NoReverseMatch:
+            self.last_response = self.client.get(url_name, data=data, **extra)
+
         self.context = self.last_response.context
         return self.last_response
 
     def post(self, url_name, *args, **kwargs):
-        """ POST to url by name using reverse() """
+        """
+        POST to url by name using reverse()
+
+        If reverse raises NoReverseMatch attempt to use it as a URL.
+        """
         data = kwargs.pop("data", None)
         extra = kwargs.pop("extra", {})
-        self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, **extra)
+        try:
+            self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, **extra)
+        except NoReverseMatch:
+            self.last_response = self.client.post(url_name, data, **extra)
+
         return self.last_response
 
-    def response_200(self, response):
+    def _which_response(self, response=None):
+        if response is None and self.last_response is not None:
+            return self.last_response
+        else:
+            return response
+
+    def response_200(self, response=None):
         """ Given response has status_code 200 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 200)
 
-    def response_201(self, response):
+    def response_201(self, response=None):
         """ Given response has status_code 201 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 201)
 
-    def response_302(self, response):
+    def response_302(self, response=None):
         """ Given response has status_code 302 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 302)
 
-    def response_403(self, response):
+    def response_403(self, response=None):
         """ Given response has status_code 403 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 403)
 
-    def response_404(self, response):
+    def response_404(self, response=None):
         """ Given response has status_code 404 """
+        response = self._which_response(response)
         self.assertEqual(response.status_code, 404)
 
     def get_check_200(self, url, *args, **kwargs):
@@ -200,5 +228,18 @@ class TestCase(TestCase):
     def assertInContext(self, key):
         if self.last_response is not None:
             self.assertTrue(key in self.last_response.context)
+        else:
+            raise NoPreviousResponse("There isn't a previous response to query")
+
+    def get_context(self, key):
+        if self.last_response is not None:
+            self.assertTrue(key in self.last_response.context)
+            return self.last_response.context[key]
+        else:
+            raise NoPreviousResponse("There isn't a previous response to query")
+
+    def assertContext(self, key, value):
+        if self.last_response is not None:
+            self.assertEqual(self.last_response.context[key], value)
         else:
             raise NoPreviousResponse("There isn't a previous response to query")

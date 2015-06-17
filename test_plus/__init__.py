@@ -1,1 +1,3 @@
-VERSION = (1, 0, 2)
+from .test import TestCase
+
+VERSION = (1, 0, 4)
