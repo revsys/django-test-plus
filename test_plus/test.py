@@ -183,7 +183,7 @@ class TestCase(TestCase):
     def make_user(self, username, password='password'):
         """
         Build a user with <username> and password of 'password' for testing
-        purposes.  Exposes the user as self.user_<username>
+        purposes.
         """
         if self.user_factory:
             test_user = self.user_factory(username=username)
