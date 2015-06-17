@@ -1,7 +1,7 @@
 import warnings
 import django
 from django.conf import settings
-from django.core.urlresolvers import reverse, resolve, NoReverseMatch
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.test import TestCase
 from distutils.version import LooseVersion
@@ -66,7 +66,6 @@ class login(object):
         if args and isinstance(args[0], User):
             credentials.update({
                 'username': args[0].username,
-                'password': 'password',
             })
 
         if not credentials.get('password', False):
@@ -178,24 +177,24 @@ class TestCase(TestCase):
         return login(self, *args, **credentials)
 
     def reverse(self, name, *args, **kwargs):
-        """ Reverse a url, convience to avoid having to import reverse in tests """
+        """ Reverse a url, convenience to avoid having to import reverse in tests """
         return reverse(name, args=args, kwargs=kwargs)
 
-    def make_user(self, username):
+    def make_user(self, username, password='password'):
         """
         Build a user with <username> and password of 'password' for testing
         purposes.  Exposes the user as self.user_<username>
         """
         if self.user_factory:
             test_user = self.user_factory(username=username)
-            test_user.set_password('password')
+            test_user.set_password(password)
             test_user.save()
             return test_user
         else:
             test_user = User.objects.create_user(
                 username,
                 '{0}@example.com'.format(username),
-                'password',
+                password,
             )
             return test_user
 
