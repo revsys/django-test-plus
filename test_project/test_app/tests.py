@@ -105,6 +105,12 @@ class TestPlusViewTests(TestCase):
         with self.login(username='test', password='password'):
             self.get_check_200('view-needs-login')
 
+    def test_login_other_password(self):
+        # Make a user with a different password
+        user = self.make_user('test', password='revsys')
+        with self.login(user, password='revsys'):
+            self.get_check_200('view-needs-login')
+
     def test_login_no_password(self):
 
         user = self.make_user('test')
