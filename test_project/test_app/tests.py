@@ -97,6 +97,16 @@ class TestPlusViewTests(TestCase):
         u1 = self.make_user('u1')
         self.assertEqual(u1.username, 'u1')
 
+    def test_make_user_with_perms(self):
+        u1 = self.make_user('u1', perms=['auth.*'])
+        expected_perms = [u'add_group', u'change_group', u'delete_group',
+                          u'add_permission', u'change_permission', u'delete_permission',
+                          u'add_user', u'change_user', u'delete_user']
+        self.assertEqual(list(u1.user_permissions.values_list('codename', flat=True)), expected_perms)
+
+        u2 = self.make_user('u2', perms=['auth.add_group'])
+        self.assertEqual(list(u2.user_permissions.values_list('codename', flat=True)), [u'add_group'])
+
     def test_login_required(self):
         self.assertLoginRequired('view-needs-login')
 
