@@ -356,3 +356,16 @@ class CBVTestCase(TestCase):
         response = self.get(cls, initkwargs=initkwargs, *args, **kwargs)
         self.response_200(response)
         return response
+
+    def assertGoodView(self, cls, initkwargs=None, *args, **kwargs):
+        """
+        Quick-n-dirty testing of a given view.
+        Ensures view returns a 200 status and that generates less than 50
+        database queries.
+        """
+        query_count = kwargs.pop('test_query_count', 50)
+
+        with self.assertNumQueriesLessThan(query_count):
+            response = self.get(cls, initkwargs=initkwargs, *args, **kwargs)
+        self.response_200(response)
+        return response
