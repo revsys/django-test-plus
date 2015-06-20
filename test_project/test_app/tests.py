@@ -5,7 +5,16 @@ import warnings
 
 from distutils.version import LooseVersion
 
-from test_plus.test import TestCase, NoPreviousResponse
+from test_plus.test import (
+    CBVTestCase,
+    NoPreviousResponse,
+    TestCase
+)
+
+from .views import (
+    CBView,
+    CBTemplateView,
+)
 
 DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
 
@@ -199,3 +208,46 @@ class TestPlusViewTests(TestCase):
                              data={'item': 1},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         self.response_200(response)
+
+
+class TestPlusCBViewTests(CBVTestCase):
+
+    def test_get(self):
+        response = self.get(CBView)
+        self.assertEqual(response.status_code, 200)
+
+    def test_post(self):
+        data = {'testing': True}
+        response = self.post(CBView, data=data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_check_200(self):
+        self.get_check_200(CBView)
+
+
+class TestPlusCBTemplateViewTests(CBVTestCase):
+
+    def test_get(self):
+        response = self.get(CBTemplateView)
+        self.assertEqual(response.status_code, 200)
+        self.assertInContext('revsys')
+        self.assertContext('revsys', 42)
+        self.assertTemplateUsed(response, template_name='test.html')
+
+    def test_get_new_template(self):
+        template_name = 'other.html'
+        response = self.get(CBTemplateView, initkwargs={'template_name': template_name})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, template_name=template_name)
+
+
+class TestPlusCBCustomMethodTests(CBVTestCase):
+
+    def test_custom_method_with_value(self):
+        special_value = 42
+        instance = self.get_instance(CBView, {'special_value': special_value})
+        self.assertEqual(instance.special(), special_value)
+
+    def test_custom_method_no_value(self):
+        instance = self.get_instance(CBView)
+        self.assertFalse(instance.special())

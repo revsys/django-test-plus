@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views import generic
 
 from .models import Data
 
+
+# Function-based test views
 
 def view_200(request):
     return HttpResponse('', status=200)
@@ -54,3 +57,29 @@ def view_context_without(request):
 
 def view_is_ajax(request):
     return HttpResponse('', status=200 if request.is_ajax() else 404)
+
+
+# Class-based test views
+
+class CBView(generic.View):
+
+    def get(self, request):
+        return HttpResponse('', status=200)
+
+    def post(self, request):
+        return HttpResponse('', status=200)
+
+    def special(self):
+        if hasattr(self, 'special_value'):
+            return self.special_value
+        else:
+            return False
+
+
+class CBTemplateView(generic.TemplateView):
+
+    template_name = 'test.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['revsys'] = 42
+        return kwargs
