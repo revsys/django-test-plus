@@ -263,7 +263,7 @@ class CBVTestCase(TestCase):
 
             def test_special_method(self):
                 request = RequestFactory().get('/')
-                instance = self.setup(MyClass, request=request)
+                instance = self.get_instance(MyClass, request=request)
 
                 # invoke a MyClass method
                 result = instance.special_method()
@@ -277,9 +277,9 @@ class CBVTestCase(TestCase):
         Returns a decorated instance of a class-based generic view class.
 
         Use `initkwargs` to set expected class attributes.
-        For example you might set the class `object` attribute:
+        For example, set the `object` attribute on MyDetailView class:
 
-            instance = self.setup(MyDetailView, {'object': obj}, request)
+            instance = self.get_instance(MyDetailView, initkwargs={'object': obj}, request)
 
         because SingleObjectMixin (part of generic.DetailView)
         expects self.object to be set before invoking get_context_data().
