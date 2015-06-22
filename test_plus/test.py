@@ -287,8 +287,6 @@ class CBVTestCase(TestCase):
         if initkwargs is None:
             initkwargs = {}
         instance = cls(**initkwargs)
-        if hasattr(instance, 'get') and not hasattr(instance, 'head'):
-            instance.head = instance.get
         instance.request = request
         instance.args = args
         instance.kwargs = kwargs
