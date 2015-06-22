@@ -224,6 +224,9 @@ class TestPlusCBViewTests(CBVTestCase):
     def test_get_check_200(self):
         self.get_check_200(CBView)
 
+    def test_assert_good_view(self):
+        self.assertGoodView(CBView)
+
 
 class TestPlusCBTemplateViewTests(CBVTestCase):
 
