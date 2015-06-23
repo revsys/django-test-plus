@@ -2,3 +2,4 @@ build/
 django_test_plus.egg-info/
 htmlcov/
 .coverage
+*.pyc
