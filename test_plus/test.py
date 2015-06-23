@@ -306,12 +306,14 @@ class CBVTestCase(TestCase):
         self.context = self.last_response.context
         return self.last_response
 
-    def post(self, cls, data={}, initkwargs=None, *args, **kwargs):
+    def post(self, cls, data=None, initkwargs=None, *args, **kwargs):
         """
         Calls cls.post() method after instantiating view class
         with `initkwargs`.
         Renders view templates and sets context if appropriate.
         """
+        if data is None:
+            data = {}
         if initkwargs is None:
             initkwargs = {}
         request = RequestFactory().post('/', data)
