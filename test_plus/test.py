@@ -283,6 +283,8 @@ class CBVTestCase(TestCase):
 
         because SingleObjectMixin (part of generic.DetailView)
         expects self.object to be set before invoking get_context_data().
+
+        `args` and `kwargs` are the same values you would pass to ``reverse()``.
         """
         if initkwargs is None:
             initkwargs = {}
