@@ -180,7 +180,7 @@ class TestCase(TestCase):
         """ Reverse a url, convenience to avoid having to import reverse in tests """
         return reverse(name, args=args, kwargs=kwargs)
 
-    def make_user(self, username, password='password'):
+    def make_user(self, username='testuser', password='password'):
         """
         Build a user with <username> and password of 'password' for testing
         purposes.
