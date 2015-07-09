@@ -334,6 +334,14 @@ can use it like this::
     def test_better_than_nothing(self):
         response = self.assertGoodView('my-url-name')
 
+Disable logging
+---------------
+You can disable logging during testing by changing the `TEST\_RUNNER
+<https://docs.djangoproject.com/en/1.8/topics/testing/advanced/#using-different-testing-frameworks>`_
+in your settings file to::
+
+    TEST_RUNNER = 'test_plus.runner.NoLoggingRunner'
+
 .. |travis ci status image| image:: https://secure.travis-ci.org/revsys/django-test-plus.png
    :target: http://travis-ci.org/revsys/django-test-plus
 .. |Coverage Status| image:: https://coveralls.io/repos/revsys/django-test-plus/badge.svg?branch=master
