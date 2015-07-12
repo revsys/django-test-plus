@@ -1,8 +1,11 @@
 import warnings
 import django
 from django.conf import settings
+from django.contrib.auth.models import Permission
+from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import connections, DEFAULT_DB_ALIAS
+from django.db.models import Q
 from django.test import TestCase
 from distutils.version import LooseVersion
 
@@ -180,7 +183,7 @@ class TestCase(TestCase):
         """ Reverse a url, convenience to avoid having to import reverse in tests """
         return reverse(name, args=args, kwargs=kwargs)
 
-    def make_user(self, username, password='password'):
+    def make_user(self, username, password='password', perms=None):
         """
         Build a user with <username> and password of 'password' for testing
         purposes.
@@ -189,14 +192,31 @@ class TestCase(TestCase):
             test_user = self.user_factory(username=username)
             test_user.set_password(password)
             test_user.save()
-            return test_user
         else:
             test_user = User.objects.create_user(
                 username,
                 '{0}@example.com'.format(username),
                 password,
             )
-            return test_user
+
+        if perms:
+            _filter = Q()
+            for perm in perms:
+                if '.' not in perm:
+                    raise ImproperlyConfigured(
+                        'The permission in the perms argument needs to be either '
+                        'app_label.codename or app_label.* (e.g. accounts.change_user or accounts.*)'
+                    )
+
+                app_label, codename = perm.split('.')
+                if codename == '*':
+                    _filter = _filter | Q(content_type__app_label=app_label)
+                else:
+                    _filter = _filter | Q(content_type__app_label=app_label, codename=codename)
+
+            test_user.user_permissions.add(*list(Permission.objects.filter(_filter)))
+
+        return test_user
 
     def assertNumQueriesLessThan(self, num, func=None, *args, **kwargs):
         using = kwargs.pop("using", DEFAULT_DB_ALIAS)
