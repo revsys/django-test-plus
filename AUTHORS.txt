@@ -3,4 +3,5 @@ django-test-plus was originally created by Frank Wiles <frank@revsys.com>
 With contributions from:
 
 Graham Ullrich <graham@flyingcracker.com>
+Brent O'Connor <epicserve@gmail.com>
 
