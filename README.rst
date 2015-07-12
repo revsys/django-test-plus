@@ -205,8 +205,8 @@ method makes it even easier::
     def test_even_better_status(self):
         response = self.get_check_200('my-url-name')
 
-make\_user(username)
-~~~~~~~~~~~~~~~~~~~~
+make\_user(username, password='password')
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When testing out views you often need to create various users to ensure
 all of your logic is safe and sound. To make this process easier, this
@@ -237,8 +237,9 @@ To use a Factory Boy factory simply create your class like this::
         def test_special_creation(self):
             user1 = self.make_user('u1')
 
-**NOTE:** Users created by this method will always have their password
-set to the string 'password' in order to ease testing.
+**NOTE:** Users created by this method will have their password
+set to the string 'password' by default, in order to ease testing.
+If you need a specific password simply override the ``password`` parameter.
 
 Authentication Helpers
 ----------------------
@@ -277,8 +278,8 @@ restriction logic. This can be made easier with the following context::
             # Test user2 see what they should be seeing
 
 Since we're likely creating our users using ``make_user()`` from above,
-we can assume the password is 'password' so the login context assumes
-that for you as well, so you can do::
+the login context assumes the password is 'password' unless specified
+otherwise. Therefore you you can do::
 
     def test_restrictions(self):
         user1 = self.make_user('u1')

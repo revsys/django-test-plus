@@ -175,10 +175,10 @@ class TestCase(TestCase):
 
     def assertLoginRequired(self, url, *args, **kwargs):
         """ Ensure login is required to GET this URL """
-        res = self.get(url, *args, **kwargs)
+        response = self.get(url, *args, **kwargs)
         reversed_url = reverse(url, args=args, kwargs=kwargs)
         expected_url = "{0}?next={1}".format(settings.LOGIN_URL, reversed_url)
-        self.assertRedirects(res, expected_url)
+        self.assertRedirects(response, expected_url)
 
     def login(self, *args, **credentials):
         """ Login a user """
