@@ -205,8 +205,8 @@ method makes it even easier::
     def test_even_better_status(self):
         response = self.get_check_200('my-url-name')
 
-make\_user(username, password='password')
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+make\_user(username='testuser', password='password', perms=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When testing out views you often need to create various users to ensure
 all of your logic is safe and sound. To make this process easier, this
@@ -240,6 +240,11 @@ To use a Factory Boy factory simply create your class like this::
 **NOTE:** Users created by this method will have their password
 set to the string 'password' by default, in order to ease testing.
 If you need a specific password simply override the ``password`` parameter.
+
+You can also pass in user permissions by passing in a string of
+'``<app_name>.<perm name>``' or '``<app_name>.*``'.  For example::
+
+    user2 = self.make_user(perms=['myapp.create_widget', 'otherapp.*'])
 
 Authentication Helpers
 ----------------------
