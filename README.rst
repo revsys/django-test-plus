@@ -454,6 +454,14 @@ Caller must provide a view class instead of a URL name or path parameter.
 All test\_plus TestCase side-effects are honored and all test\_plus
 TestCase assertion methods work with ``CBVTestCase.post()``.
 
+Disable logging
+---------------
+You can disable logging during testing by changing the `TEST\_RUNNER
+<https://docs.djangoproject.com/en/1.8/topics/testing/advanced/#using-different-testing-frameworks>`_
+in your settings file to::
+
+    TEST_RUNNER = 'test_plus.runner.NoLoggingRunner'
+
 .. |travis ci status image| image:: https://secure.travis-ci.org/revsys/django-test-plus.png
    :target: http://travis-ci.org/revsys/django-test-plus
 .. |Coverage Status| image:: https://coveralls.io/repos/revsys/django-test-plus/badge.svg?branch=master
