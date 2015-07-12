@@ -1,4 +1,6 @@
 import warnings
+from distutils.version import LooseVersion
+
 import django
 from django.conf import settings
 from django.contrib.auth.models import Permission
@@ -8,6 +10,9 @@ from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
 from django.test import TestCase
 from distutils.version import LooseVersion
+from django.test import RequestFactory, signals, TestCase
+from django.test.client import store_rendered_templates
+from django.utils.functional import curry
 
 
 class NoPreviousResponse(Exception):
@@ -262,3 +267,129 @@ class TestCase(TestCase):
             self.assertEqual(self.last_response.context[key], value)
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
+
+
+# Note this class inherits from TestCase defined above.
+class CBVTestCase(TestCase):
+    """
+    Directly calls class-based generic view methods,
+    bypassing the Django test Client.
+
+    This process bypasses middleware invocation and URL resolvers.
+
+    Example usage:
+
+        from myapp.views import MyClass
+
+        class MyClassTest(CBVTestCase):
+
+            def test_special_method(self):
+                request = RequestFactory().get('/')
+                instance = self.get_instance(MyClass, request=request)
+
+                # invoke a MyClass method
+                result = instance.special_method()
+
+                # make assertions
+                self.assertTrue(result)
+    """
+
+    def get_instance(self, cls, initkwargs=None, request=None, *args, **kwargs):
+        """
+        Returns a decorated instance of a class-based generic view class.
+
+        Use `initkwargs` to set expected class attributes.
+        For example, set the `object` attribute on MyDetailView class:
+
+            instance = self.get_instance(MyDetailView, initkwargs={'object': obj}, request)
+
+        because SingleObjectMixin (part of generic.DetailView)
+        expects self.object to be set before invoking get_context_data().
+
+        `args` and `kwargs` are the same values you would pass to ``reverse()``.
+        """
+        if initkwargs is None:
+            initkwargs = {}
+        instance = cls(**initkwargs)
+        instance.request = request
+        instance.args = args
+        instance.kwargs = kwargs
+        return instance
+
+    def get(self, cls, initkwargs=None, *args, **kwargs):
+        """
+        Calls cls.get() method after instantiating view class
+        with `initkwargs`.
+        Renders view templates and sets context if appropriate.
+        """
+        if initkwargs is None:
+            initkwargs = {}
+        request = RequestFactory().get('/')
+        instance = self.get_instance(cls, initkwargs=initkwargs, request=request, **kwargs)
+        self.last_response = self.get_response(request, instance.get)
+        self.context = self.last_response.context
+        return self.last_response
+
+    def post(self, cls, data=None, initkwargs=None, *args, **kwargs):
+        """
+        Calls cls.post() method after instantiating view class
+        with `initkwargs`.
+        Renders view templates and sets context if appropriate.
+        """
+        if data is None:
+            data = {}
+        if initkwargs is None:
+            initkwargs = {}
+        request = RequestFactory().post('/', data)
+        instance = self.get_instance(cls, initkwargs=initkwargs, request=request, **kwargs)
+        self.last_response = self.get_response(request, instance.post)
+        self.context = self.last_response.context
+        return self.last_response
+
+    def get_response(self, request, view_func):
+        """
+        Obtain response from view class method (typically get or post).
+
+        No middleware is invoked, but templates are rendered
+        and context saved if appropriate.
+        """
+        # Curry a data dictionary into an instance of
+        # the template renderer callback function.
+        data = {}
+        on_template_render = curry(store_rendered_templates, data)
+        signal_uid = "template-render-%s" % id(request)
+        signals.template_rendered.connect(on_template_render, dispatch_uid=signal_uid)
+        try:
+            response = view_func(request)
+
+            if hasattr(response, 'render') and callable(response.render):
+                response = response.render()
+                # Add any rendered template detail to the response.
+                response.templates = data.get("templates", [])
+                response.context = data.get("context")
+            else:
+                response.templates = None
+                response.context = None
+
+            return response
+        finally:
+            signals.template_rendered.disconnect(dispatch_uid=signal_uid)
+
+    def get_check_200(self, cls, initkwargs=None, *args, **kwargs):
+        """ Test that we can GET a page and it returns a 200 """
+        response = self.get(cls, initkwargs=initkwargs, *args, **kwargs)
+        self.response_200(response)
+        return response
+
+    def assertGoodView(self, cls, initkwargs=None, *args, **kwargs):
+        """
+        Quick-n-dirty testing of a given view.
+        Ensures view returns a 200 status and that generates less than 50
+        database queries.
+        """
+        query_count = kwargs.pop('test_query_count', 50)
+
+        with self.assertNumQueriesLessThan(query_count):
+            response = self.get(cls, initkwargs=initkwargs, *args, **kwargs)
+        self.response_200(response)
+        return response
