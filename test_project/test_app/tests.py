@@ -51,6 +51,15 @@ class TestPlusViewTests(TestCase):
         res = self.get(url)
         self.assertEqual(res.status_code, 200)
 
+    def test_get_follow(self):
+        # Expect 302 status code
+        res = self.get('view-redirect')
+        self.assertEqual(res.status_code, 302)
+        # Expect 200 status code
+        url = self.reverse('view-redirect')
+        res = self.get(url, follow=True)
+        self.assertEqual(res.status_code, 200)
+
     def test_get_query(self):
         res = self.get('view-200', data={'query': 'foo'})
         self.assertEqual(res.status_code, 200)
@@ -60,6 +69,16 @@ class TestPlusViewTests(TestCase):
         url = self.reverse('view-200')
         data = {'testing': True}
         res = self.post(url, data=data)
+        self.assertTrue(res.status_code, 200)
+
+    def test_post_follow(self):
+        url = self.reverse('view-redirect')
+        data = {'testing': True}
+        # Expect 302 status code
+        res = self.post(url, data=data)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.post(url, data=data, follow=True)
         self.assertTrue(res.status_code, 200)
 
     def test_get_check_200(self):

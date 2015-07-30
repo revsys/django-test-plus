@@ -1,6 +1,11 @@
 Changes
 =======
 
+version 1.0.6 - ???? ????, 2015
+-------------------------------
+
+  - get/post test methods now accept the `follow` boolean.
+
 version 1.0.5 - June 16th, 2015
 -------------------------------
 

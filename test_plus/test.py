@@ -105,7 +105,7 @@ class TestCase(TestCase):
     def tearDown(self):
         self.client.logout()
 
-    def get(self, url_name, *args, **kwargs):
+    def get(self, url_name, follow=False, *args, **kwargs):
         """
         GET url by name using reverse()
 
@@ -114,14 +114,14 @@ class TestCase(TestCase):
         extra = kwargs.pop("extra", {})
         data = kwargs.pop("data", {})
         try:
-            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), data=data, **extra)
+            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
         except NoReverseMatch:
-            self.last_response = self.client.get(url_name, data=data, **extra)
+            self.last_response = self.client.get(url_name, data=data, follow=follow, **extra)
 
         self.context = self.last_response.context
         return self.last_response
 
-    def post(self, url_name, *args, **kwargs):
+    def post(self, url_name, follow=False, *args, **kwargs):
         """
         POST to url by name using reverse()
 
@@ -130,9 +130,9 @@ class TestCase(TestCase):
         data = kwargs.pop("data", None)
         extra = kwargs.pop("extra", {})
         try:
-            self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, **extra)
+            self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, follow=follow, **extra)
         except NoReverseMatch:
-            self.last_response = self.client.post(url_name, data, **extra)
+            self.last_response = self.client.post(url_name, data, follow=follow, **extra)
 
         return self.last_response
 
