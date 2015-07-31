@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 
 from .models import Data
@@ -26,6 +26,10 @@ def view_403(request):
 
 def view_404(request):
     return HttpResponse('', status=404)
+
+
+def view_redirect(request):
+    return redirect('view-200')
 
 
 @login_required
