@@ -1,10 +1,16 @@
 Changes
 =======
 
-version 1.0.6 - ???? ????, 2015
+version 1.0.7 - July 31st, 2015
 -------------------------------
 
   - get/post test methods now accept the `follow` boolean.
+
+version 1.0.6 - July 12th, 2015
+-------------------------------
+
+  - Allow overriding password to be not just 'password'
+  - Added CBVTestCase to be able to test generic CBVs without hitting routing or middleware
 
 version 1.0.5 - June 16th, 2015
 -------------------------------
