@@ -105,12 +105,13 @@ class TestCase(TestCase):
     def tearDown(self):
         self.client.logout()
 
-    def get(self, url_name, follow=False, *args, **kwargs):
+    def get(self, url_name, *args, **kwargs):
         """
         GET url by name using reverse()
 
         If reverse raises NoReverseMatch attempt to use it as a URL.
         """
+        follow = kwargs.pop("follow", False)
         extra = kwargs.pop("extra", {})
         data = kwargs.pop("data", {})
         try:
@@ -121,12 +122,13 @@ class TestCase(TestCase):
         self.context = self.last_response.context
         return self.last_response
 
-    def post(self, url_name, follow=False, *args, **kwargs):
+    def post(self, url_name, *args, **kwargs):
         """
         POST to url by name using reverse()
 
         If reverse raises NoReverseMatch attempt to use it as a URL.
         """
+        follow = kwargs.pop("follow", False)
         data = kwargs.pop("data", None)
         extra = kwargs.pop("extra", {})
         try:
