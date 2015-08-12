@@ -1,5 +1,4 @@
 import warnings
-from distutils.version import LooseVersion
 
 import django
 from django.conf import settings
@@ -8,7 +7,6 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
-from django.test import TestCase
 from distutils.version import LooseVersion
 from django.test import RequestFactory, signals, TestCase
 from django.test.client import store_rendered_templates

@@ -9,7 +9,8 @@ from .views import (
 )
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^view/200/$', view_200, name='view-200'),
     url(r'^view/201/$', view_201, name='view-201'),

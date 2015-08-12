@@ -4,7 +4,6 @@ import sys
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
 
-import django
 from django.conf import settings
 
 # Add test_plus to Python path
