@@ -1,6 +1,11 @@
 Changes
 =======
 
+version 1.0.8 - August 12, 2015
+-------------------------------
+
+    - Bug fix with argument order
+
 version 1.0.7 - July 31st, 2015
 -------------------------------
 
