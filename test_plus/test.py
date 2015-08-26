@@ -8,9 +8,9 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
-from django.test import TestCase
+from django.test import TestCase as DjangoTestCase
 from distutils.version import LooseVersion
-from django.test import RequestFactory, signals, TestCase
+from django.test import RequestFactory, signals, TestCase as DjangoTestCase
 from django.test.client import store_rendered_templates
 from django.utils.functional import curry
 
@@ -92,7 +92,7 @@ class login(object):
         self.testcase.client.logout()
 
 
-class TestCase(TestCase):
+class TestCase(DjangoTestCase):
     """
     Django TestCase with helpful additional features
     """
