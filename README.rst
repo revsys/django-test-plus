@@ -384,7 +384,7 @@ Sets ``request``, ``args``, and ``kwargs`` attributes on the class instance.
 Sample usage::
 
     from django.views import generic
-    from test_plus import CBVTestCase
+    from test_plus.test import CBVTestCase
 
     class MyClass(generic.DetailView)
 
