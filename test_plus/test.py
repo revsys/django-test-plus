@@ -225,7 +225,8 @@ class TestCase(TestCase):
 
         return test_user
 
-    def assertNumQueriesLessThan(self, num, func=None, *args, **kwargs):
+    def assertNumQueriesLessThan(self, num, *args, **kwargs):
+        func = kwargs.pop('func', None)
         using = kwargs.pop("using", DEFAULT_DB_ALIAS)
         conn = connections[using]
 
@@ -296,7 +297,7 @@ class CBVTestCase(TestCase):
                 self.assertTrue(result)
     """
 
-    def get_instance(self, cls, initkwargs=None, request=None, *args, **kwargs):
+    def get_instance(self, cls, *args, **kwargs):
         """
         Returns a decorated instance of a class-based generic view class.
 
@@ -310,6 +311,8 @@ class CBVTestCase(TestCase):
 
         `args` and `kwargs` are the same values you would pass to ``reverse()``.
         """
+        initkwargs = kwargs.pop('initkwargs', None)
+        request = kwargs.pop('request', None)
         if initkwargs is None:
             initkwargs = {}
         instance = cls(**initkwargs)
@@ -318,12 +321,13 @@ class CBVTestCase(TestCase):
         instance.kwargs = kwargs
         return instance
 
-    def get(self, cls, initkwargs=None, *args, **kwargs):
+    def get(self, cls, *args, **kwargs):
         """
         Calls cls.get() method after instantiating view class
         with `initkwargs`.
         Renders view templates and sets context if appropriate.
         """
+        initkwargs = kwargs.pop('initkwargs', None)
         if initkwargs is None:
             initkwargs = {}
         request = RequestFactory().get('/')
@@ -332,12 +336,14 @@ class CBVTestCase(TestCase):
         self.context = self.last_response.context
         return self.last_response
 
-    def post(self, cls, data=None, initkwargs=None, *args, **kwargs):
+    def post(self, cls, *args, **kwargs):
         """
         Calls cls.post() method after instantiating view class
         with `initkwargs`.
         Renders view templates and sets context if appropriate.
         """
+        data = kwargs.pop('data', None)
+        initkwargs = kwargs.pop('initkwargs', None)
         if data is None:
             data = {}
         if initkwargs is None:
@@ -377,18 +383,20 @@ class CBVTestCase(TestCase):
         finally:
             signals.template_rendered.disconnect(dispatch_uid=signal_uid)
 
-    def get_check_200(self, cls, initkwargs=None, *args, **kwargs):
+    def get_check_200(self, cls, *args, **kwargs):
         """ Test that we can GET a page and it returns a 200 """
+        initkwargs = kwargs.pop('initkwargs', None)
         response = self.get(cls, initkwargs=initkwargs, *args, **kwargs)
         self.response_200(response)
         return response
 
-    def assertGoodView(self, cls, initkwargs=None, *args, **kwargs):
+    def assertGoodView(self, cls, *args, **kwargs):
         """
         Quick-n-dirty testing of a given view.
         Ensures view returns a 200 status and that generates less than 50
         database queries.
         """
+        initkwargs = kwargs.pop('initkwargs', None)
         query_count = kwargs.pop('test_query_count', 50)
 
         with self.assertNumQueriesLessThan(query_count):

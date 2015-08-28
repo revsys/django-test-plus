@@ -277,7 +277,7 @@ class TestPlusCBCustomMethodTests(CBVTestCase):
 
     def test_custom_method_with_value(self):
         special_value = 42
-        instance = self.get_instance(CBView, {'special_value': special_value})
+        instance = self.get_instance(CBView, initkwargs={'special_value': special_value})
         self.assertEqual(instance.special(), special_value)
 
     def test_custom_method_no_value(self):
