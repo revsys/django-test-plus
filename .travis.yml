@@ -8,8 +8,9 @@ install:
   - pip install -e .
   - pip install $DJANGO
   - pip install -r requirements-travisci.txt
-  - pip install coveralls
+  - pip install coveralls flake8
 script:
+  - flake8 . --ignore=E501
   - coverage run --source=test_plus setup.py test
 after_success:
   - coveralls
