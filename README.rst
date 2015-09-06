@@ -119,7 +119,7 @@ If you need to pass query string parameters to your url name, you can do so like
 
 Would GET /search/?query=testing
 
-post(url\_name, data, follow=True, \*args, \*\*kwargs)
+post(url\_name, data={}, follow=True, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Our ``post()`` method takes a named URL, the dictionary of data you wish
