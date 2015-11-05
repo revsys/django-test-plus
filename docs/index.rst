@@ -16,6 +16,7 @@ Contents:
    auth_helpers
    low_query_counts
    cbvtestcase
+   disable_logging
 
 
 
