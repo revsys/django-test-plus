@@ -11,6 +11,12 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   usage
+   methods
+   auth_helpers
+   low_query_counts
+   cbvtestcase
+
 
 
 Indices and tables
@@ -19,4 +25,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
