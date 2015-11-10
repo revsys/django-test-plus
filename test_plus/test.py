@@ -112,8 +112,11 @@ class TestCase(DjangoTestCase):
         follow = kwargs.pop("follow", False)
         extra = kwargs.pop("extra", {})
         data = kwargs.pop("data", {})
+        args = kwargs.pop("args", [])
+        kwargs_ = kwargs.pop("kwargs", {})
+
         try:
-            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
+            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs_), data=data, follow=follow, **extra)
         except NoReverseMatch:
             self.last_response = self.client.get(url_name, data=data, follow=follow, **extra)
 
@@ -129,8 +132,11 @@ class TestCase(DjangoTestCase):
         follow = kwargs.pop("follow", False)
         data = kwargs.pop("data", None)
         extra = kwargs.pop("extra", {})
+        args = kwargs.pop("args", [])
+        kwargs_ = kwargs.pop("kwargs", {})
+
         try:
-            self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, follow=follow, **extra)
+            self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs_), data, follow=follow, **extra)
         except NoReverseMatch:
             self.last_response = self.client.post(url_name, data, follow=follow, **extra)
 
