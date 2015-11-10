@@ -22,6 +22,11 @@ Supports: Python 2 and Python 3
 
 Supports Django Versions: 1.4, 1.5, 1.6, 1.7, and 1.8
 
+Documentation
+--------------
+
+Full documentation is available at http://django-test-plus.readthedocs.org
+
 Usage
 -----
 
@@ -35,6 +40,7 @@ django.test.TestCase like so::
         ...
 
 This is sufficient to get things rolling, but you are encouraged to
+<<<<<<< HEAD
 create *your own* sub-class on a per project basis. This will allow you
 to add your own project specific helper methods.
 
@@ -454,14 +460,9 @@ Caller must provide a view class instead of a URL name or path parameter.
 
 All test\_plus TestCase side-effects are honored and all test\_plus
 TestCase assertion methods work with ``CBVTestCase.post()``.
+create *your own* sub-class on a per project basis. For more details, see
+the Usage section of the docs.
 
-Disable logging
----------------
-You can disable logging during testing by changing the `TEST\_RUNNER
-<https://docs.djangoproject.com/en/1.8/topics/testing/advanced/#using-different-testing-frameworks>`_
-in your settings file to::
-
-    TEST_RUNNER = 'test_plus.runner.NoLoggingRunner'
 
 .. |travis ci status image| image:: https://secure.travis-ci.org/revsys/django-test-plus.png
    :target: http://travis-ci.org/revsys/django-test-plus

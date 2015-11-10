@@ -1,6 +1,12 @@
 Changes
 =======
 
+version 1.0.10 - November 11, 2015
+----------------------------------
+
+  - Added response_405() test
+  - requirements.txt typo
+
 version 1.0.9 - August 28, 2015
 -------------------------------
 

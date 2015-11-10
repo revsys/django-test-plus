@@ -3,3 +3,4 @@ django_test_plus.egg-info/
 htmlcov/
 .coverage
 *.pyc
+_build/

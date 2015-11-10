@@ -1,0 +1,38 @@
+Ensuring low query counts
+-------------------------
+
+assertNumQueriesLessThan(number) - context
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Django provides
+`assertNumQueries <https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries>`__
+which is great when your code generates generates a specific number of
+queries. However, if due to the nature of your data this number can vary
+you often don't attempt to ensure the code doesn't start producing a ton
+more queries than you expect::
+
+    def test_something_out(self):
+
+        with self.assertNumQueriesLessThan(7):
+            self.get('some-view-with-6-queries')
+
+
+**NOTE:** This isn't possible in versions of Django prior to 1.6, so the
+context will run your code and assertions and issue a warning that it
+cannot check the number of queries generated.
+
+assertGoodView(url\_name, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This method does a few of things for you, it:
+
+    - Retrieves the name URL
+    - Ensures the view does not generate more than 50 queries
+    - Ensures the response has status code 200
+    - Returns the response
+
+Often a wide sweeping test like this is better than no test at all. You
+can use it like this::
+
+    def test_better_than_nothing(self):
+        response = self.assertGoodView('my-url-name')
