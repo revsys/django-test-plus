@@ -3,4 +3,4 @@
 # using the library.
 -r requirements-travisci.txt
 
-pypdandoc==0.9.7
+pypandoc==0.9.7
