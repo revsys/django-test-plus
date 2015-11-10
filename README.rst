@@ -464,6 +464,7 @@ create *your own* sub-class on a per project basis. For more details, see
 the Usage section of the docs.
 
 
+
 .. |travis ci status image| image:: https://secure.travis-ci.org/revsys/django-test-plus.png
    :target: http://travis-ci.org/revsys/django-test-plus
 .. |Coverage Status| image:: https://coveralls.io/repos/revsys/django-test-plus/badge.svg?branch=master
