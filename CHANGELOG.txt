@@ -1,6 +1,10 @@
 Changes
 =======
 
+version 1.0.11 - November 11, 2015
+
+  - Fixed bad README typos and merge artifacts
+
 version 1.0.10 - November 11, 2015
 ----------------------------------
 

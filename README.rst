@@ -40,9 +40,7 @@ django.test.TestCase like so::
         ...
 
 This is sufficient to get things rolling, but you are encouraged to
-<<<<<<< HEAD
-create *your own* sub-class on a per project basis. This will allow you
-to add your own project specific helper methods.
+create *your own* sub-class on a per project basis. This will allow you to add your own project specific helper methods.
 
 For example, if you have a django project named 'myproject', you might
 create the following in ``myproject/test.py``::
@@ -70,7 +68,7 @@ Methods
 reverse(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the ``from django.core.urlresolvesr import reverse`` boilerplate. Instead just use::
+When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the ``from django.core.urlresolvers import reverse`` boilerplate. Instead just use::
 
     def test_something(self):
         url = self.reverse('my-url-name')
@@ -460,9 +458,6 @@ Caller must provide a view class instead of a URL name or path parameter.
 
 All test\_plus TestCase side-effects are honored and all test\_plus
 TestCase assertion methods work with ``CBVTestCase.post()``.
-create *your own* sub-class on a per project basis. For more details, see
-the Usage section of the docs.
-
 
 
 .. |travis ci status image| image:: https://secure.travis-ci.org/revsys/django-test-plus.png
