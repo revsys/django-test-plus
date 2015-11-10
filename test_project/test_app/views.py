@@ -28,6 +28,10 @@ def view_404(request):
     return HttpResponse('', status=404)
 
 
+def view_405(request):
+    return HttpResponse('', status=405)
+
+
 def view_redirect(request):
     return redirect('view-200')
 

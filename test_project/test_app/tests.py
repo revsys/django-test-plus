@@ -120,6 +120,13 @@ class TestPlusViewTests(TestCase):
         # Test without response option
         self.response_404()
 
+    def test_response_405(self):
+        res = self.get('view-405')
+        self.response_405(res)
+
+        # Test without response option
+        self.response_405()
+
     def test_make_user(self):
         """ Test make_user using django.contrib.auth defaults """
         u1 = self.make_user('u1')
