@@ -179,11 +179,11 @@ class TestPlusViewTests(TestCase):
             self.get('view-needs-login')
 
     def test_assertnumqueries_data_1(self):
-        with self.assertNumQueriesLessThan(1):
+        with self.assertNumQueriesLessThan(2):
             self.get('view-data-1')
 
     def test_assertnumqueries_data_5(self):
-        with self.assertNumQueriesLessThan(5):
+        with self.assertNumQueriesLessThan(6):
             self.get('view-data-5')
 
     @unittest.expectedFailure

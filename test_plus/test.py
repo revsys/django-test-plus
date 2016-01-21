@@ -39,7 +39,7 @@ if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
                 return
             executed = len(self)
             self.test_case.assertTrue(
-                executed <= self.num, "%d queries executed, expected less than %d" % (
+                executed < self.num, "%d queries executed, expected less than %d" % (
                     executed, self.num
                 )
             )
