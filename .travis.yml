@@ -10,7 +10,7 @@ install:
   - pip install -r requirements-travisci.txt
   - pip install coveralls flake8
 script:
-  - flake8 . --ignore=E501
+  - flake8 . --ignore=E501,E402
   - coverage run --source=test_plus setup.py test
 after_success:
   - coveralls
