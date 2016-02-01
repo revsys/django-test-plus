@@ -4,7 +4,7 @@ Methods
 reverse(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the ``from django.core.urlresolvesr import reverse`` boilerplate. Instead just use::
+When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the ``from django.core.urlresolvers import reverse`` boilerplate. Instead just use::
 
     def test_something(self):
         url = self.reverse('my-url-name')
