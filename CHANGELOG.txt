@@ -1,6 +1,10 @@
 Changes
 =======
 
+version 1.0.12 - February 5, 2016
+
+  - Fixed assertLoginRequired when settings.LOGIN_URL is a named URL pattern
+
 version 1.0.11 - November 11, 2015
 
   - Fixed bad README typos and merge artifacts
