@@ -14,7 +14,7 @@ When testing views you often find yourself needing to reverse the URL's name. Wi
 As you can see our reverse also passes along any args or kwargs you need
 to pass in.
 
-get(url\_name, follow=True, \*args, \*\*kwargs)
+get(url\_name, follow=False, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Another thing you do often is HTTP get urls. Our ``get()`` method
@@ -59,10 +59,10 @@ If you need to pass query string parameters to your url name, you can do so like
 
 Would GET /search/?query=testing
 
-post(url\_name, data, follow=True, \*args, \*\*kwargs)
+post(url\_name, follow=False, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our ``post()`` method takes a named URL, the dictionary of data you wish
+Our ``post()`` method takes a named URL, an optional dictionary of data you wish
 to post and any args or kwargs necessary to reverse the url\_name.
 If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
 
