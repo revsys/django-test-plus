@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseGone
 from django.shortcuts import render, redirect
 from django.views import generic
 
@@ -30,6 +30,10 @@ def view_404(request):
 
 def view_405(request):
     return HttpResponse('', status=405)
+
+
+def view_410(request):
+    return HttpResponseGone()
 
 
 def view_redirect(request):
