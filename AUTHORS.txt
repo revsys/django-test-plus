@@ -8,3 +8,4 @@ Gert Van Gool <gertvangool@gmail.com>
 Daniel Roy Greenfeld <pydanny@gmail.com>
 Manu Phatak <bionikspoon@gmail.com>
 Andrew Pinkham <http://AndrewsForge.com>
+Gary Reynolds <gary.reynolds@touchtechnology.com.au>
