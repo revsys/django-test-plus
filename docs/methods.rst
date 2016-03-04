@@ -125,6 +125,8 @@ django-test-plus provides the following response method checks for you::
     - response_302()
     - response_403()
     - response_404()
+    - response_405()
+    - response_410()
 
 All of which take an option Django test client response as their only argument.
 If it's available, the response_XXX methods will use the last response. So you

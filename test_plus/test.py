@@ -172,6 +172,11 @@ class TestCase(DjangoTestCase):
         response = self._which_response(response)
         self.assertEqual(response.status_code, 405)
 
+    def response_410(self, response=None):
+        """ Given response has status_code 410 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 410)
+
     def get_check_200(self, url, *args, **kwargs):
         """ Test that we can GET a page and it returns a 200 """
         response = self.get(url, *args, **kwargs)
