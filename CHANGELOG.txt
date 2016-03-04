@@ -1,7 +1,14 @@
 Changes
 =======
 
+version 1.0.12 - March 4th, 2016
+--------------------------------
+
+  - Fixed incorrect documentation
+  - Added response_405 and response_410 test methods
+
 version 1.0.11 - November 11, 2015
+----------------------------------
 
   - Fixed bad README typos and merge artifacts
 

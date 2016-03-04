@@ -14,7 +14,7 @@ f.close()
 
 setup(
     name='django-test-plus',
-    version="1.0.11",
+    version="1.0.12",
     description="django-test-plus provides useful additions to Django's default TestCase",
     long_description=readme,
     author='Frank Wiles',
