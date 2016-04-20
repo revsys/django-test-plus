@@ -20,7 +20,7 @@ Support
 
 Supports: Python 2 and Python 3
 
-Supports Django Versions: 1.4, 1.5, 1.6, 1.7, and 1.8
+Supports Django Versions: 1.4, 1.5, 1.6, 1.7, 1.8, and 1.9
 
 Documentation
 --------------
