@@ -157,6 +157,11 @@ class TestCase(DjangoTestCase):
         response = self._which_response(response)
         self.assertEqual(response.status_code, 302)
 
+    def response_401(self, response=None):
+        """ Given response has status_code 401 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 401)
+
     def response_403(self, response=None):
         """ Given response has status_code 403 """
         response = self._which_response(response)
