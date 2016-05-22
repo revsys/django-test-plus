@@ -71,7 +71,7 @@ class login(object):
 
         if args and isinstance(args[0], User):
             credentials.update({
-                'username': args[0].username,
+                User.USERNAME_FIELD: getattr(args[0], User.USERNAME_FIELD),
             })
 
         if not credentials.get('password', False):
@@ -204,7 +204,9 @@ class TestCase(DjangoTestCase):
         purposes.
         """
         if self.user_factory:
-            test_user = self.user_factory(username=username)
+            test_user = self.user_factory(**{
+                self.user_factory._meta.model.USERNAME_FIELD: username,
+            })
             test_user.set_password(password)
             test_user.save()
         else:
