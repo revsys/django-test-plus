@@ -5,7 +5,7 @@ except ImportError:
 
 from .views import (
     data_1, data_5, needs_login, view_200, view_201, view_302,
-    view_403, view_404, view_405, view_410, view_context_with,
+    view_401, view_403, view_404, view_405, view_410, view_context_with,
     view_context_without, view_is_ajax, view_redirect
 )
 
@@ -15,6 +15,7 @@ urlpatterns = patterns(
     url(r'^view/200/$', view_200, name='view-200'),
     url(r'^view/201/$', view_201, name='view-201'),
     url(r'^view/302/$', view_302, name='view-302'),
+    url(r'^view/401/$', view_401, name='view-401'),
     url(r'^view/403/$', view_403, name='view-403'),
     url(r'^view/404/$', view_404, name='view-404'),
     url(r'^view/405/$', view_405, name='view-405'),
