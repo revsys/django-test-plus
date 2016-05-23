@@ -5,6 +5,9 @@ version 1.0.13 - May 23rd, 2016
 -------------------------------
 
   - Added response_401() test
+  - Fixed situation where User models without a 'username' field could not be
+    used as easily.  Now credential field is automatically determined.
+  - Fixed assertLoginRequired when settings.LOGIN_URL is a named URL pattern
 
 version 1.0.12 - March 4th, 2016
 --------------------------------

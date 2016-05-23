@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse, NoReverseMatch
+from django.shortcuts import resolve_url
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
 from distutils.version import LooseVersion
@@ -193,7 +194,8 @@ class TestCase(DjangoTestCase):
         """ Ensure login is required to GET this URL """
         response = self.get(url, *args, **kwargs)
         reversed_url = reverse(url, args=args, kwargs=kwargs)
-        expected_url = "{0}?next={1}".format(settings.LOGIN_URL, reversed_url)
+        login_url = str(resolve_url(settings.LOGIN_URL))
+        expected_url = "{0}?next={1}".format(login_url, reversed_url)
         self.assertRedirects(response, expected_url)
 
     def login(self, *args, **credentials):
