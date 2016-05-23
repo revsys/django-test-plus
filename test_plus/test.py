@@ -70,8 +70,9 @@ class login(object):
         self.testcase = testcase
 
         if args and isinstance(args[0], User):
+            USERNAME_FIELD = getattr(User, 'USERNAME_FIELD', 'username')
             credentials.update({
-                'username': args[0].username,
+                USERNAME_FIELD: getattr(args[0], USERNAME_FIELD),
             })
 
         if not credentials.get('password', False):
@@ -209,7 +210,11 @@ class TestCase(DjangoTestCase):
         purposes.
         """
         if self.user_factory:
-            test_user = self.user_factory(username=username)
+            USERNAME_FIELD = getattr(
+                self.user_factory._meta.model, 'USERNAME_FIELD', 'username')
+            test_user = self.user_factory(**{
+                USERNAME_FIELD: username,
+            })
             test_user.set_password(password)
             test_user.save()
         else:
