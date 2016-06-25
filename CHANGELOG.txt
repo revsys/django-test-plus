@@ -1,6 +1,13 @@
 Changes
 =======
 
+version 1.0.14 - June 25th, 2016
+--------------------------------
+
+  - Fixed documentation typo
+  - Added response_400() test
+  - Added Guinslym and David Arcos to AUTHORS.txt
+
 version 1.0.13 - May 23rd, 2016
 -------------------------------
 
