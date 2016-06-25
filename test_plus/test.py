@@ -129,7 +129,7 @@ class TestCase(DjangoTestCase):
         if method_name in valid_method_names:
             method = getattr(self.client, method_name)
         else:
-            raise LookupError("Cannot find the method")
+            raise LookupError("Cannot find the method {0}".format(method_name))
 
         try:
             self.last_response = method(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
