@@ -105,38 +105,63 @@ class TestCase(DjangoTestCase):
     def tearDown(self):
         self.client.logout()
 
-    def get(self, url_name, *args, **kwargs):
+    def request(self, method_name, url_name, *args, **kwargs):
         """
-        GET url by name using reverse()
+        Request url by name using reverse() through method
 
         If reverse raises NoReverseMatch attempt to use it as a URL.
         """
         follow = kwargs.pop("follow", False)
         extra = kwargs.pop("extra", {})
         data = kwargs.pop("data", {})
+
+        valid_method_names = [
+            'get',
+            'post',
+            'put',
+            'patch',
+            'head',
+            'trace',
+            'options',
+            'delete'
+        ]
+
+        if method_name in valid_method_names:
+            method = getattr(self.client, method_name)
+        else:
+            raise LookupError("Cannot find the method")
+
         try:
-            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
+            self.last_response = method(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
         except NoReverseMatch:
-            self.last_response = self.client.get(url_name, data=data, follow=follow, **extra)
+            self.last_response = method(url_name, data=data, follow=follow, **extra)
 
         self.context = self.last_response.context
         return self.last_response
 
+    def get(self, url_name, *args, **kwargs):
+        return self.request('get', url_name, *args, **kwargs)
+
     def post(self, url_name, *args, **kwargs):
-        """
-        POST to url by name using reverse()
+        return self.request('post', url_name, *args, **kwargs)
 
-        If reverse raises NoReverseMatch attempt to use it as a URL.
-        """
-        follow = kwargs.pop("follow", False)
-        data = kwargs.pop("data", None)
-        extra = kwargs.pop("extra", {})
-        try:
-            self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, follow=follow, **extra)
-        except NoReverseMatch:
-            self.last_response = self.client.post(url_name, data, follow=follow, **extra)
+    def put(self, url_name, *args, **kwargs):
+        return self.request('put', url_name, *args, **kwargs)
 
-        return self.last_response
+    def patch(self, url_name, *args, **kwargs):
+        return self.request('patch', url_name, *args, **kwargs)
+
+    def head(self, url_name, *args, **kwargs):
+        return self.request('head', url_name, *args, **kwargs)
+
+    def trace(self, url_name, *args, **kwargs):
+        return self.request('trace', url_name, *args, **kwargs)
+
+    def options(self, url_name, *args, **kwargs):
+        return self.request('options', url_name, *args, **kwargs)
+
+    def delete(self, url_name, *args, **kwargs):
+        return self.request('delete', url_name, *args, **kwargs)
 
     def _which_response(self, response=None):
         if response is None and self.last_response is not None:
