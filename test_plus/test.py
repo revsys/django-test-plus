@@ -155,7 +155,7 @@ class TestCase(DjangoTestCase):
         return self.request('head', url_name, *args, **kwargs)
 
     def trace(self, url_name, *args, **kwargs):
-        if LooseVersion(django.get_version()) >= LooseVersion('1.7'):
+        if LooseVersion(django.get_version()) >= LooseVersion('1.8.2'):
             return self.request('trace', url_name, *args, **kwargs)
         else:
             raise LookupError("client.trace is not available for your version of django. Please\
