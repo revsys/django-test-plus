@@ -158,6 +158,16 @@ With django-test-plus you can shorten that to be::
         self.get('hello-world')
         self.assertResponseContains('<p>Hello, World!</p>')
 
+assertResponseNotContains(text, response=None, html=True)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The inverse of the above test, make sure the last response does not include
+the chunk of HTML::
+
+    def test_response_not_contains(self):
+        self.get('hello-world')
+        self.assertResponseNotContains('<p>Hello, Frank!</p>')
+
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
