@@ -134,6 +134,8 @@ If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
         response = self.post('my-url-name', data={'coolness-factor': 11.0},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
+*NOTE* Along with the frequently used get and post, we support all of the HTTP verbs such as put, patch, head, trace, options, and delete in the same fashion.
+
 get_context(key)
 ~~~~~~~~~~~~~~~~
 

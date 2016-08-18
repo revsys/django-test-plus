@@ -70,6 +70,37 @@ If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
         response = self.post('my-url-name', data={'coolness-factor': 11.0},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
+
+put(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+patch(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+head(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+trace(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+options(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+delete(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
 get_context(key)
 ~~~~~~~~~~~~~~~~
 
