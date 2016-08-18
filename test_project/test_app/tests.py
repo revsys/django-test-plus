@@ -81,6 +81,90 @@ class TestPlusViewTests(TestCase):
         res = self.post(url, data=data, follow=True)
         self.assertTrue(res.status_code, 200)
 
+    def test_put(self):
+        url = self.reverse('view-200')
+        res = self.put(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_put_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.put(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.put(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    def test_patch(self):
+        url = self.reverse('view-200')
+        res = self.patch(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_patch_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.patch(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.patch(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    def test_head(self):
+        url = self.reverse('view-200')
+        res = self.head(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_head_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.head(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.head(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    # def test_trace(self):
+    #     url = self.reverse('view-200')
+    #     res = self.trace(url)
+    #     self.assertTrue(res.status_code, 200)
+    #
+    # def test_trace_follow(self):
+    #     url = self.reverse('view-redirect')
+    #     # Expect 302 status code
+    #     res = self.trace(url)
+    #     self.assertTrue(res.status_code, 302)
+    #     # Expect 200 status code
+    #     res = self.trace(url, follow=True)
+    #     self.assertTrue(res.status_code, 200)
+
+    def test_options(self):
+        url = self.reverse('view-200')
+        res = self.options(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_options_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.options(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.options(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    def test_delete(self):
+        url = self.reverse('view-200')
+        res = self.delete(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_delete_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.delete(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.delete(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
     def test_get_check_200(self):
         res = self.get_check_200('view-200')
         self.assertTrue(res.status_code, 200)
