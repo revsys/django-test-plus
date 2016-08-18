@@ -79,6 +79,10 @@ def view_is_ajax(request):
     return HttpResponse('', status=200 if request.is_ajax() else 404)
 
 
+def view_contains(request):
+    return render(request, 'test.html', {})
+
+
 # Class-based test views
 
 class CBView(generic.View):
