@@ -140,6 +140,34 @@ can do::
 
 Which is a bit shorter.
 
+assertResponseContains(text, response=None, html=True)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You often want to check that the last response contains a chunk of HTML. With
+Django's default TestCase you would write::
+
+    from django.core.urlresolvers import reverse
+
+    def test_response_contains(self):
+        response = self.client.get(reverse('hello-world'))
+        self.assertContains(response, '<p>Hello, World!</p>', html=True)
+
+With django-test-plus you can shorten that to be::
+
+    def test_response_contains(self):
+        self.get('hello-world')
+        self.assertResponseContains('<p>Hello, World!</p>')
+
+assertResponseNotContains(text, response=None, html=True)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The inverse of the above test, make sure the last response does not include
+the chunk of HTML::
+
+    def test_response_not_contains(self):
+        self.get('hello-world')
+        self.assertResponseNotContains('<p>Hello, Frank!</p>')
+
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

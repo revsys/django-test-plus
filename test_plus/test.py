@@ -312,6 +312,16 @@ class TestCase(DjangoTestCase):
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
 
+    def assertResponseContains(self, text, response=None, html=True, **kwargs):
+        """ Convenience wrapper for assertContains """
+        response = self._which_response(response)
+        self.assertContains(response, text, html=html, **kwargs)
+
+    def assertResponseNotContains(self, text, response=None, html=True, **kwargs):
+        """ Convenience wrapper for assertNotContains """
+        response = self._which_response(response)
+        self.assertNotContains(response, text, html=html, **kwargs)
+
     def get_context(self, key):
         if self.last_response is not None:
             self.assertTrue(key in self.last_response.context)

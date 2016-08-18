@@ -350,6 +350,11 @@ class TestPlusViewTests(TestCase):
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         self.response_200(response)
 
+    def test_assertresponsecontains(self):
+        self.get('view-contains')
+        self.assertResponseContains('<p>Hello world</p>')
+        self.assertResponseNotContains('<p>Hello Frank</p>')
+
 
 class TestPlusCBViewTests(CBVTestCase):
 
