@@ -1,7 +1,7 @@
 try:
-    from django.conf.urls import url, patterns, include
+    from django.conf.urls import url, include
 except ImportError:
-    from django.conf.urls.defaults import url, patterns, include
+    from django.conf.urls.defaults import url, include
 
 from .views import (
     data_1, data_5, needs_login, view_200, view_201, view_302,
@@ -10,8 +10,7 @@ from .views import (
     view_is_ajax, view_redirect,
 )
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^view/200/$', view_200, name='view-200'),
     url(r'^view/201/$', view_201, name='view-201'),
@@ -30,4 +29,4 @@ urlpatterns = patterns(
     url(r'^view/context/without/$', view_context_without, name='view-context-without'),
     url(r'^view/isajax/$', view_is_ajax, name='view-is-ajax'),
     url(r'^view/contains/$', view_contains, name='view-contains'),
-)
+]
