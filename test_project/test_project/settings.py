@@ -63,9 +63,22 @@ DATABASES = {
     }
 }
 
+# For Django <1.10
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'test_project/templates'),
 )
+
+# For Django 1.10+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'DIRS': [
+            os.path.join(BASE_DIR, 'test_project/templates'),
+        ]
+    }
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
