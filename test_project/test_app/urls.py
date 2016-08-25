@@ -7,7 +7,7 @@ from .views import (
     data_1, data_5, needs_login, view_200, view_201, view_302,
     view_400, view_401, view_403, view_404, view_405, view_410,
     view_contains, view_context_with, view_context_without,
-    view_is_ajax, view_redirect,
+    view_is_ajax, view_redirect, FormErrors
 )
 
 urlpatterns = [
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^view/context/without/$', view_context_without, name='view-context-without'),
     url(r'^view/isajax/$', view_is_ajax, name='view-is-ajax'),
     url(r'^view/contains/$', view_contains, name='view-contains'),
+    url(r'^view/form-errors/$', FormErrors.as_view(), name='form-errors'),
 ]

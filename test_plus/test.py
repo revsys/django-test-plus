@@ -105,6 +105,21 @@ class TestCase(DjangoTestCase):
     def tearDown(self):
         self.client.logout()
 
+    def print_form_errors(self, response_or_form=None):
+        """A utility method for quickly debugging responses with form errors."""
+
+        if response_or_form is None:
+            response_or_form = self.last_response
+
+        if hasattr(response_or_form, 'errors'):
+            form = response_or_form
+        elif hasattr(response_or_form, 'context'):
+            form = response_or_form.context['form']
+        else:
+            raise Exception('print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.')
+
+        print(form.errors.as_text())
+
     def request(self, method_name, url_name, *args, **kwargs):
         """
         Request url by name using reverse() through method

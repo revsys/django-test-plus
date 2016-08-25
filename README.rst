@@ -254,6 +254,29 @@ You can also pass in user permissions by passing in a string of
 
     user2 = self.make_user(perms=['myapp.create_widget', 'otherapp.*'])
 
+print_form_errors(response_or_form=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When debugging a failing test for a view with a form, this method helps you
+quickly look at any form errors.
+
+Example usage::
+
+    class MyFormTest(TestCase):
+
+        self.post('my-url-name', data={})
+        self.print_form_errors()
+
+        # or
+
+        resp = self.post('my-url-name', data={})
+        self.print_form_errors(resp)
+
+        # or
+
+        form = MyForm(data={})
+        self.print_form_errors(form)
+
 Authentication Helpers
 ----------------------
 
