@@ -1,9 +1,17 @@
-import factory
 import django
+import factory
 import unittest
 import warnings
 
+from contextlib import contextmanager
 from distutils.version import LooseVersion
+
+import sys
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from test_plus.test import (
     CBVTestCase,
@@ -16,6 +24,8 @@ from .views import (
     CBTemplateView,
 )
 
+from .forms import TestNameForm
+
 DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
 
 if DJANGO_16:
@@ -23,6 +33,15 @@ if DJANGO_16:
     User = get_user_model()
 else:
     from django.contrib.auth.models import User
+
+
+@contextmanager
+def redirect_stdout(new_target):
+    old_target, sys.stdout = sys.stdout, new_target
+    try:
+        yield new_target
+    finally:
+        sys.stdout = old_target
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -50,6 +69,28 @@ class TestPlusViewTests(TestCase):
         url = self.reverse('view-200')
         res = self.get(url)
         self.assertEqual(res.status_code, 200)
+
+    def test_print_form_errors(self):
+
+        with self.assertRaisesMessage(Exception, 'print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.'):
+            self.print_form_errors('my-bad-argument')
+
+        form = TestNameForm(data={})
+        self.assertFalse(form.is_valid())
+
+        output = StringIO()
+        with redirect_stdout(output):
+            self.print_form_errors(form)
+        output = output.getvalue().strip()
+        self.assertTrue('This field is required.' in output)
+
+        self.post('form-errors')
+        self.response_200()
+        output = StringIO()
+        with redirect_stdout(output):
+            self.print_form_errors()
+        output = output.getvalue().strip()
+        self.assertTrue('This field is required.' in output)
 
     def test_get_follow(self):
         # Expect 302 status code

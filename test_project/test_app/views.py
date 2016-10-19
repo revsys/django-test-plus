@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseGone
 from django.shortcuts import render, redirect
 from django.views import generic
 
+from .forms import TestNameForm
 from .models import Data
 
 
@@ -107,3 +108,8 @@ class CBTemplateView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         kwargs['revsys'] = 42
         return kwargs
+
+
+class FormErrors(generic.FormView):
+    form_class = TestNameForm
+    template_name = 'form_errors.html'
