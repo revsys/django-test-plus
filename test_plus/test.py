@@ -198,6 +198,11 @@ class TestCase(DjangoTestCase):
         response = self._which_response(response)
         self.assertEqual(response.status_code, 201)
 
+    def response_301(self, response=None):
+        """ Given response has status_code 301 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 301)
+
     def response_302(self, response=None):
         """ Given response has status_code 302 """
         response = self._which_response(response)

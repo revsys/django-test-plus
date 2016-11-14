@@ -153,6 +153,7 @@ django-test-plus provides the following response method checks for you::
 
     - response_200()
     - response_201()
+    - response_301()
     - response_302()
     - response_400()
     - response_401()
