@@ -17,6 +17,7 @@ from django.utils.functional import curry
 class NoPreviousResponse(Exception):
     pass
 
+
 # Build a real context in versions of Django greater than 1.6
 # On versions below 1.6, create a context that simply warns that
 # the query number assertion is not happening
