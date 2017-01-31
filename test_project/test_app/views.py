@@ -88,6 +88,12 @@ def view_contains(request):
     return render(request, 'test.html', {})
 
 
+def view_headers(request):
+    response = HttpResponse('', content_type='text/plain', status=200)
+    response['X-Custom'] = 1
+    return response
+
+
 # Class-based test views
 
 class CBView(generic.View):

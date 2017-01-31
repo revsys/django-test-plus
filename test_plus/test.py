@@ -343,6 +343,22 @@ class TestCase(DjangoTestCase):
         response = self._which_response(response)
         self.assertNotContains(response, text, html=html, **kwargs)
 
+    def assertResponseHeaders(self, headers, response=None):
+        """
+        Check that the headers in the response are as expected.
+
+        Only headers defined in `headers` are compared, other keys present on
+        the `response` will be ignored.
+
+        :param headers: Mapping of header names to expected values
+        :type headers: :class:`collections.Mapping`
+        :param response: Response to check headers against
+        :type response: :class:`django.http.response.HttpResponse`
+        """
+        response = self._which_response(response)
+        compare = {h: response.get(h) for h in headers}
+        self.assertEqual(compare, headers)
+
     def get_context(self, key):
         if self.last_response is not None:
             self.assertTrue(key in self.last_response.context)
