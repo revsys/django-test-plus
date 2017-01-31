@@ -200,6 +200,22 @@ the chunk of HTML::
         self.get('hello-world')
         self.assertResponseNotContains('<p>Hello, Frank!</p>')
 
+assertResponseHeaders(headers, response=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes your views or middleware will set custom headers::
+
+    def test_custom_headers(self):
+        self.get('my-url-name')
+        self.assertResponseHeaders({'X-Custom-Header': 'Foo'})
+        self.assertResponseHeaders({'X-Does-Not-Exist': None})
+
+You might also want to check standard headers::
+
+    def test_content_type(self):
+        self.get('my-json-view')
+        self.assertResponseHeaders({'Content-Type': 'application/json'})
+
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
