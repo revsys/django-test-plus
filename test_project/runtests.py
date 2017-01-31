@@ -20,5 +20,6 @@ def runtests(*test_args):
     failures = test_runner.run_tests(['test_app'])
     sys.exit(failures)
 
+
 if __name__ == '__main__':
     runtests()

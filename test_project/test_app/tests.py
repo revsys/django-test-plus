@@ -224,6 +224,13 @@ class TestPlusViewTests(TestCase):
         # Test without response option
         self.response_201()
 
+    def test_response_301(self):
+        res = self.get('view-301')
+        self.response_301(res)
+
+        # Test without response option
+        self.response_301()
+
     def test_response_302(self):
         res = self.get('view-302')
         self.response_302(res)
@@ -395,6 +402,13 @@ class TestPlusViewTests(TestCase):
         self.get('view-contains')
         self.assertResponseContains('<p>Hello world</p>')
         self.assertResponseNotContains('<p>Hello Frank</p>')
+
+    def test_assert_response_headers(self):
+        self.get('view-headers')
+        self.assertResponseHeaders({'Content-Type': 'text/plain'})
+        self.assertResponseHeaders({'X-Custom': '1'})
+        self.assertResponseHeaders({'X-Custom': '1', 'X-Non-Existent': None})
+        self.assertResponseHeaders({'X-Non-Existent': None})
 
 
 class TestPlusCBViewTests(CBVTestCase):

@@ -17,6 +17,7 @@ from django.utils.functional import curry
 class NoPreviousResponse(Exception):
     pass
 
+
 # Build a real context in versions of Django greater than 1.6
 # On versions below 1.6, create a context that simply warns that
 # the query number assertion is not happening
@@ -198,6 +199,11 @@ class TestCase(DjangoTestCase):
         response = self._which_response(response)
         self.assertEqual(response.status_code, 201)
 
+    def response_301(self, response=None):
+        """ Given response has status_code 301 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 301)
+
     def response_302(self, response=None):
         """ Given response has status_code 302 """
         response = self._which_response(response)
@@ -336,6 +342,22 @@ class TestCase(DjangoTestCase):
         """ Convenience wrapper for assertNotContains """
         response = self._which_response(response)
         self.assertNotContains(response, text, html=html, **kwargs)
+
+    def assertResponseHeaders(self, headers, response=None):
+        """
+        Check that the headers in the response are as expected.
+
+        Only headers defined in `headers` are compared, other keys present on
+        the `response` will be ignored.
+
+        :param headers: Mapping of header names to expected values
+        :type headers: :class:`collections.Mapping`
+        :param response: Response to check headers against
+        :type response: :class:`django.http.response.HttpResponse`
+        """
+        response = self._which_response(response)
+        compare = {h: response.get(h) for h in headers}
+        self.assertEqual(compare, headers)
 
     def get_context(self, key):
         if self.last_response is not None:

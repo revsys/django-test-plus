@@ -17,6 +17,10 @@ def view_201(request):
     return HttpResponse('', status=201)
 
 
+def view_301(request):
+    return HttpResponse('', status=301)
+
+
 def view_302(request):
     return HttpResponse('', status=302)
 
@@ -82,6 +86,12 @@ def view_is_ajax(request):
 
 def view_contains(request):
     return render(request, 'test.html', {})
+
+
+def view_headers(request):
+    response = HttpResponse('', content_type='text/plain', status=200)
+    response['X-Custom'] = 1
+    return response
 
 
 # Class-based test views
