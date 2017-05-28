@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse, NoReverseMatch
+from django.shortcuts import resolve_url
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
 from distutils.version import LooseVersion
@@ -15,6 +16,7 @@ from django.utils.functional import curry
 
 class NoPreviousResponse(Exception):
     pass
+
 
 # Build a real context in versions of Django greater than 1.6
 # On versions below 1.6, create a context that simply warns that
@@ -70,8 +72,9 @@ class login(object):
         self.testcase = testcase
 
         if args and isinstance(args[0], User):
+            USERNAME_FIELD = getattr(User, 'USERNAME_FIELD', 'username')
             credentials.update({
-                'username': args[0].username,
+                USERNAME_FIELD: getattr(args[0], USERNAME_FIELD),
             })
 
         if not credentials.get('password', False):
@@ -103,38 +106,82 @@ class TestCase(DjangoTestCase):
     def tearDown(self):
         self.client.logout()
 
-    def get(self, url_name, *args, **kwargs):
+    def print_form_errors(self, response_or_form=None):
+        """A utility method for quickly debugging responses with form errors."""
+
+        if response_or_form is None:
+            response_or_form = self.last_response
+
+        if hasattr(response_or_form, 'errors'):
+            form = response_or_form
+        elif hasattr(response_or_form, 'context'):
+            form = response_or_form.context['form']
+        else:
+            raise Exception('print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.')
+
+        print(form.errors.as_text())
+
+    def request(self, method_name, url_name, *args, **kwargs):
         """
-        GET url by name using reverse()
+        Request url by name using reverse() through method
 
         If reverse raises NoReverseMatch attempt to use it as a URL.
         """
         follow = kwargs.pop("follow", False)
         extra = kwargs.pop("extra", {})
         data = kwargs.pop("data", {})
+
+        valid_method_names = [
+            'get',
+            'post',
+            'put',
+            'patch',
+            'head',
+            'trace',
+            'options',
+            'delete'
+        ]
+
+        if method_name in valid_method_names:
+            method = getattr(self.client, method_name)
+        else:
+            raise LookupError("Cannot find the method {0}".format(method_name))
+
         try:
-            self.last_response = self.client.get(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
+            self.last_response = method(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
         except NoReverseMatch:
-            self.last_response = self.client.get(url_name, data=data, follow=follow, **extra)
+            self.last_response = method(url_name, data=data, follow=follow, **extra)
 
         self.context = self.last_response.context
         return self.last_response
 
+    def get(self, url_name, *args, **kwargs):
+        return self.request('get', url_name, *args, **kwargs)
+
     def post(self, url_name, *args, **kwargs):
-        """
-        POST to url by name using reverse()
+        return self.request('post', url_name, *args, **kwargs)
 
-        If reverse raises NoReverseMatch attempt to use it as a URL.
-        """
-        follow = kwargs.pop("follow", False)
-        data = kwargs.pop("data", None)
-        extra = kwargs.pop("extra", {})
-        try:
-            self.last_response = self.client.post(reverse(url_name, args=args, kwargs=kwargs), data, follow=follow, **extra)
-        except NoReverseMatch:
-            self.last_response = self.client.post(url_name, data, follow=follow, **extra)
+    def put(self, url_name, *args, **kwargs):
+        return self.request('put', url_name, *args, **kwargs)
 
-        return self.last_response
+    def patch(self, url_name, *args, **kwargs):
+        return self.request('patch', url_name, *args, **kwargs)
+
+    def head(self, url_name, *args, **kwargs):
+        return self.request('head', url_name, *args, **kwargs)
+
+    # def trace(self, url_name, *args, **kwargs):
+    #     if LooseVersion(django.get_version()) >= LooseVersion('1.8.2'):
+    #         return self.request('trace', url_name, *args, **kwargs)
+    #     else:
+    #         raise LookupError("client.trace is not available for your version of django. Please\
+    #                            update your django version.")
+
+    def options(self, url_name, *args, **kwargs):
+        return self.request('options', url_name, *args, **kwargs)
+
+    def delete(self, url_name, *args, **kwargs):
+        return self.request('delete', url_name, *args, **kwargs)
 
     def _which_response(self, response=None):
         if response is None and self.last_response is not None:
@@ -152,10 +199,25 @@ class TestCase(DjangoTestCase):
         response = self._which_response(response)
         self.assertEqual(response.status_code, 201)
 
+    def response_301(self, response=None):
+        """ Given response has status_code 301 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 301)
+
     def response_302(self, response=None):
         """ Given response has status_code 302 """
         response = self._which_response(response)
         self.assertEqual(response.status_code, 302)
+
+    def response_400(self, response=None):
+        """ Given response has status_code 400 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 400)
+
+    def response_401(self, response=None):
+        """ Given response has status_code 401 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 401)
 
     def response_403(self, response=None):
         """ Given response has status_code 403 """
@@ -172,6 +234,11 @@ class TestCase(DjangoTestCase):
         response = self._which_response(response)
         self.assertEqual(response.status_code, 405)
 
+    def response_410(self, response=None):
+        """ Given response has status_code 410 """
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, 410)
+
     def get_check_200(self, url, *args, **kwargs):
         """ Test that we can GET a page and it returns a 200 """
         response = self.get(url, *args, **kwargs)
@@ -182,7 +249,8 @@ class TestCase(DjangoTestCase):
         """ Ensure login is required to GET this URL """
         response = self.get(url, *args, **kwargs)
         reversed_url = reverse(url, args=args, kwargs=kwargs)
-        expected_url = "{0}?next={1}".format(settings.LOGIN_URL, reversed_url)
+        login_url = str(resolve_url(settings.LOGIN_URL))
+        expected_url = "{0}?next={1}".format(login_url, reversed_url)
         self.assertRedirects(response, expected_url)
 
     def login(self, *args, **credentials):
@@ -199,7 +267,11 @@ class TestCase(DjangoTestCase):
         purposes.
         """
         if self.user_factory:
-            test_user = self.user_factory(username=username)
+            USERNAME_FIELD = getattr(
+                self.user_factory._meta.model, 'USERNAME_FIELD', 'username')
+            test_user = self.user_factory(**{
+                USERNAME_FIELD: username,
+            })
             test_user.set_password(password)
             test_user.save()
         else:
@@ -260,6 +332,32 @@ class TestCase(DjangoTestCase):
             self.assertTrue(key in self.last_response.context)
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
+
+    def assertResponseContains(self, text, response=None, html=True, **kwargs):
+        """ Convenience wrapper for assertContains """
+        response = self._which_response(response)
+        self.assertContains(response, text, html=html, **kwargs)
+
+    def assertResponseNotContains(self, text, response=None, html=True, **kwargs):
+        """ Convenience wrapper for assertNotContains """
+        response = self._which_response(response)
+        self.assertNotContains(response, text, html=html, **kwargs)
+
+    def assertResponseHeaders(self, headers, response=None):
+        """
+        Check that the headers in the response are as expected.
+
+        Only headers defined in `headers` are compared, other keys present on
+        the `response` will be ignored.
+
+        :param headers: Mapping of header names to expected values
+        :type headers: :class:`collections.Mapping`
+        :param response: Response to check headers against
+        :type response: :class:`django.http.response.HttpResponse`
+        """
+        response = self._which_response(response)
+        compare = {h: response.get(h) for h in headers}
+        self.assertEqual(compare, headers)
 
     def get_context(self, key):
         if self.last_response is not None:

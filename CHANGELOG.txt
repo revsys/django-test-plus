@@ -1,7 +1,46 @@
 Changes
 =======
 
+version 1.0.17 - January 31st, 2017
+-----------------------------------
+
+  - Added assertResponseHeaders
+
+version 1.0.16 - October 19th, 2016
+-----------------------------------
+
+  - Added print_form_errors utility
+
+version 1.0.15 - August 18th, 2016
+----------------------------------
+
+  - Added helper methods for more HTTP methods like put, patch, and trace
+  - Added assertResponseContains and assertResponseNotContains
+
+version 1.0.14 - June 25th, 2016
+--------------------------------
+
+  - Fixed documentation typo
+  - Added response_400() test
+  - Added Guinslym and David Arcos to AUTHORS.txt
+
+version 1.0.13 - May 23rd, 2016
+-------------------------------
+
+  - Added response_401() test
+  - Fixed situation where User models without a 'username' field could not be
+    used as easily.  Now credential field is automatically determined.
+  - Fixed assertLoginRequired when settings.LOGIN_URL is a named URL pattern
+  - Removed support for Django 1.4.x as it is well beyond it's end of life and causes a headache for supporting newer releases
+
+version 1.0.12 - March 4th, 2016
+--------------------------------
+
+  - Fixed incorrect documentation
+  - Added response_405 and response_410 test methods
+
 version 1.0.11 - November 11, 2015
+----------------------------------
 
   - Fixed bad README typos and merge artifacts
 

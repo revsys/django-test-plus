@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseGone
 from django.shortcuts import render, redirect
 from django.views import generic
 
+from .forms import TestNameForm
 from .models import Data
 
 
@@ -16,8 +17,20 @@ def view_201(request):
     return HttpResponse('', status=201)
 
 
+def view_301(request):
+    return HttpResponse('', status=301)
+
+
 def view_302(request):
     return HttpResponse('', status=302)
+
+
+def view_400(request):
+    return HttpResponse('', status=400)
+
+
+def view_401(request):
+    return HttpResponse('', status=401)
 
 
 def view_403(request):
@@ -30,6 +43,10 @@ def view_404(request):
 
 def view_405(request):
     return HttpResponse('', status=405)
+
+
+def view_410(request):
+    return HttpResponseGone()
 
 
 def view_redirect(request):
@@ -67,6 +84,16 @@ def view_is_ajax(request):
     return HttpResponse('', status=200 if request.is_ajax() else 404)
 
 
+def view_contains(request):
+    return render(request, 'test.html', {})
+
+
+def view_headers(request):
+    response = HttpResponse('', content_type='text/plain', status=200)
+    response['X-Custom'] = 1
+    return response
+
+
 # Class-based test views
 
 class CBView(generic.View):
@@ -91,3 +118,8 @@ class CBTemplateView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         kwargs['revsys'] = 42
         return kwargs
+
+
+class FormErrors(generic.FormView):
+    form_class = TestNameForm
+    template_name = 'form_errors.html'

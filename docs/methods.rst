@@ -14,7 +14,7 @@ When testing views you often find yourself needing to reverse the URL's name. Wi
 As you can see our reverse also passes along any args or kwargs you need
 to pass in.
 
-get(url\_name, follow=True, \*args, \*\*kwargs)
+get(url\_name, follow=False, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Another thing you do often is HTTP get urls. Our ``get()`` method
@@ -59,16 +59,47 @@ If you need to pass query string parameters to your url name, you can do so like
 
 Would GET /search/?query=testing
 
-post(url\_name, data, follow=True, \*args, \*\*kwargs)
+post(url\_name, follow=False, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our ``post()`` method takes a named URL, the dictionary of data you wish
+Our ``post()`` method takes a named URL, an optional dictionary of data you wish
 to post and any args or kwargs necessary to reverse the url\_name.
 If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
 
     def test_post_named_url(self):
         response = self.post('my-url-name', data={'coolness-factor': 11.0},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+
+
+put(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+patch(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+head(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+trace(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+options(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
+
+delete(url\_name, follow=False, \*args, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To support all HTTP methods
 
 get_context(key)
 ~~~~~~~~~~~~~~~~
@@ -122,9 +153,14 @@ django-test-plus provides the following response method checks for you::
 
     - response_200()
     - response_201()
+    - response_301()
     - response_302()
+    - response_400()
+    - response_401()
     - response_403()
     - response_404()
+    - response_405()
+    - response_410()
 
 All of which take an option Django test client response as their only argument.
 If it's available, the response_XXX methods will use the last response. So you
@@ -135,6 +171,50 @@ can do::
         self.response_200()
 
 Which is a bit shorter.
+
+assertResponseContains(text, response=None, html=True)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You often want to check that the last response contains a chunk of HTML. With
+Django's default TestCase you would write::
+
+    from django.core.urlresolvers import reverse
+
+    def test_response_contains(self):
+        response = self.client.get(reverse('hello-world'))
+        self.assertContains(response, '<p>Hello, World!</p>', html=True)
+
+With django-test-plus you can shorten that to be::
+
+    def test_response_contains(self):
+        self.get('hello-world')
+        self.assertResponseContains('<p>Hello, World!</p>')
+
+assertResponseNotContains(text, response=None, html=True)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The inverse of the above test, make sure the last response does not include
+the chunk of HTML::
+
+    def test_response_not_contains(self):
+        self.get('hello-world')
+        self.assertResponseNotContains('<p>Hello, Frank!</p>')
+
+assertResponseHeaders(headers, response=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes your views or middleware will set custom headers::
+
+    def test_custom_headers(self):
+        self.get('my-url-name')
+        self.assertResponseHeaders({'X-Custom-Header': 'Foo'})
+        self.assertResponseHeaders({'X-Does-Not-Exist': None})
+
+You might also want to check standard headers::
+
+    def test_content_type(self):
+        self.get('my-json-view')
+        self.assertResponseHeaders({'Content-Type': 'application/json'})
 
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

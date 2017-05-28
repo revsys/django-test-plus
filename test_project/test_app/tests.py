@@ -1,9 +1,17 @@
-import factory
 import django
+import factory
 import unittest
 import warnings
 
+from contextlib import contextmanager
 from distutils.version import LooseVersion
+
+import sys
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from test_plus.test import (
     CBVTestCase,
@@ -16,6 +24,8 @@ from .views import (
     CBTemplateView,
 )
 
+from .forms import TestNameForm
+
 DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
 
 if DJANGO_16:
@@ -23,6 +33,15 @@ if DJANGO_16:
     User = get_user_model()
 else:
     from django.contrib.auth.models import User
+
+
+@contextmanager
+def redirect_stdout(new_target):
+    old_target, sys.stdout = sys.stdout, new_target
+    try:
+        yield new_target
+    finally:
+        sys.stdout = old_target
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -50,6 +69,28 @@ class TestPlusViewTests(TestCase):
         url = self.reverse('view-200')
         res = self.get(url)
         self.assertEqual(res.status_code, 200)
+
+    def test_print_form_errors(self):
+
+        with self.assertRaisesMessage(Exception, 'print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.'):
+            self.print_form_errors('my-bad-argument')
+
+        form = TestNameForm(data={})
+        self.assertFalse(form.is_valid())
+
+        output = StringIO()
+        with redirect_stdout(output):
+            self.print_form_errors(form)
+        output = output.getvalue().strip()
+        self.assertTrue('This field is required.' in output)
+
+        self.post('form-errors')
+        self.response_200()
+        output = StringIO()
+        with redirect_stdout(output):
+            self.print_form_errors()
+        output = output.getvalue().strip()
+        self.assertTrue('This field is required.' in output)
 
     def test_get_follow(self):
         # Expect 302 status code
@@ -81,6 +122,90 @@ class TestPlusViewTests(TestCase):
         res = self.post(url, data=data, follow=True)
         self.assertTrue(res.status_code, 200)
 
+    def test_put(self):
+        url = self.reverse('view-200')
+        res = self.put(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_put_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.put(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.put(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    def test_patch(self):
+        url = self.reverse('view-200')
+        res = self.patch(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_patch_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.patch(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.patch(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    def test_head(self):
+        url = self.reverse('view-200')
+        res = self.head(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_head_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.head(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.head(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    # def test_trace(self):
+    #     url = self.reverse('view-200')
+    #     res = self.trace(url)
+    #     self.assertTrue(res.status_code, 200)
+    #
+    # def test_trace_follow(self):
+    #     url = self.reverse('view-redirect')
+    #     # Expect 302 status code
+    #     res = self.trace(url)
+    #     self.assertTrue(res.status_code, 302)
+    #     # Expect 200 status code
+    #     res = self.trace(url, follow=True)
+    #     self.assertTrue(res.status_code, 200)
+
+    def test_options(self):
+        url = self.reverse('view-200')
+        res = self.options(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_options_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.options(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.options(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
+    def test_delete(self):
+        url = self.reverse('view-200')
+        res = self.delete(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_delete_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.delete(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.delete(url, follow=True)
+        self.assertTrue(res.status_code, 200)
+
     def test_get_check_200(self):
         res = self.get_check_200('view-200')
         self.assertTrue(res.status_code, 200)
@@ -99,12 +224,33 @@ class TestPlusViewTests(TestCase):
         # Test without response option
         self.response_201()
 
+    def test_response_301(self):
+        res = self.get('view-301')
+        self.response_301(res)
+
+        # Test without response option
+        self.response_301()
+
     def test_response_302(self):
         res = self.get('view-302')
         self.response_302(res)
 
         # Test without response option
         self.response_302()
+
+    def test_response_400(self):
+        res = self.get('view-400')
+        self.response_400(res)
+
+        # Test without response option
+        self.response_400()
+
+    def test_response_401(self):
+        res = self.get('view-401')
+        self.response_401(res)
+
+        # Test without response option
+        self.response_401()
 
     def test_response_403(self):
         res = self.get('view-403')
@@ -126,6 +272,13 @@ class TestPlusViewTests(TestCase):
 
         # Test without response option
         self.response_405()
+
+    def test_response_410(self):
+        res = self.get('view-410')
+        self.response_410(res)
+
+        # Test without response option
+        self.response_410()
 
     def test_make_user(self):
         """ Test make_user using django.contrib.auth defaults """
@@ -244,6 +397,18 @@ class TestPlusViewTests(TestCase):
                              data={'item': 1},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
         self.response_200(response)
+
+    def test_assertresponsecontains(self):
+        self.get('view-contains')
+        self.assertResponseContains('<p>Hello world</p>')
+        self.assertResponseNotContains('<p>Hello Frank</p>')
+
+    def test_assert_response_headers(self):
+        self.get('view-headers')
+        self.assertResponseHeaders({'Content-Type': 'text/plain'})
+        self.assertResponseHeaders({'X-Custom': '1'})
+        self.assertResponseHeaders({'X-Custom': '1', 'X-Non-Existent': None})
+        self.assertResponseHeaders({'X-Non-Existent': None})
 
 
 class TestPlusCBViewTests(CBVTestCase):

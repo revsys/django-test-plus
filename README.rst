@@ -6,6 +6,7 @@ Systems <http://www.revsys.com/>`__
 
 |travis ci status image| |Coverage Status|
 
+
 Rationale
 ---------
 
@@ -20,7 +21,7 @@ Support
 
 Supports: Python 2 and Python 3
 
-Supports Django Versions: 1.4, 1.5, 1.6, 1.7, and 1.8
+Supports Django Versions: 1.5, 1.6, 1.7, 1.8, 1.9, and 1.10
 
 Documentation
 --------------
@@ -133,6 +134,8 @@ If needed, place kwargs for ``TestClient.post()`` in an 'extra' dictionary.::
     def test_post_named_url(self):
         response = self.post('my-url-name', data={'coolness-factor': 11.0},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+
+*NOTE* Along with the frequently used get and post, we support all of the HTTP verbs such as put, patch, head, trace, options, and delete in the same fashion.
 
 get_context(key)
 ~~~~~~~~~~~~~~~~
@@ -250,6 +253,29 @@ You can also pass in user permissions by passing in a string of
 '``<app_name>.<perm name>``' or '``<app_name>.*``'.  For example::
 
     user2 = self.make_user(perms=['myapp.create_widget', 'otherapp.*'])
+
+print_form_errors(response_or_form=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When debugging a failing test for a view with a form, this method helps you
+quickly look at any form errors.
+
+Example usage::
+
+    class MyFormTest(TestCase):
+
+        self.post('my-url-name', data={})
+        self.print_form_errors()
+
+        # or
+
+        resp = self.post('my-url-name', data={})
+        self.print_form_errors(resp)
+
+        # or
+
+        form = MyForm(data={})
+        self.print_form_errors(form)
 
 Authentication Helpers
 ----------------------

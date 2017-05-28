@@ -14,7 +14,7 @@ f.close()
 
 setup(
     name='django-test-plus',
-    version="1.0.11",
+    version="1.0.17",
     description="django-test-plus provides useful additions to Django's default TestCase",
     long_description=readme,
     author='Frank Wiles',
@@ -23,9 +23,9 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     zip_safe=False,
-    install_requires=['Django>=1.4.20'],
+    install_requires=['Django>=1.5'],
     tests_require=[
-        'Django>=1.4.20',
+        'Django>=1.5',
         'factory-boy>=2.5.2',
     ],
     classifiers=[
