@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseGone
 from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
 from django.views import generic
 
 from .forms import TestDataForm, TestNameForm
@@ -110,6 +111,16 @@ class CBView(generic.View):
             return self.special_value
         else:
             return False
+
+
+class CBLoginRequiredView(generic.View):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CBLoginRequiredView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return HttpResponse('', status=200)
 
 
 class CBDataView(generic.UpdateView):

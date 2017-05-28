@@ -8,6 +8,7 @@ from .views import (
     view_302, view_400, view_401, view_403, view_404, view_405, view_410,
     view_contains, view_context_with, view_context_without, view_headers,
     view_is_ajax, view_redirect,
+    CBLoginRequiredView, CBView,
 )
 
 urlpatterns = [
@@ -32,4 +33,6 @@ urlpatterns = [
     url(r'^view/contains/$', view_contains, name='view-contains'),
     url(r'^view/form-errors/$', FormErrors.as_view(), name='form-errors'),
     url(r'^view/headers/$', view_headers, name='view-headers'),
+    url(r'^cbview/needs-login/$', CBLoginRequiredView.as_view(), name='cbview-needs-login'),
+    url(r'^cbview/$', CBView.as_view(), name='cbview'),
 ]

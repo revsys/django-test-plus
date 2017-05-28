@@ -481,23 +481,29 @@ class CBVTestCase(TestCase):
         finally:
             signals.template_rendered.disconnect(dispatch_uid=signal_uid)
 
-    def get_check_200(self, cls, *args, **kwargs):
+    def get_check_200(self, url, *args, **kwargs):
         """ Test that we can GET a page and it returns a 200 """
-        initkwargs = kwargs.pop('initkwargs', None)
-        response = self.get(cls, initkwargs=initkwargs, *args, **kwargs)
+        response = super(CBVTestCase, self).get(url, *args, **kwargs)
         self.response_200(response)
         return response
 
-    def assertGoodView(self, cls, *args, **kwargs):
+    def assertLoginRequired(self, url, *args, **kwargs):
+        """ Ensure login is required to GET this URL """
+        response = super(CBVTestCase, self).get(url, *args, **kwargs)
+        reversed_url = reverse(url, args=args, kwargs=kwargs)
+        login_url = str(resolve_url(settings.LOGIN_URL))
+        expected_url = "{0}?next={1}".format(login_url, reversed_url)
+        self.assertRedirects(response, expected_url)
+
+    def assertGoodView(self, url_name, *args, **kwargs):
         """
         Quick-n-dirty testing of a given view.
         Ensures view returns a 200 status and that generates less than 50
         database queries.
         """
-        initkwargs = kwargs.pop('initkwargs', None)
         query_count = kwargs.pop('test_query_count', 50)
 
         with self.assertNumQueriesLessThan(query_count):
-            response = self.get(cls, initkwargs=initkwargs, *args, **kwargs)
+            response = super(CBVTestCase, self).get(url_name, *args, **kwargs)
         self.response_200(response)
         return response

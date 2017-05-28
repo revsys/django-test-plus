@@ -23,8 +23,8 @@ from .forms import TestNameForm
 from .models import Data
 from .views import (
     CBDataView,
-    CBView,
     CBTemplateView,
+    CBView,
 )
 
 DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
@@ -343,7 +343,7 @@ class TestPlusViewTests(TestCase):
     @unittest.expectedFailure
     def test_assertnumqueries_failure(self):
         if not DJANGO_16:
-            return unittest.skip("Does not work before Django 1.6")
+            return unittest.skip('Does not work before Django 1.6')
 
         with self.assertNumQueriesLessThan(1):
             self.get('view-data-5')
@@ -351,7 +351,7 @@ class TestPlusViewTests(TestCase):
     def test_assertnumqueries_warning(self):
         if not DJANGO_16:
             with warnings.catch_warnings(record=True) as w:
-                warnings.simplefilter("always")
+                warnings.simplefilter('always')
 
                 with self.assertNumQueriesLessThan(1):
                     self.get('view-data-1')
@@ -359,7 +359,7 @@ class TestPlusViewTests(TestCase):
                 self.assertEqual(len(w), 1)
                 self.assertTrue('skipped' in str(w[-1].message))
         else:
-            return unittest.skip("Only useful for Django 1.6 and before")
+            return unittest.skip('Only useful for Django 1.6 and before')
 
     def test_assertincontext(self):
         response = self.get('view-context-with')
@@ -415,19 +415,27 @@ class TestPlusViewTests(TestCase):
 class TestPlusCBViewTests(CBVTestCase):
 
     def test_get(self):
-        response = self.get(CBView)
-        self.assertEqual(response.status_code, 200)
+        self.get(CBView)
+        self.response_200()
 
     def test_post(self):
         data = {'testing': True}
-        response = self.post(CBView, data=data)
-        self.assertEqual(response.status_code, 200)
+        self.post(CBView, data=data)
+        self.response_200()
 
     def test_get_check_200(self):
-        self.get_check_200(CBView)
+        self.get_check_200('cbview')
 
     def test_assert_good_view(self):
-        self.assertGoodView(CBView)
+        self.assertGoodView('cbview')
+
+    def test_login_required(self):
+        self.assertLoginRequired('cbview-needs-login')
+
+        # Make a user and login with our login context
+        self.make_user('test')
+        with self.login(username='test', password='password'):
+            self.get_check_200('cbview-needs-login')
 
 
 class TestPlusCBDataViewTests(CBVTestCase):
@@ -436,13 +444,13 @@ class TestPlusCBDataViewTests(CBVTestCase):
     """
 
     def setUp(self):
-        self.data = Data.objects.create(name="RevSys")
+        self.data = Data.objects.create(name='RevSys')
 
     def test_get_request_attributes(self):
         """
         Ensure custom `request` attribute is seen at view
         """
-        request = django.test.RequestFactory().get("/")
+        request = django.test.RequestFactory().get('/')
         # add custom attribute
         request.some_data = 5
 
@@ -458,14 +466,14 @@ class TestPlusCBDataViewTests(CBVTestCase):
         """
         Ensure `initkwargs` overrides view attributes
         """
-        request = django.test.RequestFactory().get("/")
+        request = django.test.RequestFactory().get('/')
 
         self.get(
             CBDataView,
             request=request,
             pk=self.data.pk,
         )
-        self.assertTemplateUsed("test.html")  # default template
+        self.assertTemplateUsed('test.html')  # default template
 
         # Use `initkwargs` to override view class "template_name" attribute
         self.get(
@@ -473,16 +481,16 @@ class TestPlusCBDataViewTests(CBVTestCase):
             request=request,
             pk=self.data.pk,
             initkwargs={
-                "template_name": "other.html",
+                'template_name': 'other.html',
             }
         )
-        self.assertTemplateUsed("other.html")  # overridden template
+        self.assertTemplateUsed('other.html')  # overridden template
 
     def test_post_request_attributes(self):
         """
         Ensure custom `request` attribute is seen at view
         """
-        request = django.test.RequestFactory().post("/")
+        request = django.test.RequestFactory().post('/')
         # add custom attribute
         request.some_data = 5
 
@@ -499,7 +507,7 @@ class TestPlusCBDataViewTests(CBVTestCase):
         """
         Ensure `initkwargs` overrides view attributes
         """
-        request = django.test.RequestFactory().post("/")
+        request = django.test.RequestFactory().post('/')
 
         self.post(
             CBDataView,
@@ -507,7 +515,7 @@ class TestPlusCBDataViewTests(CBVTestCase):
             pk=self.data.pk,
             data={}  # no data, name is required so this will be invalid
         )
-        self.assertTemplateUsed("test.html")  # default template
+        self.assertTemplateUsed('test.html')  # default template
 
         # Use `initkwargs` to override view class "template_name" attribute
         self.post(
@@ -515,11 +523,11 @@ class TestPlusCBDataViewTests(CBVTestCase):
             request=request,
             pk=self.data.pk,
             initkwargs={
-                "template_name": "other.html",
+                'template_name': 'other.html',
             },
             data={}  # no data, name is required so this will be invalid
         )
-        self.assertTemplateUsed("other.html")  # overridden template
+        self.assertTemplateUsed('other.html')  # overridden template
 
 
 class TestPlusCBTemplateViewTests(CBVTestCase):
