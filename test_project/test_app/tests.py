@@ -19,12 +19,13 @@ from test_plus.test import (
     TestCase
 )
 
+from .forms import TestNameForm
+from .models import Data
 from .views import (
+    CBDataView,
     CBView,
     CBTemplateView,
 )
-
-from .forms import TestNameForm
 
 DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
 
@@ -427,6 +428,98 @@ class TestPlusCBViewTests(CBVTestCase):
 
     def test_assert_good_view(self):
         self.assertGoodView(CBView)
+
+
+class TestPlusCBDataViewTests(CBVTestCase):
+    """
+    Provide usage examples for CBVTestCase
+    """
+
+    def setUp(self):
+        self.data = Data.objects.create(name="RevSys")
+
+    def test_get_request_attributes(self):
+        """
+        Ensure custom `request` attribute is seen at view
+        """
+        request = django.test.RequestFactory().get("/")
+        # add custom attribute
+        request.some_data = 5
+
+        self.get(
+            CBDataView,
+            request=request,
+            pk=self.data.pk,
+        )
+        # view copies `request.some_data` into context if present
+        self.assertContext('some_data', 5)
+
+    def test_get_override_view_template(self):
+        """
+        Ensure `initkwargs` overrides view attributes
+        """
+        request = django.test.RequestFactory().get("/")
+
+        self.get(
+            CBDataView,
+            request=request,
+            pk=self.data.pk,
+        )
+        self.assertTemplateUsed("test.html")  # default template
+
+        # Use `initkwargs` to override view class "template_name" attribute
+        self.get(
+            CBDataView,
+            request=request,
+            pk=self.data.pk,
+            initkwargs={
+                "template_name": "other.html",
+            }
+        )
+        self.assertTemplateUsed("other.html")  # overridden template
+
+    def test_post_request_attributes(self):
+        """
+        Ensure custom `request` attribute is seen at view
+        """
+        request = django.test.RequestFactory().post("/")
+        # add custom attribute
+        request.some_data = 5
+
+        self.post(
+            CBDataView,
+            request=request,
+            pk=self.data.pk,
+            data={}  # no data, name is required so this will be invalid
+        )
+        # view copies `request.some_data` into context if present
+        self.assertContext('some_data', 5)
+
+    def test_post_override_view_template(self):
+        """
+        Ensure `initkwargs` overrides view attributes
+        """
+        request = django.test.RequestFactory().post("/")
+
+        self.post(
+            CBDataView,
+            request=request,
+            pk=self.data.pk,
+            data={}  # no data, name is required so this will be invalid
+        )
+        self.assertTemplateUsed("test.html")  # default template
+
+        # Use `initkwargs` to override view class "template_name" attribute
+        self.post(
+            CBDataView,
+            request=request,
+            pk=self.data.pk,
+            initkwargs={
+                "template_name": "other.html",
+            },
+            data={}  # no data, name is required so this will be invalid
+        )
+        self.assertTemplateUsed("other.html")  # overridden template
 
 
 class TestPlusCBTemplateViewTests(CBVTestCase):

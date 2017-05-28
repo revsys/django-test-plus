@@ -410,7 +410,8 @@ class CBVTestCase(TestCase):
         because SingleObjectMixin (part of generic.DetailView)
         expects self.object to be set before invoking get_context_data().
 
-        `args` and `kwargs` are the same values you would pass to ``reverse()``.
+        Pass a "request" kwarg in order for your tests to have particular
+        request attributes.
         """
         initkwargs = kwargs.pop('initkwargs', None)
         request = kwargs.pop('request', None)
@@ -424,34 +425,30 @@ class CBVTestCase(TestCase):
 
     def get(self, cls, *args, **kwargs):
         """
-        Calls cls.get() method after instantiating view class
-        with `initkwargs`.
+        Calls cls.get() method after instantiating view class.
         Renders view templates and sets context if appropriate.
         """
-        initkwargs = kwargs.pop('initkwargs', None)
-        if initkwargs is None:
-            initkwargs = {}
-        request = RequestFactory().get('/')
-        instance = self.get_instance(cls, initkwargs=initkwargs, request=request, **kwargs)
-        self.last_response = self.get_response(request, instance.get)
+        instance = self.get_instance(cls, *args, **kwargs)
+        if not instance.request:
+            # Use a basic request
+            instance.request = RequestFactory().get('/')
+        self.last_response = self.get_response(instance.request, instance.get)
         self.context = self.last_response.context
         return self.last_response
 
     def post(self, cls, *args, **kwargs):
         """
-        Calls cls.post() method after instantiating view class
-        with `initkwargs`.
+        Calls cls.post() method after instantiating view class.
         Renders view templates and sets context if appropriate.
         """
         data = kwargs.pop('data', None)
-        initkwargs = kwargs.pop('initkwargs', None)
         if data is None:
             data = {}
-        if initkwargs is None:
-            initkwargs = {}
-        request = RequestFactory().post('/', data)
-        instance = self.get_instance(cls, initkwargs=initkwargs, request=request, **kwargs)
-        self.last_response = self.get_response(request, instance.post)
+        instance = self.get_instance(cls, *args, **kwargs)
+        if not instance.request:
+            # Use a basic request
+            instance.request = RequestFactory().post('/', data)
+        self.last_response = self.get_response(instance.request, instance.post)
         self.context = self.last_response.context
         return self.last_response
 
