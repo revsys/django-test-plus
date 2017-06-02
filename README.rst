@@ -28,6 +28,13 @@ Documentation
 
 Full documentation is available at http://django-test-plus.readthedocs.org
 
+Installation
+------------
+
+::
+
+    $ pip install django-test-plus
+
 Usage
 -----
 
