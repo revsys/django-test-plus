@@ -12,10 +12,9 @@ affect the end result.
 
 Class-based views (derived from Django's ``generic.models.View`` class)
 contain methods and mixins which makes granular unit testing (more) feasible.
-Quite often your usage of a generic view class comprises a simple override
-of an existing method. Invoking the entire view and the Django request/response
-stack is a waste of time... you really want to call the overridden
-method directly and test the result.
+Quite often usage of a generic view class comprises a simple method override.
+Invoking the entire view and the Django request/response stack is a waste of
+time... you really want to test the overridden method directly.
 
 CBVTestCase to the rescue!
 
@@ -44,20 +43,35 @@ Sample usage::
     from django.views import generic
     from test_plus.test import CBVTestCase
 
-    class MyClass(generic.DetailView)
+    class MyViewClass(generic.DetailView)
 
         def get_context_data(self, **kwargs):
-            kwargs['answer'] = 42
+            kwargs = super(MyViewClass, self).get_context_data(**kwargs)
+            if hasattr(self.request, 'some_data'):
+                kwargs.update({
+                    'some_data': self.request.some_data
+                })
+            if hasattr(self, 'special_value'):
+                kwargs.update({
+                    'special_value': self.special_value
+                })
             return kwargs
 
-    class MyTests(CBVTestCase):
+    class MyViewTests(CBVTestCase):
 
         def test_context_data(self):
-            my_view = self.get_instance(MyClass, {'object': some_object})
+            my_view = self.get_instance(MyViewClass, initkwargs={'special_value': 42})
             context = my_view.get_context_data()
-            self.assertEqual(context['answer'], 42)
+            self.assertContext('special_value', 42)
 
-get(cls, initkwargs=None, \*args, \*\*kwargs)
+        def test_request_attribute(self):
+            request = django.test.RequestFactory().get('/')
+            request.some_data = 5
+            my_view = self.get_instance(MyViewClass, request=request)
+            context = my_view.get_context_data()
+            self.assertContext('some_data', 5)
+
+get(cls, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Invokes ``cls.get()`` and returns the response, rendering template if possible.
@@ -65,17 +79,27 @@ Builds on the ``CBVTestCase.get_instance()`` foundation.
 
 All test\_plus.test.TestCase methods are valid, so the following works::
 
-    response = self.get(MyClass)
+    response = self.get(MyViewClass)
     self.assertContext('my_key', expected_value)
 
 All test\_plus TestCase side-effects are honored and all test\_plus
 TestCase assertion methods work with ``CBVTestCase.get()``.
 
+If you need special request attributes, i.e. 'user', you can create a
+custom Request with RequestFactory, assign to ``request.user``,
+and use that in the ``get()``:
+
+        def test_request_attribute(self):
+            request = django.test.RequestFactory().get('/')
+            request.user = some_user
+            self.get(MyViewClass, request=request, pk=data.pk)
+            self.assertContext('user', some_user)
+
 **NOTE:** This method bypasses Django's middleware, and therefore context
 variables created by middleware are not available. If this affects your
-template/context testing you should use TestCase instead of CBVTestCase.
+template/context testing you should use ``TestCase`` instead of ``CBVTestCase``.
 
-post(cls, data=None, initkwargs=None, \*args, \*\*kwargs)
+post(cls, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Invokes ``cls.post()`` and returns the response, rendering template if possible.
@@ -83,16 +107,26 @@ Builds on the ``CBVTestCase.get_instance()`` foundation.
 
 Example::
 
-    response = self.post(MyClass, data={'search_term': 'revsys'})
+    response = self.post(MyViewClass, data={'search_term': 'revsys'})
     self.response_200(response)
     self.assertContext('company_name', 'RevSys')
 
 All test\_plus TestCase side-effects are honored and all test\_plus
 TestCase assertion methods work with ``CBVTestCase.post()``.
 
+If you need special request attributes, i.e. 'user', you can create a
+custom Request with RequestFactory, assign to ``request.user``,
+and use that in the ``post()``:
+
+        def test_request_attribute(self):
+            request = django.test.RequestFactory().post('/')
+            request.user = some_user
+            self.post(MyViewClass, request=request, pk=self.data.pk, data={})
+            self.assertContext('user', some_user)
+
 **NOTE:** This method bypasses Django's middleware, and therefore context
 variables created by middleware are not available. If this affects your
-template/context testing you should use TestCase instead of CBVTestCase.
+template/context testing you should use ``TestCase`` instead of ``CBVTestCase``.
 
 get_check_200(cls, initkwargs=None, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

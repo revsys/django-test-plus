@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseGone
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
 from django.views import generic
 
-from .forms import TestNameForm
+from .forms import TestDataForm, TestNameForm
 from .models import Data
 
 
@@ -109,6 +111,34 @@ class CBView(generic.View):
             return self.special_value
         else:
             return False
+
+
+class CBLoginRequiredView(generic.View):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CBLoginRequiredView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return HttpResponse('', status=200)
+
+
+class CBDataView(generic.UpdateView):
+
+    model = Data
+    template_name = "test.html"
+    form_class = TestDataForm
+
+    def get_success_url(self):
+        return reverse("view-200")
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(CBDataView, self).get_context_data(**kwargs)
+        if hasattr(self.request, "some_data"):
+            kwargs.update({
+                "some_data": self.request.some_data
+            })
+        return kwargs
 
 
 class CBTemplateView(generic.TemplateView):
