@@ -21,12 +21,19 @@ Support
 
 Supports: Python 2 and Python 3
 
-Supports Django Versions: 1.5, 1.6, 1.7, 1.8, 1.9, and 1.10
+Supports Django Versions: 1.5, 1.6, 1.7, 1.8, 1.9, 1.10, 1.11
 
 Documentation
 --------------
 
 Full documentation is available at http://django-test-plus.readthedocs.org
+
+Installation
+------------
+
+::
+
+    $ pip install django-test-plus
 
 Usage
 -----
