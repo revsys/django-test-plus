@@ -1,6 +1,12 @@
 Changes
 =======
 
+version 1.0.18 - June 26th, 2017
+--------------------------------
+
+  - Allow custom Request objects in get() and post()
+  - Begin testing against Python 3.6 and Django 1.11
+
 version 1.0.17 - January 31st, 2017
 -----------------------------------
 
