@@ -1,5 +1,6 @@
-from .test import TestCase
+from .test import APITestCase, TestCase
 
 __all__ = [
+    'APITestCase',
     'TestCase',
 ]
