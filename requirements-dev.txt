@@ -1,6 +1,9 @@
-# These requirements are necessary for working on the django-test-plus
-# project itself.  They are not necessary for running the tests or
-# using the library.
--r requirements-travisci.txt
+# These requirements are necessary for developing the django-test-plus
+# project itself.
 
-pypandoc==0.9.7
+-r requirements.txt
+
+coveralls==1.2.0
+factory-boy==2.5.2
+flake8==3.4.1
+pypandoc==1.4
