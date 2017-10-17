@@ -5,3 +5,4 @@ htmlcov/
 *.pyc
 _build/
 .idea/*
+.tox/*

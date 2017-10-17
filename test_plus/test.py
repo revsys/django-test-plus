@@ -4,7 +4,6 @@ import django
 from django.conf import settings
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import reverse, NoReverseMatch
 from django.shortcuts import resolve_url
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
@@ -12,6 +11,8 @@ from distutils.version import LooseVersion
 from django.test import RequestFactory, signals, TestCase as DjangoTestCase
 from django.test.client import store_rendered_templates
 from django.utils.functional import curry
+
+from .compat import reverse, NoReverseMatch
 
 
 class NoPreviousResponse(Exception):
