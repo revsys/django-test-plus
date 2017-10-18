@@ -21,7 +21,7 @@ Support
 
 Supports: Python 2 and Python 3
 
-Supports Django Versions: 1.5, 1.6, 1.7, 1.8, 1.9, 1.10, 1.11, 2.0
+Supports Django Versions: 1.8, 1.9, 1.10, 1.11, 2.0
 
 Documentation
 --------------
@@ -231,9 +231,6 @@ method will create a user for you::
         user1 = self.make_user('u1')
         user2 = self.make_user('u2')
 
-**NOTE:** This work properly with version of Django prior to 1.6 and
-will use your own User class if you have created your own User model.
-
 If creating a User in your project is more complicated, say for example
 you removed the ``username`` field from the default Django Auth model
 you can provide a `Factory
@@ -357,10 +354,6 @@ more queries than you expect::
         with self.assertNumQueriesLessThan(7):
             self.get('some-view-with-6-queries')
 
-
-**NOTE:** This isn't possible in versions of Django prior to 1.6, so the
-context will run your code and assertions and issue a warning that it
-cannot check the number of queries generated.
 
 assertGoodView(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,12 +1,10 @@
 import django
 import factory
+import sys
 import unittest
-import warnings
 
 from contextlib import contextmanager
-from distutils.version import LooseVersion
-
-import sys
+from django.contrib.auth import get_user_model
 
 try:
     from StringIO import StringIO
@@ -27,13 +25,8 @@ from .views import (
     CBView,
 )
 
-DJANGO_16 = LooseVersion(django.get_version()) >= LooseVersion('1.6')
 
-if DJANGO_16:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-else:
-    from django.contrib.auth.models import User
+User = get_user_model()
 
 
 @contextmanager
@@ -342,24 +335,8 @@ class TestPlusViewTests(TestCase):
 
     @unittest.expectedFailure
     def test_assertnumqueries_failure(self):
-        if not DJANGO_16:
-            return unittest.skip('Does not work before Django 1.6')
-
         with self.assertNumQueriesLessThan(1):
             self.get('view-data-5')
-
-    def test_assertnumqueries_warning(self):
-        if not DJANGO_16:
-            with warnings.catch_warnings(record=True) as w:
-                warnings.simplefilter('always')
-
-                with self.assertNumQueriesLessThan(1):
-                    self.get('view-data-1')
-
-                self.assertEqual(len(w), 1)
-                self.assertTrue('skipped' in str(w[-1].message))
-        else:
-            return unittest.skip('Only useful for Django 1.6 and before')
 
     def test_assertincontext(self):
         response = self.get('view-context-with')
