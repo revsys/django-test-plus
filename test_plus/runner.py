@@ -2,10 +2,8 @@
 from __future__ import unicode_literals
 
 import logging
-try:
-    from django.test.runner import DiscoverRunner as DefaultRunner
-except ImportError:
-    from django.test.simple import DjangoTestSuiteRunner as DefaultRunner
+
+from django.test.runner import DiscoverRunner as DefaultRunner
 
 
 class NoLoggingRunner(DefaultRunner):
