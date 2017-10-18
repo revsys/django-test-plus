@@ -29,7 +29,7 @@ If needed, place kwargs for ``TestClient.get()`` in an 'extra' dictionary.::
             'my-url-name',
             extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
-When using this get method two other things happen for you, we store the
+When using this get method two other things happen for you: we store the
 last response in ``self.last\_response`` and the response's Context in ``self.context``.
 So instead of::
 
@@ -236,11 +236,11 @@ method will create a user for you::
         user1 = self.make_user('u1')
         user2 = self.make_user('u2')
 
-**NOTE:** This work properly with version of Django prior to 1.6 and
+**NOTE:** This works properly with versions of Django prior to 1.6 and
 will use your own User class if you have created your own User model.
 
 If creating a User in your project is more complicated, say for example
-you removed the ``username`` field from the default Django Auth model
+you removed the ``username`` field from the default Django Auth model,
 you can provide a `Factory
 Boy <https://factoryboy.readthedocs.org/en/latest/>`__ factory to create
 it or simply override this method on your own sub-class.
