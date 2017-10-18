@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseGone
@@ -53,6 +55,15 @@ def view_410(request):
 
 def view_redirect(request):
     return redirect('view-200')
+
+
+def view_json(request):
+    ctype = request.META['CONTENT_TYPE']
+    if not ctype.startswith('application/json'):
+        raise ValueError("Request's content-type should be 'application/json'. Got '{}' instead.".format(ctype))
+
+    data = json.loads(request.body.decode('utf-8'))
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 @login_required

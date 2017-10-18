@@ -371,6 +371,32 @@ can use it like this::
     def test_better_than_nothing(self):
         response = self.assertGoodView('my-url-name')
 
+Testing DRF views
+-----------------
+
+To take advantage of the convenience of DRF's test client, you can create a subclass of ``TestCase`` and set the ``client_class`` property::
+
+    from test_plus import TestCase
+    from rest_framework.test import APIClient
+
+
+    class APITestCase(TestCase):
+        client_class = APIClient
+
+For convenience, ``test_plus`` ships with ``APITestCase``, which does just that::
+
+    from test_plus import APITestCase
+
+
+    class MyAPITestCase(APITestCase):
+
+        def test_post(self):
+            data = {'testing': {'prop': 'value'}}
+            self.post('view-json', data=data, extra={'format': 'json'})
+            self.response_200()
+
+Note that using ``APITestCase`` requires Django >= 1.8 and having installed ``django-rest-framework``.
+
 Testing class-based "generic" views
 ------------------------------------
 

@@ -10,7 +10,7 @@ from django.test.client import store_rendered_templates
 from django.test.utils import CaptureQueriesContext
 from django.utils.functional import curry
 
-from .compat import reverse, NoReverseMatch
+from .compat import reverse, NoReverseMatch, APIClient
 
 
 class NoPreviousResponse(Exception):
@@ -351,6 +351,10 @@ class TestCase(DjangoTestCase):
             self.assertEqual(self.last_response.context[key], value)
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
+
+
+class APITestCase(TestCase):
+    client_class = APIClient
 
 
 # Note this class inherits from TestCase defined above.
