@@ -1,15 +1,13 @@
-import warnings
-
-import django
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ImproperlyConfigured
-from django.shortcuts import resolve_url
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
-from distutils.version import LooseVersion
+from django.shortcuts import resolve_url
 from django.test import RequestFactory, signals, TestCase as DjangoTestCase
 from django.test.client import store_rendered_templates
+from django.test.utils import CaptureQueriesContext
 from django.utils.functional import curry
 
 from .compat import reverse, NoReverseMatch
@@ -19,48 +17,29 @@ class NoPreviousResponse(Exception):
     pass
 
 
-# Build a real context in versions of Django greater than 1.6
-# On versions below 1.6, create a context that simply warns that
-# the query number assertion is not happening
-if LooseVersion(django.get_version()) >= LooseVersion('1.6'):
-    from django.test.utils import CaptureQueriesContext
-    from django.contrib.auth import get_user_model
+# Build a real context
 
-    User = get_user_model()
+User = get_user_model()
 
-    CAPTURE = True
+CAPTURE = True
 
-    class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
-        def __init__(self, test_case, num, connection):
-            self.test_case = test_case
-            self.num = num
-            super(_AssertNumQueriesLessThanContext, self).__init__(connection)
 
-        def __exit__(self, exc_type, exc_value, traceback):
-            super(_AssertNumQueriesLessThanContext, self).__exit__(exc_type, exc_value, traceback)
-            if exc_type is not None:
-                return
-            executed = len(self)
-            self.test_case.assertTrue(
-                executed < self.num, "%d queries executed, expected less than %d" % (
-                    executed, self.num
-                )
+class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
+    def __init__(self, test_case, num, connection):
+        self.test_case = test_case
+        self.num = num
+        super(_AssertNumQueriesLessThanContext, self).__init__(connection)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        super(_AssertNumQueriesLessThanContext, self).__exit__(exc_type, exc_value, traceback)
+        if exc_type is not None:
+            return
+        executed = len(self)
+        self.test_case.assertTrue(
+            executed < self.num, "%d queries executed, expected less than %d" % (
+                executed, self.num
             )
-
-else:
-    from django.contrib.auth.models import User
-
-    CAPTURE = False
-
-    class _AssertNumQueriesLessThanContext(object):
-        def __init__(self, test_case, num, connection):
-            pass
-
-        def __enter__(self):
-            pass
-
-        def __exit__(self, exc_type, exc_value, traceback):
-            warnings.warn("assertNumQueriesLessThan being skipped, does not work prior to Django 1.6")
+        )
 
 
 class login(object):
