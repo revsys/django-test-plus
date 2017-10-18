@@ -17,10 +17,6 @@ more queries than you expect::
             self.get('some-view-with-6-queries')
 
 
-**NOTE:** This isn't possible in versions of Django prior to 1.6, so the
-context will run your code and assertions and issue a warning that it
-cannot check the number of queries generated.
-
 assertGoodView(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

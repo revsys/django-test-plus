@@ -236,9 +236,6 @@ method will create a user for you::
         user1 = self.make_user('u1')
         user2 = self.make_user('u2')
 
-**NOTE:** This work properly with version of Django prior to 1.6 and
-will use your own User class if you have created your own User model.
-
 If creating a User in your project is more complicated, say for example
 you removed the ``username`` field from the default Django Auth model
 you can provide a `Factory
