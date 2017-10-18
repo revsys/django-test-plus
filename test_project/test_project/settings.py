@@ -22,8 +22,6 @@ SECRET_KEY = 'mlqc(f8*woj%&b(gf=al7yc8$v3+(b8-=k&50%vyao8p5u8b6*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -63,11 +61,6 @@ DATABASES = {
     }
 }
 
-# For Django <1.10
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'test_project/templates'),
-)
-
 # For Django 1.10+
 TEMPLATES = [
     {
@@ -83,6 +76,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': True
         }
     }
 ]
