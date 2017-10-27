@@ -1,7 +1,6 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseGone
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
@@ -9,6 +8,11 @@ from django.views import generic
 
 from .forms import TestDataForm, TestNameForm
 from .models import Data
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 # Function-based test views
