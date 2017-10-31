@@ -1,6 +1,11 @@
 Changes
 =======
 
+version 1.0.20 - October 31st, 2017
+-----------------------------------
+  - The Halloween Release!
+  - Fixes to CI to ensure we really test Django 2.0
+
 version 1.0.19 - October 24th, 2017
 -----------------------------------
 
@@ -8,7 +13,7 @@ version 1.0.19 - October 24th, 2017
   - Dropped support for Python 3.3
   - Dropped support for Django < 1.8
   - Added APITestCase for better DRF testing
-   
+
 version 1.0.18 - June 26th, 2017
 --------------------------------
 
