@@ -1,6 +1,10 @@
 Changes
 =======
 
+version 1.0.21 - December 15th, 2017
+-----------------------------------
+  - Add response_204 method
+
 version 1.0.20 - October 31st, 2017
 -----------------------------------
   - The Halloween Release!
