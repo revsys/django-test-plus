@@ -513,7 +513,7 @@ All test\_plus TestCase side-effects are honored and all test\_plus
 TestCase assertion methods work with ``CBVTestCase.post()``.
 
 
-.. |travis ci status image| image:: https://secure.travis-ci.org/revsys/django-test-plus.png
+.. |travis ci status image| image:: https://secure.travis-ci.org/revsys/django-test-plus.svg
    :target: http://travis-ci.org/revsys/django-test-plus
 .. |Coverage Status| image:: https://coveralls.io/repos/revsys/django-test-plus/badge.svg?branch=master
    :target: https://coveralls.io/r/revsys/django-test-plus?branch=master
