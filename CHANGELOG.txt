@@ -1,6 +1,11 @@
 Changes
 =======
 
+version 1.0.22 - January 9th, 2018
+----------------------------------
+
+  - Fix bug where we did not pass data dictionary to RequestFactory.get() properly
+  
 version 1.0.21 - December 15th, 2017
 -----------------------------------
   - Add response_204 method
