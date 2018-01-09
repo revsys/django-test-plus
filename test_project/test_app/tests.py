@@ -433,10 +433,13 @@ class TestPlusCBDataViewTests(CBVTestCase):
         # add custom attribute
         request.some_data = 5
 
+        data = {'some_data_key': 'some_data_value'}
+
         self.get(
             CBDataView,
             request=request,
             pk=self.data.pk,
+            data=data,
         )
         # view copies `request.some_data` into context if present
         self.assertContext('some_data', 5)

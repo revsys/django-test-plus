@@ -417,10 +417,11 @@ class CBVTestCase(TestCase):
         Calls cls.get() method after instantiating view class.
         Renders view templates and sets context if appropriate.
         """
+        data = kwargs.pop('data', None)
         instance = self.get_instance(cls, *args, **kwargs)
         if not instance.request:
             # Use a basic request
-            instance.request = RequestFactory().get('/')
+            instance.request = RequestFactory().get('/', data)
         self.last_response = self.get_response(instance.request, instance.get)
         self.context = self.last_response.context
         return self.last_response
