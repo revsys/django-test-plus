@@ -101,7 +101,7 @@ If needed, place kwargs for ``TestClient.get()`` in an 'extra' dictionary.::
             extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 
 When using this get method two other things happen for you, we store the
-last response in ``self.last\_response`` and the response's Context in ``self.context``.
+last response in ``self.last_response`` and the response's Context in ``self.context``.
 So instead of::
 
     def test_default_django(self):
