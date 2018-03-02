@@ -1,8 +1,7 @@
 django-test-plus
 ================
 
-Useful additions to Django's default TestCase from `Revolution
-Systems <http://www.revsys.com/>`__
+Useful additions to Django's default TestCase from `REVSYS <https://www.revsys.com/>`__
 
 |travis ci status image| |Coverage Status|
 
