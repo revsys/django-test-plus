@@ -171,60 +171,60 @@ class BaseTestCase(object):
         else:
             return response
 
-    def response_200(self, response=None):
+    def response_200(self, response=None, msg=None):
         """ Given response has status_code 200 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, msg)
 
-    def response_201(self, response=None):
+    def response_201(self, response=None, msg=None):
         """ Given response has status_code 201 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201, msg)
 
-    def response_204(self, response=None):
+    def response_204(self, response=None, msg=None):
         """ Given response has status_code 204 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 204, msg)
 
-    def response_301(self, response=None):
+    def response_301(self, response=None, msg=None):
         """ Given response has status_code 301 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response.status_code, 301, msg)
 
-    def response_302(self, response=None):
+    def response_302(self, response=None, msg=None):
         """ Given response has status_code 302 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 302, msg)
 
-    def response_400(self, response=None):
+    def response_400(self, response=None, msg=None):
         """ Given response has status_code 400 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 400, msg)
 
-    def response_401(self, response=None):
+    def response_401(self, response=None, msg=None):
         """ Given response has status_code 401 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 401, msg)
 
-    def response_403(self, response=None):
+    def response_403(self, response=None, msg=None):
         """ Given response has status_code 403 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 403, msg)
 
-    def response_404(self, response=None):
+    def response_404(self, response=None, msg=None):
         """ Given response has status_code 404 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 404, msg)
 
-    def response_405(self, response=None):
+    def response_405(self, response=None, msg=None):
         """ Given response has status_code 405 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 405, msg)
 
-    def response_410(self, response=None):
+    def response_410(self, response=None, msg=None):
         """ Given response has status_code 410 """
         response = self._which_response(response)
-        self.assertEqual(response.status_code, 410)
+        self.assertEqual(response.status_code, 410, msg)
 
     def get_check_200(self, url, *args, **kwargs):
         """ Test that we can GET a page and it returns a 200 """
