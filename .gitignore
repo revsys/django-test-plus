@@ -6,3 +6,5 @@ htmlcov/
 _build/
 .idea/*
 .tox/*
+*.egg
+dist/
