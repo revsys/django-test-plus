@@ -8,7 +8,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
 BASE_DIR = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(BASE_DIR, 'test_project'))
 
-f = open(os.path.join(os.path.dirname(__file__), 'README.rst'))
+f = open(os.path.join(os.path.dirname(__file__), 'README.md'))
 readme = f.read()
 f.close()
 
