@@ -23,8 +23,10 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     zip_safe=False,
+    setup_requires=['pytest-runner', ],
     tests_require=[
-        'factory-boy>=2.5.2',
+        'pytest',
+        'factory-boy>=2.11.1',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -45,5 +47,4 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    test_suite='runtests.runtests'
 )

@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import generic
 
-from .forms import TestDataForm, TestNameForm
+from .forms import DataForm, NameForm
 from .models import Data
 
 try:
@@ -142,7 +142,7 @@ class CBDataView(generic.UpdateView):
 
     model = Data
     template_name = "test.html"
-    form_class = TestDataForm
+    form_class = DataForm
 
     def get_success_url(self):
         return reverse("view-200")
@@ -166,5 +166,5 @@ class CBTemplateView(generic.TemplateView):
 
 
 class FormErrors(generic.FormView):
-    form_class = TestNameForm
+    form_class = NameForm
     template_name = 'form_errors.html'

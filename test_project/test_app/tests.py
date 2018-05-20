@@ -19,7 +19,7 @@ from test_plus.test import (
 )
 from test_plus.compat import DRF
 
-from .forms import TestNameForm
+from .forms import NameForm
 from .models import Data
 from .views import (
     CBDataView,
@@ -71,7 +71,7 @@ class TestPlusViewTests(TestCase):
         with self.assertRaisesMessage(Exception, 'print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.'):
             self.print_form_errors('my-bad-argument')
 
-        form = TestNameForm(data={})
+        form = NameForm(data={})
         self.assertFalse(form.is_valid())
 
         output = StringIO()

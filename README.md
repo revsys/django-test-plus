@@ -547,6 +547,15 @@ Caller must provide a view class instead of a URL name or path parameter.
 All test_plus TestCase side-effects are honored and all test_plus
 TestCase assertion methods work with `CBVTestCase.post()`.
 
+## Development
+
+To work on django-test-plus itself, you need to clone this repository and run the following commands:
+
+```shell
+pip install -r requirements.txt
+pip install -e
+```
+
 ## Need help?
 
 [REVSYS](http://www.revsys.com?utm_medium=github&utm_source=django-test-plus) can help with your Python, Django, and infrastructure projects. If you have a question about this project, please open a GitHub issue. If you love us and want to keep track of our goings-on, here's where you can find us online:

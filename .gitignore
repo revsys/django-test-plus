@@ -8,3 +8,6 @@ _build/
 .tox/*
 *.egg
 dist/
+.eggs/
+.pytest_cache/
+test_project/.pytest_cache/

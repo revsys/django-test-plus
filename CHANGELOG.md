@@ -1,7 +1,12 @@
 # Changes
 
+## version 1.1.0 - 
 
-## version 1.0.22 - January 9th, 2018
+  - Added real pytest support! 
+  - Stopped testing support below Django 1.11.x. django-test-plus should probably continue to work for a long time, but Django 1.11 is the only pre-2.x version that is still supported so all we are going to worry about.
+  - Moved README and docs to Markdown
+   
+  ## version 1.0.22 - January 9th, 2018
 
   - Fix bug where we did not pass data dictionary to RequestFactory.get() properly
   
