@@ -26,6 +26,8 @@ setup(
     setup_requires=['pytest-runner', ],
     tests_require=[
         'pytest',
+        'pytest-django',
+        'pytest-cov',
         'factory-boy>=2.11.1',
     ],
     classifiers=[
