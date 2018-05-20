@@ -1,2 +1,2 @@
-include README.md LICENSE AUTHORS.txt CHANGELOG.md requirements.txt
+include README.md LICENSE AUTHORS.txt CHANGELOG.md requirements.txt pytest.ini setup.cfg
 recursive-include tests *.py
