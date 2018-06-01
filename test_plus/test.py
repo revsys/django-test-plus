@@ -48,6 +48,7 @@ class login(object):
     a User, we will login with that user's username.  If no password is
     given we will use 'password'.
     """
+
     def __init__(self, testcase, *args, **credentials):
         self.testcase = testcase
 
