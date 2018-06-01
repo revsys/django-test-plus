@@ -1,3 +1,7 @@
+import django
+
+from distutils.version import LooseVersion
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -151,12 +155,12 @@ class TestCase(DjangoTestCase):
     def head(self, url_name, *args, **kwargs):
         return self.request('head', url_name, *args, **kwargs)
 
-    # def trace(self, url_name, *args, **kwargs):
-    #     if LooseVersion(django.get_version()) >= LooseVersion('1.8.2'):
-    #         return self.request('trace', url_name, *args, **kwargs)
-    #     else:
-    #         raise LookupError("client.trace is not available for your version of django. Please\
-    #                            update your django version.")
+    def trace(self, url_name, *args, **kwargs):
+        if LooseVersion(django.get_version()) >= LooseVersion('1.8.2'):
+            return self.request('trace', url_name, *args, **kwargs)
+        else:
+            raise LookupError("client.trace is not available for your version of django. Please\
+                               update your django version.")
 
     def options(self, url_name, *args, **kwargs):
         return self.request('options', url_name, *args, **kwargs)

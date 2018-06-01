@@ -165,19 +165,19 @@ class TestPlusViewTests(TestCase):
         res = self.head(url, follow=True)
         self.assertTrue(res.status_code, 200)
 
-    # def test_trace(self):
-    #     url = self.reverse('view-200')
-    #     res = self.trace(url)
-    #     self.assertTrue(res.status_code, 200)
-    #
-    # def test_trace_follow(self):
-    #     url = self.reverse('view-redirect')
-    #     # Expect 302 status code
-    #     res = self.trace(url)
-    #     self.assertTrue(res.status_code, 302)
-    #     # Expect 200 status code
-    #     res = self.trace(url, follow=True)
-    #     self.assertTrue(res.status_code, 200)
+    def test_trace(self):
+        url = self.reverse('view-200')
+        res = self.trace(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_trace_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.trace(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.trace(url, follow=True)
+        self.assertTrue(res.status_code, 200)
 
     def test_options(self):
         url = self.reverse('view-200')
