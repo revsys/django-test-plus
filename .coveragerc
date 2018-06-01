@@ -1,0 +1,5 @@
+[run]
+omit =
+    test_project/*
+    */.virtualenvs/*
+    test_plus/compat.py

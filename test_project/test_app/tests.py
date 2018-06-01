@@ -5,6 +5,7 @@ import unittest
 
 from contextlib import contextmanager
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
 
 try:
     from StringIO import StringIO
@@ -54,6 +55,10 @@ class TestPlusUserFactoryOption(TestCase):
     def test_make_user_factory(self):
         u1 = self.make_user('factory')
         self.assertEqual(u1.username, 'factory')
+
+    def test_invalid_perms_for_user(self):
+        with self.assertRaises(ImproperlyConfigured):
+            self.make_user(perms=['fake'])
 
 
 class TestPlusViewTests(TestCase):
@@ -220,6 +225,13 @@ class TestPlusViewTests(TestCase):
         # Test without response option
         self.response_201()
 
+    def test_response_204(self):
+        res = self.get('view-204')
+        self.response_204(res)
+
+        # Test without response option
+        self.response_204()
+
     def test_response_301(self):
         res = self.get('view-301')
         self.response_301(res)
@@ -335,6 +347,10 @@ class TestPlusViewTests(TestCase):
         with self.assertNumQueriesLessThan(6):
             self.get('view-data-5')
 
+    def test_invalid_request_method(self):
+        with self.assertRaises(LookupError):
+            self.request('foobar', 'some-url')
+
     @unittest.expectedFailure
     def test_assertnumqueries_failure(self):
         with self.assertNumQueriesLessThan(1):
@@ -366,6 +382,14 @@ class TestPlusViewTests(TestCase):
     def test_no_response(self):
         with self.assertRaises(NoPreviousResponse):
             self.assertInContext('testvalue')
+
+    def test_no_response_context(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.assertContext('testvalue', False)
+
+    def test_get_context_raises(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.get_context('testvalue')
 
     def test_get_is_ajax(self):
         response = self.get('view-is-ajax',
@@ -400,6 +424,10 @@ class TestPlusCBViewTests(CBVTestCase):
     def test_post(self):
         data = {'testing': True}
         self.post(CBView, data=data)
+        self.response_200()
+
+        # Test without data
+        self.post(CBView)
         self.response_200()
 
     def test_get_check_200(self):

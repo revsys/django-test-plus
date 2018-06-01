@@ -25,6 +25,10 @@ def view_201(request):
     return HttpResponse('', status=201)
 
 
+def view_204(request):
+    return HttpResponse('', status=204)
+
+
 def view_301(request):
     return HttpResponse('', status=301)
 
