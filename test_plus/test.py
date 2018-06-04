@@ -213,6 +213,10 @@ class TestCase(DjangoTestCase):
         """ Given response has status_code 405 """
         self._assert_response_code(405, response)
 
+    def response_409(self, response=None):
+        """ Given response has status_code 409 """
+        self._assert_response_code(409, response)
+
     def response_410(self, response=None):
         """ Given response has status_code 410 """
         self._assert_response_code(410, response)
