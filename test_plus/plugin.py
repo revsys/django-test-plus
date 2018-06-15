@@ -22,4 +22,3 @@ def tp(client):
     t = TestCase()
     t.client = client
     return t
-
