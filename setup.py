@@ -32,6 +32,7 @@ setup(
         'pytest',
         'pytest-django',
         'pytest-cov',
+        'pytest-pythonpath',
         'factory-boy>=2.11.1',
     ],
     classifiers=[
