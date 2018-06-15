@@ -1,6 +1,6 @@
 # django-test-plus
 
-Useful additions to Django's default TestCase from [REVSYS](htps://www.revsys.com/)
+Useful additions to Django's default TestCase from [REVSYS](https://www.revsys.com/)
 
 <a href="http://travis-ci.org/revsys/django-test-plus"><img src="https://secure.travis-ci.org/revsys/django-test-plus.svg" /></a> <a href="https://coveralls.io/r/revsys/django-test-plus?branch=master"><img src="https://coveralls.io/repos/revsys/django-test-plus/badge.svg?branch=master" /></a> 
 
