@@ -70,6 +70,19 @@ more similar to the regular importing of Django's TestCase:
     from test_plus import TestCase
 ```
 
+## pytest Usage
+
+You can get a TestCase like object as a pytest fixture now by simply asking for `tp`. All of the methods below would then work in pytest functions.  For
+example: 
+
+```python
+
+def test_url_reverse(tp):
+    expected_url = '/api/'
+    reversed_url = tp.reverse('api')
+    assert expected_url == reversed_url
+```
+    
 ## Methods
 
 ### reverse(url_name, \*args, \*\*kwargs)

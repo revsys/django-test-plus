@@ -513,5 +513,3 @@ class CBVTestCase(TestCase):
             response = super(CBVTestCase, self).get(url_name, *args, **kwargs)
         self.response_200(response)
         return response
-
-
