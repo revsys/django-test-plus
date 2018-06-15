@@ -2,7 +2,7 @@
 
 ## version 1.1.0 - 
 
-  - Added real pytest support! 
+  - Added real pytest fixture support! 
   - Stopped testing support below Django 1.11.x. django-test-plus should probably continue to work for a long time, but Django 1.11 is the only pre-2.x version that is still supported so all we are going to worry about.
   - Moved README and docs to Markdown
    
