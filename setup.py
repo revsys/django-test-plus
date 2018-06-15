@@ -23,7 +23,11 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     zip_safe=False,
-    setup_requires=['pytest-runner', ],
+    entry_points={"pytest11": ["test_plus = test_plus.plugin"]},
+    setup_requires=[
+        'pytest-runner',
+        'pytest-django',
+    ],
     tests_require=[
         'pytest',
         'pytest-django',
@@ -39,6 +43,7 @@ setup(
         'Framework :: Django :: 1.10',
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
+        'Framework :: Pytest',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',

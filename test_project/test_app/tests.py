@@ -575,3 +575,25 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         data = {'testing': {'prop': 'value'}}
         self.post('view-json', data=data, extra={'format': 'json'})
         self.response_200()
+
+
+# pytest tests
+
+def test_tp_loads(tp):
+    from django.test import Client
+    assert isinstance(tp.client, Client)
+
+
+def test_simple_post(tp):
+    url = tp.reverse('view-200')
+    data = {'testing': True}
+    res = tp.post(url, data=data)
+    assert res.status_code == 200
+
+
+def test_tp_response_200(tp):
+    url = tp.reverse('view-200')
+    data = {'testing': True}
+    res = tp.post(url, data=data)
+    tp.response_200()
+    tp.response_200(res)

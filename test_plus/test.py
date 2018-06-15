@@ -4,7 +4,6 @@ from distutils.version import LooseVersion
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Permission
 from django.core.exceptions import ImproperlyConfigured
 from django.db import connections, DEFAULT_DB_ALIAS
 from django.db.models import Q
@@ -22,8 +21,6 @@ class NoPreviousResponse(Exception):
 
 
 # Build a real context
-
-User = get_user_model()
 
 CAPTURE = True
 
@@ -55,6 +52,7 @@ class login(object):
 
     def __init__(self, testcase, *args, **credentials):
         self.testcase = testcase
+        User = get_user_model()
 
         if args and isinstance(args[0], User):
             USERNAME_FIELD = getattr(User, 'USERNAME_FIELD', 'username')
@@ -78,7 +76,7 @@ class login(object):
         self.testcase.client.logout()
 
 
-class TestCase(DjangoTestCase):
+class BaseTestCase(object):
     """
     Django TestCase with helpful additional features
     """
@@ -86,7 +84,6 @@ class TestCase(DjangoTestCase):
 
     def __init__(self, *args, **kwargs):
         self.last_response = None
-        super(TestCase, self).__init__(*args, **kwargs)
 
     def tearDown(self):
         self.client.logout()
@@ -256,6 +253,8 @@ class TestCase(DjangoTestCase):
         Build a user with <username> and password of 'password' for testing
         purposes.
         """
+        User = get_user_model()
+
         if self.user_factory:
             USERNAME_FIELD = getattr(
                 self.user_factory._meta.model, 'USERNAME_FIELD', 'username')
@@ -272,6 +271,7 @@ class TestCase(DjangoTestCase):
             )
 
         if perms:
+            from django.contrib.auth.models import Permission
             _filter = Q()
             for perm in perms:
                 if '.' not in perm:
@@ -361,6 +361,17 @@ class TestCase(DjangoTestCase):
             self.assertEqual(self.last_response.context[key], value)
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
+
+
+class TestCase(DjangoTestCase, BaseTestCase):
+    """
+    Django TestCase with helpful additional features
+    """
+    user_factory = None
+
+    def __init__(self, *args, **kwargs):
+        self.last_response = None
+        super(TestCase, self).__init__(*args, **kwargs)
 
 
 class APITestCase(TestCase):
@@ -502,3 +513,5 @@ class CBVTestCase(TestCase):
             response = super(CBVTestCase, self).get(url_name, *args, **kwargs)
         self.response_200(response)
         return response
+
+
