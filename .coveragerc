@@ -4,3 +4,5 @@ omit =
     */.virtualenvs/*
     */site-packages/*
     test_plus/compat.py
+    .eggs/*
+    .tox/*
