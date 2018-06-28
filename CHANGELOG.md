@@ -1,5 +1,9 @@
 # Changes
 
+## version 1.1.1 - 
+
+  - Fix premature loading of Django settings under pytest
+git pu  
 ## version 1.1.0 - 
 
   - Added real pytest fixture support! 
