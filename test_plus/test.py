@@ -13,7 +13,7 @@ from django.test.client import store_rendered_templates
 from django.test.utils import CaptureQueriesContext
 from django.utils.functional import curry
 
-from .compat import reverse, NoReverseMatch, APIClient
+from .compat import reverse, NoReverseMatch, get_api_client
 
 
 class NoPreviousResponse(Exception):
@@ -375,7 +375,9 @@ class TestCase(DjangoTestCase, BaseTestCase):
 
 
 class APITestCase(TestCase):
-    client_class = APIClient
+    def __init__(self, *args, **kwargs):
+        self.client_class = get_api_client()
+        super(APITestCase, self).__init__(*args, **kwargs)
 
 
 # Note this class inherits from TestCase defined above.
