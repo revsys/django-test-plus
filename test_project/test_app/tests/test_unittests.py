@@ -20,9 +20,9 @@ from test_plus.test import (
 )
 from test_plus.compat import DRF
 
-from .forms import NameForm
-from .models import Data
-from .views import (
+from test_app.forms import NameForm
+from test_app.models import Data
+from test_app.views import (
     CBDataView,
     CBTemplateView,
     CBView,
