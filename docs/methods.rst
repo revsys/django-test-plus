@@ -131,7 +131,7 @@ equality while we're at it. This asserts that key == value::
         self.get('my-view-with-some-context')
         self.assertContext('some-key', 'expected value')
 
-response\_XXX(response) - status code checking
+response\_XXX(response, msg=None) - status code checking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Another test you often need to do is check that a response has a certain
@@ -163,7 +163,8 @@ django-test-plus provides the following response method checks for you::
     - response_405()
     - response_410()
 
-All of which take an option Django test client response as their only argument.
+All of which take an optional Django test client response and a string msg argument
+that, if specified, is used as the error message when a failure occurs.
 If it's available, the response_XXX methods will use the last response. So you
 can do::
 

@@ -2,7 +2,7 @@
 
 Useful additions to Django's default TestCase from [REVSYS](https://www.revsys.com/)
 
-<a href="http://travis-ci.org/revsys/django-test-plus"><img src="https://secure.travis-ci.org/revsys/django-test-plus.svg" /></a> <a href="https://coveralls.io/r/revsys/django-test-plus?branch=master"><img src="https://coveralls.io/repos/revsys/django-test-plus/badge.svg?branch=master" /></a> 
+<a href="http://travis-ci.org/revsys/django-test-plus"><img src="https://secure.travis-ci.org/revsys/django-test-plus.svg" /></a> <a href="https://coveralls.io/r/revsys/django-test-plus?branch=master"><img src="https://coveralls.io/repos/revsys/django-test-plus/badge.svg?branch=master" /></a>
 
 ## Rationale
 
@@ -73,7 +73,7 @@ more similar to the regular importing of Django's TestCase:
 ## pytest Usage
 
 You can get a TestCase like object as a pytest fixture now by simply asking for `tp`. All of the methods below would then work in pytest functions.  For
-example: 
+example:
 
 ```python
 
@@ -82,7 +82,7 @@ def test_url_reverse(tp):
     reversed_url = tp.reverse('api')
     assert expected_url == reversed_url
 ```
-    
+
 ## Methods
 
 ### reverse(url_name, \*args, \*\*kwargs)
@@ -201,7 +201,7 @@ equality while we're at it. This asserts that key == value:
         self.assertContext('some-key', 'expected value')
 ```
 
-## response_XXX(response) - status code checking
+## response_XXX(response, msg=None) - status code checking
 
 Another test you often need to do is check that a response has a certain
 HTTP status code. With Django's default TestCase you would write:
@@ -227,12 +227,17 @@ django-test-plus provides the following response method checks for you:
 - response_200()
 - response_201()
 - response_204()
+- response_301()
 - response_302()
+- response_400()
+- response_401()
 - response_403()
 - response_404()
 - response_405()
+- response_410()
 
-All of which take an option Django test client response as their only argument.
+All of which take an optional Django test client response and a string msg argument
+that, if specified, is used as the error message when a failure occurs.
 If it's available, the response_XXX methods will use the last response. So you
 can do:
 
