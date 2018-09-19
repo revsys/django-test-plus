@@ -31,7 +31,7 @@ Full documentation is available at http://django-test-plus.readthedocs.org
 ## Usage
 
 Using django-test-plus is pretty easy, simply have your tests inherit
-from test_plus.test.TestCase rather than the normal
+from test\_plus.test.TestCase rather than the normal
 django.test.TestCase like so::
 
 ```python
@@ -42,7 +42,7 @@ django.test.TestCase like so::
 ```
 
 This is sufficient to get things rolling, but you are encouraged to
-create _your own_ sub-class on a per project basis. This will allow you to add your own project specific helper methods.
+create *your own* sub-class on a per project basis. This will allow you to add your own project specific helper methods.
 
 For example, if you have a django project named 'myproject', you might
 create the following in `myproject/test.py`:
@@ -72,10 +72,11 @@ more similar to the regular importing of Django's TestCase:
 
 ## pytest Usage
 
-You can get a TestCase like object as a pytest fixture now by simply asking for `tp`. All of the methods below would then work in pytest functions. For
+You can get a TestCase like object as a pytest fixture now by simply asking for `tp`. All of the methods below would then work in pytest functions.  For
 example:
 
 ```python
+
 def test_url_reverse(tp):
     expected_url = '/api/'
     reversed_url = tp.reverse('api')
@@ -98,11 +99,11 @@ When testing views you often find yourself needing to reverse the URL's name. Wi
 As you can see our reverse also passes along any args or kwargs you need
 to pass in.
 
-## get(url_name, follow=True, \*args, \*\*kwargs)
+## get(url\_name, follow=True, \*args, \*\*kwargs)
 
 Another thing you do often is HTTP get urls. Our `get()` method
 assumes you are passing in a named URL with any args or kwargs necessary
-to reverse the url_name.
+to reverse the url\_name.
 If needed, place kwargs for `TestClient.get()` in an 'extra' dictionary.:
 
 ```python
@@ -165,7 +166,7 @@ If needed, place kwargs for `TestClient.post()` in an 'extra' dictionary.:
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 ```
 
-_NOTE_ Along with the frequently used get and post, we support all of the HTTP verbs such as put, patch, head, trace, options, and delete in the same fashion.
+*NOTE* Along with the frequently used get and post, we support all of the HTTP verbs such as put, patch, head, trace, options, and delete in the same fashion.
 
 ## get_context(key)
 
@@ -202,7 +203,6 @@ equality while we're at it. This asserts that key == value:
 
 ## response_XXX(response, msg=None) - status code checking
 
-````
 Another test you often need to do is check that a response has a certain
 HTTP status code. With Django's default TestCase you would write:
 
@@ -224,17 +224,17 @@ With django-test-plus you can shorten that to be:
 
 django-test-plus provides the following response method checks for you:
 
-    - response_200()
-    - response_201()
-    - response_204()
-    - response_301()
-    - response_302()
-    - response_400()
-    - response_401()
-    - response_403()
-    - response_404()
-    - response_405()
-    - response_410()
+- response_200()
+- response_201()
+- response_204()
+- response_301()
+- response_302()
+- response_400()
+- response_401()
+- response_403()
+- response_404()
+- response_405()
+- response_410()
 
 All of which take an optional Django test client response and a string msg argument
 that, if specified, is used as the error message when a failure occurs.
@@ -583,4 +583,3 @@ pip install -e
 <a href="https://www.facebook.com/revsysllc/"><img src="https://cdn3.iconfinder.com/data/icons/picons-social/57/06-facebook-512.png" height="50" /></a>
 <a href="https://github.com/revsys/"><img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" height="53" /></a>
 <a href="https://gitlab.com/revsys"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/GitLab_Logo.svg/2000px-GitLab_Logo.svg.png" height="44" /></a>
-````
