@@ -1,6 +1,5 @@
 import django
 import factory
-import pytest
 import sys
 import unittest
 
