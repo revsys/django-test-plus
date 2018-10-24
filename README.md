@@ -571,7 +571,7 @@ To work on django-test-plus itself, you need to clone this repository and run th
 
 ```shell
 $ pip install -r requirements.txt
-$ pip install -e
+$ pip install -e .
 ```
 
 ## Need help?
