@@ -5,6 +5,7 @@ import unittest
 
 from contextlib import contextmanager
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
 
 try:
     from StringIO import StringIO
@@ -19,9 +20,9 @@ from test_plus.test import (
 )
 from test_plus.compat import DRF
 
-from .forms import TestNameForm
-from .models import Data
-from .views import (
+from test_app.forms import NameForm
+from test_app.models import Data
+from test_app.views import (
     CBDataView,
     CBTemplateView,
     CBView,
@@ -55,6 +56,10 @@ class TestPlusUserFactoryOption(TestCase):
         u1 = self.make_user('factory')
         self.assertEqual(u1.username, 'factory')
 
+    def test_invalid_perms_for_user(self):
+        with self.assertRaises(ImproperlyConfigured):
+            self.make_user(perms=['fake'])
+
 
 class TestPlusViewTests(TestCase):
 
@@ -71,7 +76,7 @@ class TestPlusViewTests(TestCase):
         with self.assertRaisesMessage(Exception, 'print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.'):
             self.print_form_errors('my-bad-argument')
 
-        form = TestNameForm(data={})
+        form = NameForm(data={})
         self.assertFalse(form.is_valid())
 
         output = StringIO()
@@ -160,19 +165,19 @@ class TestPlusViewTests(TestCase):
         res = self.head(url, follow=True)
         self.assertTrue(res.status_code, 200)
 
-    # def test_trace(self):
-    #     url = self.reverse('view-200')
-    #     res = self.trace(url)
-    #     self.assertTrue(res.status_code, 200)
-    #
-    # def test_trace_follow(self):
-    #     url = self.reverse('view-redirect')
-    #     # Expect 302 status code
-    #     res = self.trace(url)
-    #     self.assertTrue(res.status_code, 302)
-    #     # Expect 200 status code
-    #     res = self.trace(url, follow=True)
-    #     self.assertTrue(res.status_code, 200)
+    def test_trace(self):
+        url = self.reverse('view-200')
+        res = self.trace(url)
+        self.assertTrue(res.status_code, 200)
+
+    def test_trace_follow(self):
+        url = self.reverse('view-redirect')
+        # Expect 302 status code
+        res = self.trace(url)
+        self.assertTrue(res.status_code, 302)
+        # Expect 200 status code
+        res = self.trace(url, follow=True)
+        self.assertTrue(res.status_code, 200)
 
     def test_options(self):
         url = self.reverse('view-200')
@@ -219,6 +224,13 @@ class TestPlusViewTests(TestCase):
 
         # Test without response option
         self.response_201()
+
+    def test_response_204(self):
+        res = self.get('view-204')
+        self.response_204(res)
+
+        # Test without response option
+        self.response_204()
 
     def test_response_301(self):
         res = self.get('view-301')
@@ -283,9 +295,16 @@ class TestPlusViewTests(TestCase):
 
     def test_make_user_with_perms(self):
         u1 = self.make_user('u1', perms=['auth.*'])
-        expected_perms = [u'add_group', u'change_group', u'delete_group',
-                          u'add_permission', u'change_permission', u'delete_permission',
-                          u'add_user', u'change_user', u'delete_user']
+        if django.VERSION < (2, 1):
+            expected_perms = [u'add_group', u'change_group', u'delete_group',
+                              u'add_permission', u'change_permission', u'delete_permission',
+                              u'add_user', u'change_user', u'delete_user']
+        else:
+            expected_perms = [u'add_group', u'change_group', u'delete_group', u'view_group',
+                              u'add_permission', u'change_permission', u'delete_permission',
+                              u'view_permission', u'add_user', u'change_user', u'delete_user',
+                              u'view_user']
+
         self.assertEqual(list(u1.user_permissions.values_list('codename', flat=True)), expected_perms)
 
         u2 = self.make_user('u2', perms=['auth.add_group'])
@@ -335,6 +354,10 @@ class TestPlusViewTests(TestCase):
         with self.assertNumQueriesLessThan(6):
             self.get('view-data-5')
 
+    def test_invalid_request_method(self):
+        with self.assertRaises(LookupError):
+            self.request('foobar', 'some-url')
+
     @unittest.expectedFailure
     def test_assertnumqueries_failure(self):
         with self.assertNumQueriesLessThan(1):
@@ -366,6 +389,14 @@ class TestPlusViewTests(TestCase):
     def test_no_response(self):
         with self.assertRaises(NoPreviousResponse):
             self.assertInContext('testvalue')
+
+    def test_no_response_context(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.assertContext('testvalue', False)
+
+    def test_get_context_raises(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.get_context('testvalue')
 
     def test_get_is_ajax(self):
         response = self.get('view-is-ajax',
@@ -400,6 +431,10 @@ class TestPlusCBViewTests(CBVTestCase):
     def test_post(self):
         data = {'testing': True}
         self.post(CBView, data=data)
+        self.response_200()
+
+        # Test without data
+        self.post(CBView)
         self.response_200()
 
     def test_get_check_200(self):
@@ -547,3 +582,25 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         data = {'testing': {'prop': 'value'}}
         self.post('view-json', data=data, extra={'format': 'json'})
         self.response_200()
+
+
+# pytest tests
+
+def test_tp_loads(tp):
+    from django.test import Client
+    assert isinstance(tp.client, Client)
+
+
+def test_simple_post(tp):
+    url = tp.reverse('view-200')
+    data = {'testing': True}
+    res = tp.post(url, data=data)
+    assert res.status_code == 200
+
+
+def test_tp_response_200(tp):
+    url = tp.reverse('view-200')
+    data = {'testing': True}
+    res = tp.post(url, data=data)
+    tp.response_200()
+    tp.response_200(res)

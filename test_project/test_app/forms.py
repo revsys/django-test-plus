@@ -3,11 +3,11 @@ from django import forms
 from .models import Data
 
 
-class TestNameForm(forms.Form):
+class NameForm(forms.Form):
     name = forms.CharField(max_length=255)
 
 
-class TestDataForm(forms.ModelForm):
+class DataForm(forms.ModelForm):
 
     class Meta:
         model = Data

@@ -8,13 +8,14 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
 BASE_DIR = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(BASE_DIR, 'test_project'))
 
-f = open(os.path.join(os.path.dirname(__file__), 'README.md'))
+
+f = open(os.path.join(BASE_DIR, 'README.md'))
 readme = f.read()
 f.close()
 
 setup(
     name='django-test-plus',
-    version="1.0.22",
+    version="1.1.1",
     description="django-test-plus provides useful additions to Django's default TestCase",
     long_description=readme,
     author='Frank Wiles',
@@ -23,8 +24,17 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     zip_safe=False,
+    entry_points={"pytest11": ["test_plus = test_plus.plugin"]},
+    setup_requires=[
+        'pytest-runner',
+        'pytest-django',
+    ],
     tests_require=[
-        'factory-boy>=2.5.2',
+        'pytest',
+        'pytest-django',
+        'pytest-cov',
+        'pytest-pythonpath',
+        'factory-boy>=2.11.1',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -35,6 +45,8 @@ setup(
         'Framework :: Django :: 1.10',
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
+        'Framework :: Django :: 2.1',
+        'Framework :: Pytest',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
@@ -44,6 +56,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
-    test_suite='runtests.runtests'
 )
