@@ -25,20 +25,20 @@ Full documentation is available at http://django-test-plus.readthedocs.org
 ## Installation
 
 ```shell
-    $ pip install django-test-plus
+$ pip install django-test-plus
 ```
 
 ## Usage
 
 Using django-test-plus is pretty easy, simply have your tests inherit
-from test\_plus.test.TestCase rather than the normal
+from test_plus.test.TestCase rather than the normal
 django.test.TestCase like so::
 
 ```python
-    from test_plus.test import TestCase
+from test_plus.test import TestCase
 
-    class MyViewTests(TestCase):
-        ...
+class MyViewTests(TestCase):
+    ...
 ```
 
 This is sufficient to get things rolling, but you are encouraged to
@@ -48,26 +48,26 @@ For example, if you have a django project named 'myproject', you might
 create the following in `myproject/test.py`:
 
 ```python
-    from test_plus.test import TestCase as PlusTestCase
+from test_plus.test import TestCase as PlusTestCase
 
-    class TestCase(PlusTestCase):
-        pass
+class TestCase(PlusTestCase):
+    pass
 ```
 
 And then in your tests use:
 
 ```python
-    from myproject.test import TestCase
+from myproject.test import TestCase
 
-    class MyViewTests(TestCase):
-        ...
+class MyViewTests(TestCase):
+    ...
 ```
 
 Note that you can also option to import it like this if you want, which is
 more similar to the regular importing of Django's TestCase:
 
 ```python
-    from test_plus import TestCase
+from test_plus import TestCase
 ```
 
 ## pytest Usage
@@ -85,34 +85,34 @@ def test_url_reverse(tp):
 
 ## Methods
 
-### reverse(url_name, \*args, \*\*kwargs)
+### reverse(url_name, *args, **kwargs)
 
 When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the `from django.core.urlresolvers import reverse` boilerplate. Instead just use:
 
 ```python
-    def test_something(self):
-        url = self.reverse('my-url-name')
-        slug_url = self.reverse('name-takes-a-slug', slug='my-slug')
-        pk_url = self.reverse('name-takes-a-pk', pk=12)
+def test_something(self):
+    url = self.reverse('my-url-name')
+    slug_url = self.reverse('name-takes-a-slug', slug='my-slug')
+    pk_url = self.reverse('name-takes-a-pk', pk=12)
 ```
 
 As you can see our reverse also passes along any args or kwargs you need
 to pass in.
 
-## get(url\_name, follow=True, \*args, \*\*kwargs)
+## get(url_name, follow=True, *args, **kwargs)
 
 Another thing you do often is HTTP get urls. Our `get()` method
 assumes you are passing in a named URL with any args or kwargs necessary
-to reverse the url\_name.
+to reverse the url_name.
 If needed, place kwargs for `TestClient.get()` in an 'extra' dictionary.:
 
 ```python
-    def test_get_named_url(self):
-        response = self.get('my-url-name')
-        # Get XML data via AJAX request
-        xml_response = self.get(
-            'my-url-name',
-            extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+def test_get_named_url(self):
+    response = self.get('my-url-name')
+    # Get XML data via AJAX request
+    xml_response = self.get(
+        'my-url-name',
+        extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 ```
 
 When using this get method two other things happen for you, we store the
@@ -121,49 +121,49 @@ last response in `self.last_response` and the response's Context in `self.contex
 So instead of:
 
 ```python
-    def test_default_django(self):
-        response = self.client.get(reverse('my-url-name'))
-        self.assertTrue('foo' in response.context)
-        self.assertEqual(response.context['foo'], 12)
+def test_default_django(self):
+    response = self.client.get(reverse('my-url-name'))
+    self.assertTrue('foo' in response.context)
+    self.assertEqual(response.context['foo'], 12)
 ```
 
 You can instead write:
 
 ```python
-    def test_testplus_get(self):
-        self.get('my-url-name')
-        self.assertInContext('foo')
-        self.assertEqual(self.context['foo'], 12)
+def test_testplus_get(self):
+    self.get('my-url-name')
+    self.assertInContext('foo')
+    self.assertEqual(self.context['foo'], 12)
 ```
 
 It's also smart about already reversed URLs so you can be lazy and do:
 
 ```python
-    def test_testplus_get(self):
-        url = self.reverse('my-url-name')
-        self.get(url)
-        self.response_200()
+def test_testplus_get(self):
+    url = self.reverse('my-url-name')
+    self.get(url)
+    self.response_200()
 ```
 
 If you need to pass query string parameters to your url name, you can do so like this. Assuming the name 'search' maps to '/search/' then:
 
 ```python
-    def test_testplus_get_query(self):
-        self.get('search', data={'query': 'testing'})
+def test_testplus_get_query(self):
+    self.get('search', data={'query': 'testing'})
 ```
 
 Would GET `/search/?query=testing`.
 
-## post(url_name, data, follow=True, \*args, \*\*kwargs)
+## post(url_name, data, follow=True, *args, **kwargs)
 
 Our `post()` method takes a named URL, the dictionary of data you wish
 to post and any args or kwargs necessary to reverse the url_name.
 If needed, place kwargs for `TestClient.post()` in an 'extra' dictionary.:
 
 ```python
-    def test_post_named_url(self):
-        response = self.post('my-url-name', data={'coolness-factor': 11.0},
-                             extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
+def test_post_named_url(self):
+    response = self.post('my-url-name', data={'coolness-factor': 11.0},
+                         extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 ```
 
 *NOTE* Along with the frequently used get and post, we support all of the HTTP verbs such as put, patch, head, trace, options, and delete in the same fashion.
@@ -174,9 +174,9 @@ Often you need to get things out of the template context, so let's make that
 easy:
 
 ```python
-    def test_context_data(self):
-        self.get('my-view-with-some-context')
-        slug = self.get_context('slug')
+def test_context_data(self):
+    self.get('my-view-with-some-context')
+    slug = self.get_context('slug')
 ```
 
 ## assertInContext(key)
@@ -185,9 +185,9 @@ You can ensure a specific key exists in the last response's context by
 using:
 
 ```python
-    def test_in_context(self):
-        self.get('my-view-with-some-context')
-        self.assertInContext('some-key')
+def test_in_context(self):
+    self.get('my-view-with-some-context')
+    self.assertInContext('some-key')
 ```
 
 ## assertContext(key, value)
@@ -196,9 +196,9 @@ We can get context values and ensure they exist, but so let's also test
 equality while we're at it. This asserts that key == value:
 
 ```python
-    def test_in_context(self):
-        self.get('my-view-with-some-context')
-        self.assertContext('some-key', 'expected value')
+def test_in_context(self):
+    self.get('my-view-with-some-context')
+    self.assertContext('some-key', 'expected value')
 ```
 
 ## response_XXX(response, msg=None) - status code checking
@@ -207,19 +207,19 @@ Another test you often need to do is check that a response has a certain
 HTTP status code. With Django's default TestCase you would write:
 
 ```python
-    from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 
-    def test_status(self):
-        response = self.client.get(reverse('my-url-name'))
-        self.assertEqual(response.status_code, 200)
+def test_status(self):
+    response = self.client.get(reverse('my-url-name'))
+    self.assertEqual(response.status_code, 200)
 ```
 
 With django-test-plus you can shorten that to be:
 
 ```python
-    def test_better_status(self):
-        response = self.get('my-url-name')
-        self.response_200(response)
+def test_better_status(self):
+    response = self.get('my-url-name')
+    self.response_200(response)
 ```
 
 django-test-plus provides the following response method checks for you:
@@ -242,21 +242,21 @@ If it's available, the response_XXX methods will use the last response. So you
 can do:
 
 ```python
-    def test_status(self):
-        self.get('my-url-name')
-        self.response_200()
+def test_status(self):
+    self.get('my-url-name')
+    self.response_200()
 ```
 
 Which is a bit shorter.
 
-## get_check_200(url_name, \*args, \*\*kwargs)
+## get_check_200(url_name, *args, **kwargs)
 
 GETing and checking views return status 200 is so common a test this
 method makes it even easier::
 
 ```python
-    def test_even_better_status(self):
-        response = self.get_check_200('my-url-name')
+def test_even_better_status(self):
+    response = self.get_check_200('my-url-name')
 ```
 
 ## make_user(username='testuser', password='password', perms=None)
@@ -266,9 +266,9 @@ all of your logic is safe and sound. To make this process easier, this
 method will create a user for you:
 
 ```python
-    def test_user_stuff(self)
-        user1 = self.make_user('u1')
-        user2 = self.make_user('u2')
+def test_user_stuff(self)
+    user1 = self.make_user('u1')
+    user2 = self.make_user('u2')
 ```
 
 If creating a User in your project is more complicated, say for example
@@ -280,15 +280,15 @@ it or simply override this method on your own sub-class.
 To use a Factory Boy factory simply create your class like this::
 
 ```python
-    from test_plus.test import TestCase
-    from .factories import UserFactory
+from test_plus.test import TestCase
+from .factories import UserFactory
 
 
-    class MySpecialTest(TestCase):
-        user_factory = UserFactory
+class MySpecialTest(TestCase):
+    user_factory = UserFactory
 
-        def test_special_creation(self):
-            user1 = self.make_user('u1')
+    def test_special_creation(self):
+        user1 = self.make_user('u1')
 ```
 
 **NOTE:** Users created by this method will have their password
@@ -299,7 +299,7 @@ You can also pass in user permissions by passing in a string of
 '`<app_name>.<perm name>`' or '`<app_name>.*`'.  For example:
 
 ```python
-    user2 = self.make_user(perms=['myapp.create_widget', 'otherapp.*'])
+user2 = self.make_user(perms=['myapp.create_widget', 'otherapp.*'])
 ```
 
 ## print_form_errors(response_or_form=None)
@@ -310,35 +310,35 @@ quickly look at any form errors.
 Example usage:
 
 ```python
-    class MyFormTest(TestCase):
+class MyFormTest(TestCase):
 
-        self.post('my-url-name', data={})
-        self.print_form_errors()
+    self.post('my-url-name', data={})
+    self.print_form_errors()
 
-        # or
+    # or
 
-        resp = self.post('my-url-name', data={})
-        self.print_form_errors(resp)
+    resp = self.post('my-url-name', data={})
+    self.print_form_errors(resp)
 
-        # or
+    # or
 
-        form = MyForm(data={})
-        self.print_form_errors(form)
+    form = MyForm(data={})
+    self.print_form_errors(form)
 ```
 
 ## Authentication Helpers
 
-### assertLoginRequired(url_name, \*args, \*\*kwargs)
+### assertLoginRequired(url_name, *args, **kwargs)
 
 It's pretty easy to add a new view to a project and forget to restrict
 it to be login required, this method helps make it easy to test that a
 given named URL requires auth:
 
 ```python
-    def test_auth(self):
-        self.assertLoginRequired('my-restricted-url')
-        self.assertLoginRequired('my-restricted-object', pk=12)
-        self.assertLoginRequired('my-restricted-object', slug='something')
+def test_auth(self):
+    self.assertLoginRequired('my-restricted-url')
+    self.assertLoginRequired('my-restricted-object', pk=12)
+    self.assertLoginRequired('my-restricted-object', slug='something')
 ```
 
 ### login context
@@ -348,19 +348,19 @@ thing you end up doing is logging in as various users to test our your
 restriction logic. This can be made easier with the following context:
 
 ```python
-    def test_restrictions(self):
-        user1 = self.make_user('u1')
-        user2 = self.make_user('u2')
+def test_restrictions(self):
+    user1 = self.make_user('u1')
+    user2 = self.make_user('u2')
 
-        self.assertLoginRequired('my-protected-view')
+    self.assertLoginRequired('my-protected-view')
 
-        with self.login(username=user1.username, password='password'):
-            response = self.get('my-protected-view')
-            # Test user1 sees what they should be seeing
+    with self.login(username=user1.username, password='password'):
+        response = self.get('my-protected-view')
+        # Test user1 sees what they should be seeing
 
-        with self.login(username=user2.username, password='password'):
-            response = self.get('my-protected-view')
-            # Test user2 see what they should be seeing
+    with self.login(username=user2.username, password='password'):
+        response = self.get('my-protected-view')
+        # Test user2 see what they should be seeing
 ```
 
 Since we're likely creating our users using `make_user()` from above,
@@ -368,22 +368,22 @@ the login context assumes the password is 'password' unless specified
 otherwise. Therefore you you can do:
 
 ```python
-    def test_restrictions(self):
-        user1 = self.make_user('u1')
+def test_restrictions(self):
+    user1 = self.make_user('u1')
 
-        with self.login(username=user1.username):
-            response = self.get('my-protected-view')
+    with self.login(username=user1.username):
+        response = self.get('my-protected-view')
 ```
 
 We can also derive the username if we're using `make_user()` so we can
 shorten that up even further like this:
 
 ```python
-    def test_restrictions(self):
-        user1 = self.make_user('u1')
+def test_restrictions(self):
+    user1 = self.make_user('u1')
 
-        with self.login(user1):
-            response = self.get('my-protected-view')
+    with self.login(user1):
+        response = self.get('my-protected-view')
 ```
 
 ## Ensuring low query counts
@@ -398,13 +398,13 @@ you often don't attempt to ensure the code doesn't start producing a ton
 more queries than you expect:
 
 ```python
-    def test_something_out(self):
+def test_something_out(self):
 
-        with self.assertNumQueriesLessThan(7):
-            self.get('some-view-with-6-queries')
+    with self.assertNumQueriesLessThan(7):
+        self.get('some-view-with-6-queries')
 ```
 
-### assertGoodView(url_name, \*args, \*\*kwargs)
+### assertGoodView(url_name, *args, **kwargs)
 
 This method does a few of things for you, it:
 
@@ -417,8 +417,8 @@ Often a wide sweeping test like this is better than no test at all. You
 can use it like this:
 
 ```python
-    def test_better_than_nothing(self):
-        response = self.assertGoodView('my-url-name')
+def test_better_than_nothing(self):
+    response = self.assertGoodView('my-url-name')
 ```
 
 ## Testing DRF views
@@ -426,26 +426,26 @@ can use it like this:
 To take advantage of the convenience of DRF's test client, you can create a subclass of `TestCase` and set the `client_class` property:
 
 ```python
-    from test_plus import TestCase
-    from rest_framework.test import APIClient
+from test_plus import TestCase
+from rest_framework.test import APIClient
 
 
-    class APITestCase(TestCase):
-        client_class = APIClient
+class APITestCase(TestCase):
+    client_class = APIClient
 ```
 
 For convenience, `test_plus` ships with `APITestCase`, which does just that:
 
 ```python
-    from test_plus import APITestCase
+from test_plus import APITestCase
 
 
-    class MyAPITestCase(APITestCase):
+class MyAPITestCase(APITestCase):
 
-        def test_post(self):
-            data = {'testing': {'prop': 'value'}}
-            self.post('view-json', data=data, extra={'format': 'json'})
-            self.response_200()
+    def test_post(self):
+        data = {'testing': {'prop': 'value'}}
+        self.post('view-json', data=data, extra={'format': 'json'})
+        self.response_200()
 ```
 
 Note that using `APITestCase` requires Django >= 1.8 and having installed `django-rest-framework`.
@@ -474,14 +474,14 @@ As with TestCase above, simply have your tests inherit
 from test_plus.test.CBVTestCase rather than TestCase like so:
 
 ```python
-    from test_plus.test import CBVTestCase
+from test_plus.test import CBVTestCase
 
-    class MyViewTests(CBVTestCase):
+class MyViewTests(CBVTestCase):
 ```
 
 ## Methods
 
-### get_instance(cls, initkwargs=None, request=None, \*args, \*\*kwargs)
+### get_instance(cls, initkwargs=None, request=None, *args, **kwargs)
 
 This core method simplifies the instantiation of your class, giving you
 a way to invoke class methods directly.
@@ -493,24 +493,24 @@ Sets `request`, `args`, and `kwargs` attributes on the class instance.
 Sample usage:
 
 ```python
-    from django.views import generic
-    from test_plus.test import CBVTestCase
+from django.views import generic
+from test_plus.test import CBVTestCase
 
-    class MyClass(generic.DetailView)
+class MyClass(generic.DetailView)
 
-        def get_context_data(self, **kwargs):
-            kwargs['answer'] = 42
-            return kwargs
+    def get_context_data(self, **kwargs):
+        kwargs['answer'] = 42
+        return kwargs
 
-    class MyTests(CBVTestCase):
+class MyTests(CBVTestCase):
 
-        def test_context_data(self):
-            my_view = self.get_instance(MyClass, {'object': some_object})
-            context = my_view.get_context_data()
-            self.assertEqual(context['answer'], 42)
+    def test_context_data(self):
+        my_view = self.get_instance(MyClass, {'object': some_object})
+        context = my_view.get_context_data()
+        self.assertEqual(context['answer'], 42)
 ```
 
-### get(cls, initkwargs=None, \*args, \*\*kwargs)
+### get(cls, initkwargs=None, *args, **kwargs)
 
 Invokes `cls.get()` and returns the response, rendering template if possible.
 Builds on the `CBVTestCase.get_instance()` foundation.
@@ -518,8 +518,8 @@ Builds on the `CBVTestCase.get_instance()` foundation.
 All test_plus.test.TestCase methods are valid, so the following works:
 
 ```python
-    response = self.get(MyClass)
-    self.assertContext('my_key', expected_value)
+response = self.get(MyClass)
+self.assertContext('my_key', expected_value)
 ```
 
 All test_plus TestCase side-effects are honored and all test_plus
@@ -529,7 +529,7 @@ TestCase assertion methods work with `CBVTestCase.get()`.
 variables created by middleware are not available. If this affects your
 template/context testing you should use TestCase instead of CBVTestCase.
 
-### post(cls, data=None, initkwargs=None, \*args, \*\*kwargs)
+### post(cls, data=None, initkwargs=None, *args, **kwargs)
 
 Invokes `cls.post()` and returns the response, rendering template if possible.
 Builds on the `CBVTestCase.get_instance()` foundation.
@@ -537,9 +537,9 @@ Builds on the `CBVTestCase.get_instance()` foundation.
 Example:
 
 ```python
-    response = self.post(MyClass, data={'search_term': 'revsys'})
-    self.response_200(response)
-    self.assertContext('company_name', 'RevSys')
+response = self.post(MyClass, data={'search_term': 'revsys'})
+self.response_200(response)
+self.assertContext('company_name', 'RevSys')
 ```
 
 All test_plus TestCase side-effects are honored and all test_plus
@@ -549,7 +549,7 @@ TestCase assertion methods work with `CBVTestCase.post()`.
 variables created by middleware are not available. If this affects your
 template/context testing you should use TestCase instead of CBVTestCase.
 
-### get_check_200(cls, initkwargs=None, \*args, \*\*kwargs)
+### get_check_200(cls, initkwargs=None, *args, **kwargs)
 
 Works just like `TestCase.get_check_200()`.
 Caller must provide a view class instead of a URL name or path parameter.
@@ -557,7 +557,7 @@ Caller must provide a view class instead of a URL name or path parameter.
 All test_plus TestCase side-effects are honored and all test_plus
 TestCase assertion methods work with `CBVTestCase.post()`.
 
-### assertGoodView(cls, initkwargs=None, \*args, \*\*kwargs)
+### assertGoodView(cls, initkwargs=None, *args, **kwargs)
 
 Works just like `TestCase.assertGoodView()`.
 Caller must provide a view class instead of a URL name or path parameter.
@@ -570,8 +570,8 @@ TestCase assertion methods work with `CBVTestCase.post()`.
 To work on django-test-plus itself, you need to clone this repository and run the following commands:
 
 ```shell
-pip install -r requirements.txt
-pip install -e
+$ pip install -r requirements.txt
+$ pip install -e
 ```
 
 ## Need help?
