@@ -295,9 +295,16 @@ class TestPlusViewTests(TestCase):
 
     def test_make_user_with_perms(self):
         u1 = self.make_user('u1', perms=['auth.*'])
-        expected_perms = [u'add_group', u'change_group', u'delete_group',
-                          u'add_permission', u'change_permission', u'delete_permission',
-                          u'add_user', u'change_user', u'delete_user']
+        if django.VERSION < (2, 1):
+            expected_perms = [u'add_group', u'change_group', u'delete_group',
+                              u'add_permission', u'change_permission', u'delete_permission',
+                              u'add_user', u'change_user', u'delete_user']
+        else:
+            expected_perms = [u'add_group', u'change_group', u'delete_group', u'view_group',
+                              u'add_permission', u'change_permission', u'delete_permission',
+                              u'view_permission', u'add_user', u'change_user', u'delete_user',
+                              u'view_user']
+
         self.assertEqual(list(u1.user_permissions.values_list('codename', flat=True)), expected_perms)
 
         u2 = self.make_user('u2', perms=['auth.add_group'])

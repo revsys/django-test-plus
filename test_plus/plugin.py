@@ -13,8 +13,11 @@ class TestCase(BaseTestCase):
         self.last_response = None
         super(TestCase, self).__init__(*args, **kwargs)
 
-    def assertEqual(self, first, second):
-        assert first == second, "Elements Not Equal"
+    def assertEqual(self, first, second, msg=None):
+        if not msg:
+            msg = "Elements Not Equal"
+
+        assert first == second, msg
 
 
 @pytest.fixture
