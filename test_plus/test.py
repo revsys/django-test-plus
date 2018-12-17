@@ -97,11 +97,14 @@ class BaseTestCase(object):
         if hasattr(response_or_form, 'errors'):
             form = response_or_form
         elif hasattr(response_or_form, 'context'):
-            form = response_or_form.context['form']
+            form = response_or_form.context.get('form', response_or_form.context.get('adminform', None))
         else:
-            raise Exception('print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.')
+            form = None
 
-        print(form.errors.as_text())
+        if form:
+            print(form.errors.as_text())
+        else:
+            raise Exception('print_form_errors cannot identify form in arguments')
 
     def request(self, method_name, url_name, *args, **kwargs):
         """
