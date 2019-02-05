@@ -248,17 +248,18 @@ class BaseTestCase(object):
         """ Reverse a url, convenience to avoid having to import reverse in tests """
         return reverse(name, args=args, kwargs=kwargs)
 
-    def make_user(self, username='testuser', password='password', perms=None):
+    @classmethod
+    def make_user(cls, username='testuser', password='password', perms=None):
         """
         Build a user with <username> and password of 'password' for testing
         purposes.
         """
         User = get_user_model()
 
-        if self.user_factory:
+        if cls.user_factory:
             USERNAME_FIELD = getattr(
-                self.user_factory._meta.model, 'USERNAME_FIELD', 'username')
-            test_user = self.user_factory(**{
+                cls.user_factory._meta.model, 'USERNAME_FIELD', 'username')
+            test_user = cls.user_factory(**{
                 USERNAME_FIELD: username,
             })
             test_user.set_password(password)
@@ -405,7 +406,8 @@ class CBVTestCase(TestCase):
                 self.assertTrue(result)
     """
 
-    def get_instance(self, cls, *args, **kwargs):
+    @staticmethod
+    def get_instance(view_cls, *args, **kwargs):
         """
         Returns a decorated instance of a class-based generic view class.
 
@@ -424,19 +426,19 @@ class CBVTestCase(TestCase):
         request = kwargs.pop('request', None)
         if initkwargs is None:
             initkwargs = {}
-        instance = cls(**initkwargs)
+        instance = view_cls(**initkwargs)
         instance.request = request
         instance.args = args
         instance.kwargs = kwargs
         return instance
 
-    def get(self, cls, *args, **kwargs):
+    def get(self, view_cls, *args, **kwargs):
         """
-        Calls cls.get() method after instantiating view class.
+        Calls view_cls.get() method after instantiating view class.
         Renders view templates and sets context if appropriate.
         """
         data = kwargs.pop('data', None)
-        instance = self.get_instance(cls, *args, **kwargs)
+        instance = self.get_instance(view_cls, *args, **kwargs)
         if not instance.request:
             # Use a basic request
             instance.request = RequestFactory().get('/', data)
@@ -444,15 +446,15 @@ class CBVTestCase(TestCase):
         self.context = self.last_response.context
         return self.last_response
 
-    def post(self, cls, *args, **kwargs):
+    def post(self, view_cls, *args, **kwargs):
         """
-        Calls cls.post() method after instantiating view class.
+        Calls view_cls.post() method after instantiating view class.
         Renders view templates and sets context if appropriate.
         """
         data = kwargs.pop('data', None)
         if data is None:
             data = {}
-        instance = self.get_instance(cls, *args, **kwargs)
+        instance = self.get_instance(view_cls, *args, **kwargs)
         if not instance.request:
             # Use a basic request
             instance.request = RequestFactory().post('/', data)
