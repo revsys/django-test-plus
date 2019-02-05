@@ -214,79 +214,131 @@ class TestPlusViewTests(TestCase):
     def test_response_200(self):
         res = self.get('view-200')
         self.response_200(res)
+        self.assertHttpOk(res)
+        self.assertHttp200(res)
 
         # Test without response option
         self.response_200()
+        self.assertHttpOk()
+        self.assertHttp200()
 
     def test_response_201(self):
         res = self.get('view-201')
         self.response_201(res)
+        self.assertHttpCreated(res)
+        self.assertHttp201(res)
 
         # Test without response option
         self.response_201()
+        self.assertHttpCreated()
+        self.assertHttp201()
 
     def test_response_204(self):
         res = self.get('view-204')
         self.response_204(res)
+        self.assertHttpNoContent(res)
+        self.assertHttp204(res)
 
         # Test without response option
         self.response_204()
+        self.assertHttpNoContent()
+        self.assertHttp204()
 
     def test_response_301(self):
         res = self.get('view-301')
         self.response_301(res)
+        self.assertHttpMovedPermanently(res)
+        self.assertHttp301(res)
+        self.assertHttpMovedPermanently(res, url=self.reverse('view-200'))
+        self.assertHttp301(res, url=self.reverse('view-200'))
 
         # Test without response option
         self.response_301()
+        self.assertHttpMovedPermanently()
+        self.assertHttp301()
+        self.assertHttpMovedPermanently(url=self.reverse('view-200'))
+        self.assertHttp301(url=self.reverse('view-200'))
 
     def test_response_302(self):
         res = self.get('view-302')
         self.response_302(res)
+        self.assertHttpRedirects(res)
+        self.assertHttp302(res)
+        self.assertHttpRedirects(res, url=self.reverse('view-200'))
+        self.assertHttp302(res, url=self.reverse('view-200'))
 
         # Test without response option
         self.response_302()
+        self.assertHttpRedirects()
+        self.assertHttp302()
+        self.assertHttpRedirects(url=self.reverse('view-200'))
+        self.assertHttp302(url=self.reverse('view-200'))
 
     def test_response_400(self):
         res = self.get('view-400')
         self.response_400(res)
+        self.assertHttpBadRequest(res)
+        self.assertHttp400(res)
 
         # Test without response option
         self.response_400()
+        self.assertHttpBadRequest()
+        self.assertHttp400()
 
     def test_response_401(self):
         res = self.get('view-401')
         self.response_401(res)
+        self.assertHttpUnauthorized(res)
+        self.assertHttp401(res)
 
         # Test without response option
         self.response_401()
+        self.assertHttpUnauthorized()
+        self.assertHttp401()
 
     def test_response_403(self):
         res = self.get('view-403')
         self.response_403(res)
+        self.assertHttpForbidden(res)
+        self.assertHttp403(res)
 
         # Test without response option
         self.response_403()
+        self.assertHttpForbidden()
+        self.assertHttp403()
 
     def test_response_404(self):
         res = self.get('view-404')
         self.response_404(res)
+        self.assertHttpNotFound(res)
+        self.assertHttp404(res)
 
         # Test without response option
         self.response_404()
+        self.assertHttpNotFound()
+        self.assertHttp404()
 
     def test_response_405(self):
         res = self.get('view-405')
         self.response_405(res)
+        self.assertHttpMethodNotAllowed(res)
+        self.assertHttp405(res)
 
         # Test without response option
         self.response_405()
+        self.assertHttpMethodNotAllowed()
+        self.assertHttp405()
 
     def test_response_410(self):
         res = self.get('view-410')
         self.response_410(res)
+        self.assertHttpGone(res)
+        self.assertHttp410(res)
 
         # Test without response option
         self.response_410()
+        self.assertHttpGone()
+        self.assertHttp410()
 
     def test_make_user(self):
         """ Test make_user using django.contrib.auth defaults """

@@ -171,6 +171,85 @@ class BaseTestCase(object):
         else:
             return response
 
+    """
+    The following assertHttpXXXX methods were intentionally added statically instead of dynamically so that code
+    completion in IDEs like PyCharm work. The assertHttpXXXX methods where also added in camel case because that is the
+    pattern that is used Python's default unit test assert methods. It is preferred to use these methods over the
+    response_XXX methods, which could be deprecated at some point. Also, please consider using the assert methods that
+    are word based rather than the ones that use the number code since that makes your test more readable.
+    """
+    def _assert_http_status(self, status_code, response=None, msg=None, url=None):
+        response = self._which_response(response)
+        self.assertEqual(response.status_code, status_code, msg)
+        if url is not None:
+            self.assertEqual(response.url, url)
+
+    def assertHttpOk(self, response=None, msg=None):
+        self._assert_http_status(200, response=response, msg=msg)
+
+    def assertHttp200(self, response=None, msg=None):
+        self._assert_http_status(200, response=response, msg=msg)
+
+    def assertHttpCreated(self, response=None, msg=None):
+        self._assert_http_status(201, response=response, msg=msg)
+
+    def assertHttp201(self, response=None, msg=None):
+        self._assert_http_status(201, response=response, msg=msg)
+
+    def assertHttpNoContent(self, response=None, msg=None):
+        self._assert_http_status(204, response=response, msg=msg)
+
+    def assertHttp204(self, response=None, msg=None):
+        self._assert_http_status(204, response=response, msg=msg)
+
+    def assertHttpMovedPermanently(self, response=None, msg=None, url=None):
+        self._assert_http_status(301, response=response, msg=msg, url=url)
+
+    def assertHttp301(self, response=None, msg=None, url=None):
+        self._assert_http_status(301, response=response, msg=msg, url=url)
+
+    def assertHttpRedirects(self, response=None, msg=None, url=None):
+        self._assert_http_status(302, response=response, msg=msg, url=url)
+
+    def assertHttp302(self, response=None, msg=None, url=None):
+        self._assert_http_status(302, response=response, msg=msg, url=url)
+
+    def assertHttpBadRequest(self, response=None, msg=None):
+        self._assert_http_status(400, response=response, msg=msg)
+
+    def assertHttp400(self, response=None, msg=None):
+        self._assert_http_status(400, response=response, msg=msg)
+
+    def assertHttpUnauthorized(self, response=None, msg=None):
+        self._assert_http_status(401, response=response, msg=msg)
+
+    def assertHttp401(self, response=None, msg=None):
+        self._assert_http_status(401, response=response, msg=msg)
+
+    def assertHttpForbidden(self, response=None, msg=None):
+        self._assert_http_status(403, response=response, msg=msg)
+
+    def assertHttp403(self, response=None, msg=None):
+        self._assert_http_status(403, response=response, msg=msg)
+
+    def assertHttpNotFound(self, response=None, msg=None):
+        self._assert_http_status(404, response=response, msg=msg)
+
+    def assertHttp404(self, response=None, msg=None):
+        self._assert_http_status(404, response=response, msg=msg)
+
+    def assertHttpMethodNotAllowed(self, response=None, msg=None):
+        self._assert_http_status(405, response=response, msg=msg)
+
+    def assertHttp405(self, response=None, msg=None):
+        self._assert_http_status(405, response=response, msg=msg)
+
+    def assertHttpGone(self, response=None, msg=None):
+        self._assert_http_status(410, response=response, msg=msg)
+
+    def assertHttp410(self, response=None, msg=None):
+        self._assert_http_status(410, response=response, msg=msg)
+
     def response_200(self, response=None, msg=None):
         """ Given response has status_code 200 """
         response = self._which_response(response)

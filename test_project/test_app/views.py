@@ -30,11 +30,15 @@ def view_204(request):
 
 
 def view_301(request):
-    return HttpResponse('', status=301)
+    res = HttpResponse('', status=301)
+    res.url = reverse('view-200')
+    return res
 
 
 def view_302(request):
-    return HttpResponse('', status=302)
+    res = HttpResponse('', status=302)
+    res.url = reverse('view-200')
+    return res
 
 
 def view_400(request):
