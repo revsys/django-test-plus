@@ -1,10 +1,14 @@
 # Changes
 
-## version 1.1.1 - 
+## version 1.2.1 - May 5h, 2019
+
+  - Add optional `msg` argument to assertEqual method. Thanks @davitovmasyan.
+
+## version 1.1.1 - July 2nd, 2018
 
   - Fix premature loading of Django settings under pytest
    
-## version 1.1.0 - 
+## version 1.1.0 - May 20th, 2018
 
   - Added real pytest fixture support! 
   - Stopped testing support below Django 1.11.x. django-test-plus should probably continue to work for a long time, but Django 1.11 is the only pre-2.x version that is still supported so all we are going to worry about.
