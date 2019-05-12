@@ -574,7 +574,10 @@ $ pip install -r requirements.txt
 $ pip install -e .
 ```
 
-## Keep in touch! 
+**NOTE**: You will also need to ensure that the `test_project` directory, located
+at the root of this repo, is in your virtualenv's path.
+
+## Keep in touch!
 
 If you have a question about this project, please open a GitHub issue. If you love us and want to keep track of our goings-on, here's where you can find us online:
 
