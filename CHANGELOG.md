@@ -1,6 +1,6 @@
 # Changes
 
-## version 1.2.1 - May 5h, 2019
+## version 1.2.0 - May 5h, 2019
 
   - Add optional `msg` argument to assertEqual method. Thanks @davitovmasyan.
 
