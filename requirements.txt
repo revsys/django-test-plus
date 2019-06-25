@@ -4,3 +4,5 @@ pytest-django==3.4.8
 pytest-cov==2.7.1
 pytest-pythonpath==0.7.3
 factory-boy==2.11.1
+flake8==3.5.0
+pyflakes==1.6.0
