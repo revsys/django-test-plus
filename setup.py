@@ -18,6 +18,7 @@ setup(
     version="1.2.0",
     description="django-test-plus provides useful additions to Django's default TestCase",
     long_description=readme,
+    long_description_content_type="text/markdown",
     author="Frank Wiles",
     author_email="frank@revsys.com",
     url="https://github.com/revsys/django-test-plus/",
