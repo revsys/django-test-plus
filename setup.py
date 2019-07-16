@@ -28,7 +28,7 @@ setup(
     entry_points={"pytest11": ["test_plus = test_plus.plugin"]},
     setup_requires=["pytest-runner", "pytest-django"],
     tests_require=[
-        "pytest==4.5.0",
+        "pytest==5.0.1",
         "pytest-django==3.5.1",
         "pytest-cov==2.7.1",
         "pytest-pythonpath==0.7.3",
