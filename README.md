@@ -16,7 +16,7 @@ least 3 weeks!
 
 Supports: Python 2 and Python 3
 
-Supports Django Versions: 1.8, 1.9, 1.10, 1.11, 2.0, 2.1
+Supports Django Versions: 1.10, 1.11, 2.0, 2.1, 2.2
 
 ## Documentation
 
@@ -76,7 +76,6 @@ You can get a TestCase like object as a pytest fixture now by simply asking for 
 example:
 
 ```python
-
 def test_url_reverse(tp):
     expected_url = '/api/'
     reversed_url = tp.reverse('api')
