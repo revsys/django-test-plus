@@ -3,6 +3,8 @@ import factory
 import sys
 import unittest
 
+import pytest
+
 from contextlib import contextmanager
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
@@ -589,6 +591,12 @@ class TestAPITestCaseDRFInstalled(APITestCase):
 def test_tp_loads(tp):
     from django.test import Client
     assert isinstance(tp.client, Client)
+
+
+@pytest.mark.skipif(DRF is False, reason="DRF is not installed.")
+def test_tp_api_loads(tp_api):
+    from rest_framework.test import APIClient
+    assert isinstance(tp_api.client, APIClient)
 
 
 def test_simple_post(tp):

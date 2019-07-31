@@ -82,6 +82,14 @@ def test_url_reverse(tp):
     assert expected_url == reversed_url
 ```
 
+The `tp_api` fixture will provide a `TestCase` that uses django-rest-framework's `APIClient()`:
+
+```python
+def test_url_reverse(tp_api):
+    response = tp_api.client.post("myapi", format="json")
+    assert response.status_code == 200
+```
+
 ## Methods
 
 ### reverse(url_name, *args, **kwargs)
