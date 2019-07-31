@@ -1,5 +1,10 @@
 # Changes
 
+## version 1.3.1 - July 31st, 2019
+
+  - Made `make_user` and `get_instance` class based methods, so they can be used
+    in `setupUpTestData`. Thanks @avelis for the report.
+  
 ## version 1.3.0 - July 31st, 2019
 
   - Add `tp_api` pytest fixture.
