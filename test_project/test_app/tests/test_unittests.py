@@ -1,3 +1,5 @@
+import re
+
 import django
 import factory
 import sys
@@ -208,6 +210,42 @@ class TestPlusViewTests(TestCase):
         # Expect 200 status code
         res = self.delete(url, follow=True)
         self.assertTrue(res.status_code, 200)
+
+    @staticmethod
+    def _test_http_response(method, response=None, msg=None, url=None):
+        try:
+            if url is not None:
+                method(response=response, msg=msg, url=url)
+            else:
+                method(response=response, msg=msg)
+        except AssertionError as e:
+            msg = '{method_name}: {error}'.format(method_name=method.__name__, error=e)
+            e.args = (msg,)
+            raise
+
+    def test_http_status_code_assertions(self):
+        """
+        This test iterates through all the http_###_status_code methods in the StatusCodeAssertionMixin and tests that
+        they return the correct status code.
+        """
+        from test_plus.status_codes import StatusCodeAssertionMixin
+        for attr in dir(StatusCodeAssertionMixin):
+            method = getattr(self, attr, None)
+            match = re.match(r'[a-z_]+(?P<status_code>[\d]+)[a-z_]+', attr)
+            if callable(method) is True and match is not None:
+                status_code = int(match.groupdict()['status_code'])
+                url = self.reverse('status-code-view', status_code)
+                res_url = None
+                res = self.get(url)
+
+                if status_code in (301, 302):
+                    res_url = self.reverse('view-200')
+
+                # with response
+                self._test_http_response(method, res, url=res_url)
+
+                # without response
+                self._test_http_response(method, url=res_url)
 
     def test_get_check_200(self):
         res = self.get_check_200('view-200')

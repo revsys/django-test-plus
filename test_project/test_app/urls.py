@@ -9,10 +9,12 @@ from .views import (
     view_410, view_contains, view_context_with, view_context_without,
     view_headers, view_is_ajax, view_json, view_redirect,
     CBLoginRequiredView, CBView,
+    status_code_view,
 )
 
 urlpatterns = [
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^status-code-view/(?P<status>[\d]+)/$', status_code_view, name='status-code-view'),
     url(r'^view/200/$', view_200, name='view-200'),
     url(r'^view/201/$', view_201, name='view-201'),
     url(r'^view/204/$', view_204, name='view-204'),

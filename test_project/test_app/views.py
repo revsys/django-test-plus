@@ -17,6 +17,15 @@ except ImportError:
 
 # Function-based test views
 
+def status_code_view(request, status=200):
+    status = int(status)
+    if status in (301, 302):
+        is_perm = True if status == 301 else False
+        return redirect('view-200', permanent=is_perm)
+
+    return HttpResponse('', status=status)
+
+
 def view_200(request):
     return HttpResponse('', status=200)
 

@@ -13,6 +13,7 @@ from django.test.client import store_rendered_templates
 from django.test.utils import CaptureQueriesContext
 from django.utils.functional import curry
 
+from test_plus.status_codes import StatusCodeAssertionMixin
 from .compat import reverse, NoReverseMatch, get_api_client
 
 
@@ -76,7 +77,7 @@ class login(object):
         self.testcase.client.logout()
 
 
-class BaseTestCase(object):
+class BaseTestCase(StatusCodeAssertionMixin):
     """
     Django TestCase with helpful additional features
     """
