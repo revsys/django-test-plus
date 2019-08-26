@@ -208,7 +208,7 @@ def test_in_context(self):
     self.assertContext('some-key', 'expected value')
 ```
 
-## response_XXX(response, msg=None) - status code checking
+## assert_http_###_<status_name>(response, msg=None) - status code checking
 
 Another test you often need to do is check that a response has a certain
 HTTP status code. With Django's default TestCase you would write:
@@ -226,32 +226,27 @@ With django-test-plus you can shorten that to be:
 ```python
 def test_better_status(self):
     response = self.get('my-url-name')
-    self.response_200(response)
+    self.assert_http_200_ok(response)
 ```
 
-django-test-plus provides the following response method checks for you:
+Django-test-plus provides a majority of the status codes assertions for you. The status assertions
+can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/master/test_plus/status_codes.py)
+and should be searchable if you're using an IDE like pycharm. It should be noted that in previous
+versions, Django-test-plus had assertion methods in the pattern of `response_###()`, which are still
+available but have since been deprecated. 
 
-- response_200()
-- response_201()
-- response_204()
-- response_301()
-- response_302()
-- response_400()
-- response_401()
-- response_403()
-- response_404()
-- response_405()
-- response_410()
+Each of the assertion methods take an optional Django test client `response` and a string `msg` argument
+that, if specified, is used as the error message when a failure occurs. The methods,
+`assert_http_301_moved_permanently` and `assert_http_302_found` also take an optional `url` argument that
+if passed, will check to make sure the `response.url` matches.
 
-All of which take an optional Django test client response and a string msg argument
-that, if specified, is used as the error message when a failure occurs.
-If it's available, the response_XXX methods will use the last response. So you
+If it's available, the `assert_http_###_<status_name>` methods will use the last response. So you
 can do:
 
 ```python
 def test_status(self):
     self.get('my-url-name')
-    self.response_200()
+    self.assert_http_200_ok()
 ```
 
 Which is a bit shorter.
@@ -452,7 +447,7 @@ class MyAPITestCase(APITestCase):
     def test_post(self):
         data = {'testing': {'prop': 'value'}}
         self.post('view-json', data=data, extra={'format': 'json'})
-        self.response_200()
+        self.assert_http_200_ok()
 ```
 
 Note that using `APITestCase` requires Django >= 1.8 and having installed `django-rest-framework`.
