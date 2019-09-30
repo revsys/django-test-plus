@@ -30,9 +30,7 @@ $ pip install django-test-plus
 
 ## Usage
 
-Using django-test-plus is pretty easy, simply have your tests inherit
-from test_plus.test.TestCase rather than the normal
-django.test.TestCase like so::
+To use django-test-plus, have your tests inherit from test_plus.test.TestCase rather than the normal django.test.TestCase::
 
 ```python
 from test_plus.test import TestCase
@@ -42,7 +40,8 @@ class MyViewTests(TestCase):
 ```
 
 This is sufficient to get things rolling, but you are encouraged to
-create *your own* sub-class on a per project basis. This will allow you to add your own project specific helper methods.
+create *your own* sub-classes for your projects. This will allow you
+to add your own project-specific helper methods.
 
 For example, if you have a django project named 'myproject', you might
 create the following in `myproject/test.py`:
@@ -63,8 +62,8 @@ class MyViewTests(TestCase):
     ...
 ```
 
-Note that you can also option to import it like this if you want, which is
-more similar to the regular importing of Django's TestCase:
+This import, which is similar to the way you would import Django's TestCase, 
+is also valid:
 
 ```python
 from test_plus import TestCase
@@ -72,7 +71,7 @@ from test_plus import TestCase
 
 ## pytest Usage
 
-You can get a TestCase like object as a pytest fixture now by simply asking for `tp`. All of the methods below would then work in pytest functions.  For
+You can get a TestCase like object as a pytest fixture now by asking for `tp`. All of the methods below would then work in pytest functions. For
 example:
 
 ```python
@@ -94,7 +93,7 @@ def test_url_reverse(tp_api):
 
 ### reverse(url_name, *args, **kwargs)
 
-When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the `from django.core.urlresolvers import reverse` boilerplate. Instead just use:
+When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the `from django.core.urlresolvers import reverse` boilerplate. Instead, use:
 
 ```python
 def test_something(self):
@@ -122,7 +121,7 @@ def test_get_named_url(self):
         extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 ```
 
-When using this get method two other things happen for you, we store the
+When using this get method two other things happen for you: we store the
 last response in `self.last_response` and the response's Context in `self.context`.
 
 So instead of:
@@ -134,7 +133,7 @@ def test_default_django(self):
     self.assertEqual(response.context['foo'], 12)
 ```
 
-You can instead write:
+You can write:
 
 ```python
 def test_testplus_get(self):
@@ -143,7 +142,7 @@ def test_testplus_get(self):
     self.assertEqual(self.context['foo'], 12)
 ```
 
-It's also smart about already reversed URLs so you can be lazy and do:
+It's also smart about already reversed URLs, so you can be lazy and do:
 
 ```python
 def test_testplus_get(self):
@@ -163,7 +162,7 @@ Would GET `/search/?query=testing`.
 
 ## post(url_name, data, follow=True, *args, **kwargs)
 
-Our `post()` method takes a named URL, the dictionary of data you wish
+Our `post()` method takes a named URL, an optional dictionary of data you wish
 to post and any args or kwargs necessary to reverse the url_name.
 If needed, place kwargs for `TestClient.post()` in an 'extra' dictionary.:
 
@@ -177,8 +176,7 @@ def test_post_named_url(self):
 
 ## get_context(key)
 
-Often you need to get things out of the template context, so let's make that
-easy:
+Often you need to get things out of the template context:
 
 ```python
 def test_context_data(self):
@@ -199,7 +197,7 @@ def test_in_context(self):
 
 ## assertContext(key, value)
 
-We can get context values and ensure they exist, but so let's also test
+We can get context values and ensure they exist, but we can also test
 equality while we're at it. This asserts that key == value:
 
 ```python
@@ -232,10 +230,10 @@ def test_better_status(self):
 Django-test-plus provides a majority of the status codes assertions for you. The status assertions
 can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/master/test_plus/status_codes.py)
 and should be searchable if you're using an IDE like pycharm. It should be noted that in previous
-versions, Django-test-plus had assertion methods in the pattern of `response_###()`, which are still
+versions, django-test-plus had assertion methods in the pattern of `response_###()`, which are still
 available but have since been deprecated. 
 
-Each of the assertion methods take an optional Django test client `response` and a string `msg` argument
+Each of the assertion methods takes an optional Django test client `response` and a string `msg` argument
 that, if specified, is used as the error message when a failure occurs. The methods,
 `assert_http_301_moved_permanently` and `assert_http_302_found` also take an optional `url` argument that
 if passed, will check to make sure the `response.url` matches.
@@ -253,8 +251,7 @@ Which is a bit shorter.
 
 ## get_check_200(url_name, *args, **kwargs)
 
-GETing and checking views return status 200 is so common a test this
-method makes it even easier::
+GETing and checking views return status 200 is a common test. This method makes it more convenient::
 
 ```python
 def test_even_better_status(self):
@@ -274,12 +271,12 @@ def test_user_stuff(self)
 ```
 
 If creating a User in your project is more complicated, say for example
-you removed the `username` field from the default Django Auth model
+you removed the `username` field from the default Django Auth model,
 you can provide a [Factory
 Boy](https://factoryboy.readthedocs.org/en/latest/) factory to create
-it or simply override this method on your own sub-class.
+it or override this method on your own sub-class.
 
-To use a Factory Boy factory simply create your class like this::
+To use a Factory Boy factory, create your class like this::
 
 ```python
 from test_plus.test import TestCase
@@ -295,7 +292,7 @@ class MySpecialTest(TestCase):
 
 **NOTE:** Users created by this method will have their password
 set to the string 'password' by default, in order to ease testing.
-If you need a specific password simply override the `password` parameter.
+If you need a specific password, override the `password` parameter.
 
 You can also pass in user permissions by passing in a string of
 '`<app_name>.<perm name>`' or '`<app_name>.*`'.  For example:
@@ -332,9 +329,7 @@ class MyFormTest(TestCase):
 
 ### assertLoginRequired(url_name, *args, **kwargs)
 
-It's pretty easy to add a new view to a project and forget to restrict
-it to be login required, this method helps make it easy to test that a
-given named URL requires auth:
+This method helps you test that a given named URL requires authorization:
 
 ```python
 def test_auth(self):
@@ -345,9 +340,9 @@ def test_auth(self):
 
 ### login context
 
-Along with ensuing a view requires login and creating users, the next
-thing you end up doing is logging in as various users to test our your
-restriction logic. This can be made easier with the following context:
+Along with ensuring a view requires login and creating users, the next
+thing you end up doing is logging in as various users to test your
+restriction logic:
 
 ```python
 def test_restrictions(self):
@@ -395,8 +390,8 @@ def test_restrictions(self):
 Django provides
 [assertNumQueries](https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries)
 which is great when your code generates a specific number of
-queries. However, if due to the nature of your data this number can vary
-you often don't attempt to ensure the code doesn't start producing a ton
+queries. However, if this number varies due to the nature of your data, with 
+this method you can still test to ensure the code doesn't start producing a ton
 more queries than you expect:
 
 ```python
@@ -408,14 +403,14 @@ def test_something_out(self):
 
 ### assertGoodView(url_name, *args, **kwargs)
 
-This method does a few of things for you, it:
+This method does a few things for you. It:
 
 - Retrieves the name URL
 - Ensures the view does not generate more than 50 queries
 - Ensures the response has status code 200
 - Returns the response
 
-Often a wide sweeping test like this is better than no test at all. You
+Often a wide, sweeping test like this is better than no test at all. You
 can use it like this:
 
 ```python
@@ -465,14 +460,14 @@ affect the end result.
 
 Class-based views (derived from Django's `generic.models.View` class)
 contain methods and mixins which makes granular unit testing (more) feasible.
-Quite often your usage of a generic view class comprises a simple override
+Quite often your usage of a generic view class comprises an override
 of an existing method. Invoking the entire view and the Django request/response
-stack is a waste of time... you really want to call the overridden
+stack is a waste of time when you really want to call the overridden
 method directly and test the result.
 
 CBVTestCase to the rescue!
 
-As with TestCase above, simply have your tests inherit
+As with TestCase above, have your tests inherit
 from test_plus.test.CBVTestCase rather than TestCase like so:
 
 ```python
@@ -529,7 +524,7 @@ TestCase assertion methods work with `CBVTestCase.get()`.
 
 **NOTE:** This method bypasses Django's middleware, and therefore context
 variables created by middleware are not available. If this affects your
-template/context testing you should use TestCase instead of CBVTestCase.
+template/context testing, you should use TestCase instead of CBVTestCase.
 
 ### post(cls, data=None, initkwargs=None, *args, **kwargs)
 
@@ -569,7 +564,7 @@ TestCase assertion methods work with `CBVTestCase.post()`.
 
 ## Development
 
-To work on django-test-plus itself, you need to clone this repository and run the following commands:
+To work on django-test-plus itself, clone this repository and run the following commands:
 
 ```shell
 $ pip install -r requirements.txt

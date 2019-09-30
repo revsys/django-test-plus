@@ -4,7 +4,7 @@ Methods
 reverse(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the ``from django.core.urlresolvers import reverse`` boilerplate. Instead just use::
+When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the ``from django.core.urlresolvers import reverse`` boilerplate. Instead, use::
 
     def test_something(self):
         url = self.reverse('my-url-name')
@@ -38,14 +38,14 @@ So instead of::
         self.assertTrue('foo' in response.context)
         self.assertEqual(response.context['foo'], 12)
 
-You can instead write::
+You can write::
 
     def test_testplus_get(self):
         self.get('my-url-name')
         self.assertInContext('foo')
         self.assertEqual(self.context['foo'], 12)
 
-It's also smart about already reversed URLs so you can be lazy and do::
+It's also smart about already reversed URLs, so you can be lazy and do::
 
     def test_testplus_get(self):
         url = self.reverse('my-url-name')
@@ -104,8 +104,7 @@ To support all HTTP methods
 get_context(key)
 ~~~~~~~~~~~~~~~~
 
-Often you need to get things out of the template context, so let's make that
-easy::
+Often you need to get things out of the template context::
 
     def test_context_data(self):
         self.get('my-view-with-some-context')
@@ -124,14 +123,14 @@ using::
 assertContext(key, value)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We can get context values and ensure they exist, but so let's also test
+We can get context values and ensure they exist, but we can also test
 equality while we're at it. This asserts that key == value::
 
     def test_in_context(self):
         self.get('my-view-with-some-context')
         self.assertContext('some-key', 'expected value')
 
-response\_XXX(response, msg=None) - status code checking
+assert\_http\_XXX_\<status\_name\>(response, msg=None) - status code checking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Another test you often need to do is check that a response has a certain
@@ -147,30 +146,17 @@ With django-test-plus you can shorten that to be::
 
     def test_better_status(self):
         response = self.get('my-url-name')
-        self.response_200(response)
+        self.assert_http_200_ok(response)
 
-django-test-plus provides the following response method checks for you::
+Django-test-plus provides a majority of the status codes assertions for you. The status assertions can be found in their own `mixin <https://github.com/revsys/django-test-plus/blob/master/test_plus/status_codes.py>`__ and should be searchable if you're using an IDE like pycharm. It should be noted that in previous versions, django-test-plus had assertion methods in the pattern of ``response_###()``, which are still available but have since been deprecated. 
 
-    - response_200()
-    - response_201()
-    - response_204()
-    - response_301()
-    - response_302()
-    - response_400()
-    - response_401()
-    - response_403()
-    - response_404()
-    - response_405()
-    - response_410()
+Each of the assertion methods takes an optional Django test client ``response`` and a string ``msg`` argument that, if specified, is used as the error message when a failure occurs. The methods, ``assert_http_301_moved_permanently`` and ``assert_http_302_found`` also take an optional ``url`` argument that if passed, will check to make sure the ``response.url`` matches.
 
-All of which take an optional Django test client response and a string msg argument
-that, if specified, is used as the error message when a failure occurs.
-If it's available, the response_XXX methods will use the last response. So you
-can do::
+If it's available, the ``assert_http_###_<status_name>`` methods will use the last response. So you can do:::
 
     def test_status(self):
         self.get('my-url-name')
-        self.response_200()
+        self.assert_http_200_ok()
 
 Which is a bit shorter.
 
@@ -195,7 +181,7 @@ With django-test-plus you can shorten that to be::
 assertResponseNotContains(text, response=None, html=True)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The inverse of the above test, make sure the last response does not include
+The inverse of the above test, this method makes sure the last response does not include
 the chunk of HTML::
 
     def test_response_not_contains(self):
@@ -221,8 +207,7 @@ You might also want to check standard headers::
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-GETing and checking views return status 200 is so common a test this
-method makes it even easier::
+GETing and checking views return status 200 is a common test. This method makes it more convenient::
 
     def test_even_better_status(self):
         response = self.get_check_200('my-url-name')
@@ -242,9 +227,9 @@ If creating a User in your project is more complicated, say for example
 you removed the ``username`` field from the default Django Auth model,
 you can provide a `Factory
 Boy <https://factoryboy.readthedocs.org/en/latest/>`__ factory to create
-it or simply override this method on your own sub-class.
+it or override this method on your own sub-class.
 
-To use a Factory Boy factory simply create your class like this::
+To use a Factory Boy factory, create your class like this::
 
     from test_plus.test import TestCase
     from .factories import UserFactory
@@ -258,7 +243,7 @@ To use a Factory Boy factory simply create your class like this::
 
 **NOTE:** Users created by this method will have their password
 set to the string 'password' by default, in order to ease testing.
-If you need a specific password simply override the ``password`` parameter.
+If you need a specific password, override the ``password`` parameter.
 
 You can also pass in user permissions by passing in a string of
 '``<app_name>.<perm name>``' or '``<app_name>.*``'.  For example::
