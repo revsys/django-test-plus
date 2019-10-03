@@ -231,7 +231,7 @@ Django-test-plus provides a majority of the status codes assertions for you. The
 can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/master/test_plus/status_codes.py)
 and should be searchable if you're using an IDE like pycharm. It should be noted that in previous
 versions, django-test-plus had assertion methods in the pattern of `response_###()`, which are still
-available but have since been deprecated. 
+available but have since been deprecated. See below for a list of those methods. 
 
 Each of the assertion methods takes an optional Django test client `response` and a string `msg` argument
 that, if specified, is used as the error message when a failure occurs. The methods,
@@ -248,6 +248,22 @@ def test_status(self):
 ```
 
 Which is a bit shorter.
+
+The `response_###()` methods that are deprecated, but still available for use, include: 
+
+- `response_200()`
+- `response_201()` 
+- `response_204()` 
+- `response_301()`
+- `response_302()` 
+- `response_400()`
+- `response_401()` 
+- `response_403()`
+- `response_404()` 
+- `response_405()`
+- `response_410()` 
+
+All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the `assert_http_###_<status_name>()` methods, these methods will use the last response if it's available. 
 
 ## get_check_200(url_name, *args, **kwargs)
 
