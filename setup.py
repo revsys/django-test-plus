@@ -30,7 +30,7 @@ setup(
     tests_require=[
         "pytest<6.0",
         "pytest-django==3.5.1",
-        "pytest-cov==2.7.1",
+        "pytest-cov==2.8.1",
         "pytest-pythonpath==0.7.3",
         "factory-boy>=2.11.1",
     ],
