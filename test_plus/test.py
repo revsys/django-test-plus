@@ -11,7 +11,7 @@ from django.shortcuts import resolve_url
 from django.test import RequestFactory, signals, TestCase as DjangoTestCase
 from django.test.client import store_rendered_templates
 from django.test.utils import CaptureQueriesContext
-from django.utils.functional import curry
+from functools import partial
 
 from test_plus.status_codes import StatusCodeAssertionMixin
 from .compat import reverse, NoReverseMatch, get_api_client
@@ -470,10 +470,10 @@ class CBVTestCase(TestCase):
         No middleware is invoked, but templates are rendered
         and context saved if appropriate.
         """
-        # Curry a data dictionary into an instance of
-        # the template renderer callback function.
+        # Curry (using functools.partial) a data dictionary into 
+        # an instance of the template renderer callback function.
         data = {}
-        on_template_render = curry(store_rendered_templates, data)
+        on_template_render = partial(store_rendered_templates, data)
         signal_uid = "template-render-%s" % id(request)
         signals.template_rendered.connect(on_template_render, dispatch_uid=signal_uid)
         try:
