@@ -470,7 +470,7 @@ class CBVTestCase(TestCase):
         No middleware is invoked, but templates are rendered
         and context saved if appropriate.
         """
-        # Curry (using functools.partial) a data dictionary into 
+        # Curry (using functools.partial) a data dictionary into
         # an instance of the template renderer callback function.
         data = {}
         on_template_render = partial(store_rendered_templates, data)
