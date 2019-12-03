@@ -11,6 +11,6 @@ class NoLoggingRunner(DefaultRunner):
         # Disable logging below CRITICAL while running the tests
         logging.disable(logging.CRITICAL)
 
-        return super(NoLoggingRunner, self).run_tests(test_labels,
-                                                      extra_tests,
-                                                      **kwargs)
+        return super(NoLoggingRunner, self).run_tests(
+            test_labels, extra_tests, **kwargs
+        )

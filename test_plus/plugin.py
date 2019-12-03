@@ -8,6 +8,7 @@ class TestCase(BaseTestCase):
     """
     pytest plugin version of test_plus.TestCase with helpful additional features
     """
+
     user_factory = None
 
     def __init__(self, *args, **kwargs):

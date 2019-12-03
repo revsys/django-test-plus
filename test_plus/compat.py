@@ -5,6 +5,7 @@ except ImportError:
 
 try:
     import rest_framework  # noqa
+
     DRF = True
 except ImportError:
     DRF = False
@@ -17,5 +18,8 @@ def get_api_client():
         from django.core.exceptions import ImproperlyConfigured
 
         def APIClient(*args, **kwargs):
-            raise ImproperlyConfigured('django-rest-framework must be installed in order to use APITestCase.')
+            raise ImproperlyConfigured(
+                "django-rest-framework must be installed in order to use APITestCase."
+            )
+
     return APIClient

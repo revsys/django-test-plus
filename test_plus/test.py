@@ -33,14 +33,15 @@ class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
         super(_AssertNumQueriesLessThanContext, self).__init__(connection)
 
     def __exit__(self, exc_type, exc_value, traceback):
-        super(_AssertNumQueriesLessThanContext, self).__exit__(exc_type, exc_value, traceback)
+        super(_AssertNumQueriesLessThanContext, self).__exit__(
+            exc_type, exc_value, traceback
+        )
         if exc_type is not None:
             return
         executed = len(self)
         self.test_case.assertTrue(
-            executed < self.num, "%d queries executed, expected less than %d" % (
-                executed, self.num
-            )
+            executed < self.num,
+            "%d queries executed, expected less than %d" % (executed, self.num),
         )
 
 
@@ -56,18 +57,17 @@ class login(object):
         User = get_user_model()
 
         if args and isinstance(args[0], User):
-            USERNAME_FIELD = getattr(User, 'USERNAME_FIELD', 'username')
-            credentials.update({
-                USERNAME_FIELD: getattr(args[0], USERNAME_FIELD),
-            })
+            USERNAME_FIELD = getattr(User, "USERNAME_FIELD", "username")
+            credentials.update(
+                {USERNAME_FIELD: getattr(args[0], USERNAME_FIELD),}
+            )
 
-        if not credentials.get('password', False):
-            credentials['password'] = 'password'
+        if not credentials.get("password", False):
+            credentials["password"] = "password"
 
         success = testcase.client.login(**credentials)
         self.testcase.assertTrue(
-            success,
-            "login failed with credentials=%r" % (credentials)
+            success, "login failed with credentials=%r" % (credentials)
         )
 
     def __enter__(self):
@@ -81,6 +81,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
     """
     Django TestCase with helpful additional features
     """
+
     user_factory = None
 
     def __init__(self, *args, **kwargs):
@@ -95,12 +96,14 @@ class BaseTestCase(StatusCodeAssertionMixin):
         if response_or_form is None:
             response_or_form = self.last_response
 
-        if hasattr(response_or_form, 'errors'):
+        if hasattr(response_or_form, "errors"):
             form = response_or_form
-        elif hasattr(response_or_form, 'context'):
-            form = response_or_form.context['form']
+        elif hasattr(response_or_form, "context"):
+            form = response_or_form.context["form"]
         else:
-            raise Exception('print_form_errors requires the response_or_form argument to either be a Django http response or a form instance.')
+            raise Exception(
+                "print_form_errors requires the response_or_form argument to either be a Django http response or a form instance."
+            )
 
         print(form.errors.as_text())
 
@@ -115,14 +118,14 @@ class BaseTestCase(StatusCodeAssertionMixin):
         data = kwargs.pop("data", {})
 
         valid_method_names = [
-            'get',
-            'post',
-            'put',
-            'patch',
-            'head',
-            'trace',
-            'options',
-            'delete'
+            "get",
+            "post",
+            "put",
+            "patch",
+            "head",
+            "trace",
+            "options",
+            "delete",
         ]
 
         if method_name in valid_method_names:
@@ -131,7 +134,12 @@ class BaseTestCase(StatusCodeAssertionMixin):
             raise LookupError("Cannot find the method {0}".format(method_name))
 
         try:
-            self.last_response = method(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
+            self.last_response = method(
+                reverse(url_name, args=args, kwargs=kwargs),
+                data=data,
+                follow=follow,
+                **extra
+            )
         except NoReverseMatch:
             self.last_response = method(url_name, data=data, follow=follow, **extra)
 
@@ -139,32 +147,34 @@ class BaseTestCase(StatusCodeAssertionMixin):
         return self.last_response
 
     def get(self, url_name, *args, **kwargs):
-        return self.request('get', url_name, *args, **kwargs)
+        return self.request("get", url_name, *args, **kwargs)
 
     def post(self, url_name, *args, **kwargs):
-        return self.request('post', url_name, *args, **kwargs)
+        return self.request("post", url_name, *args, **kwargs)
 
     def put(self, url_name, *args, **kwargs):
-        return self.request('put', url_name, *args, **kwargs)
+        return self.request("put", url_name, *args, **kwargs)
 
     def patch(self, url_name, *args, **kwargs):
-        return self.request('patch', url_name, *args, **kwargs)
+        return self.request("patch", url_name, *args, **kwargs)
 
     def head(self, url_name, *args, **kwargs):
-        return self.request('head', url_name, *args, **kwargs)
+        return self.request("head", url_name, *args, **kwargs)
 
     def trace(self, url_name, *args, **kwargs):
-        if LooseVersion(django.get_version()) >= LooseVersion('1.8.2'):
-            return self.request('trace', url_name, *args, **kwargs)
+        if LooseVersion(django.get_version()) >= LooseVersion("1.8.2"):
+            return self.request("trace", url_name, *args, **kwargs)
         else:
-            raise LookupError("client.trace is not available for your version of django. Please\
-                               update your django version.")
+            raise LookupError(
+                "client.trace is not available for your version of django. Please\
+                               update your django version."
+            )
 
     def options(self, url_name, *args, **kwargs):
-        return self.request('options', url_name, *args, **kwargs)
+        return self.request("options", url_name, *args, **kwargs)
 
     def delete(self, url_name, *args, **kwargs):
-        return self.request('delete', url_name, *args, **kwargs)
+        return self.request("delete", url_name, *args, **kwargs)
 
     def _which_response(self, response=None):
         if response is None and self.last_response is not None:
@@ -250,7 +260,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
         return reverse(name, args=args, kwargs=kwargs)
 
     @classmethod
-    def make_user(cls, username='testuser', password='password', perms=None):
+    def make_user(cls, username="testuser", password="password", perms=None):
         """
         Build a user with <username> and password of 'password' for testing
         purposes.
@@ -259,41 +269,41 @@ class BaseTestCase(StatusCodeAssertionMixin):
 
         if cls.user_factory:
             USERNAME_FIELD = getattr(
-                cls.user_factory._meta.model, 'USERNAME_FIELD', 'username')
-            test_user = cls.user_factory(**{
-                USERNAME_FIELD: username,
-            })
+                cls.user_factory._meta.model, "USERNAME_FIELD", "username"
+            )
+            test_user = cls.user_factory(**{USERNAME_FIELD: username,})
             test_user.set_password(password)
             test_user.save()
         else:
             test_user = User.objects.create_user(
-                username,
-                '{0}@example.com'.format(username),
-                password,
+                username, "{0}@example.com".format(username), password,
             )
 
         if perms:
             from django.contrib.auth.models import Permission
+
             _filter = Q()
             for perm in perms:
-                if '.' not in perm:
+                if "." not in perm:
                     raise ImproperlyConfigured(
-                        'The permission in the perms argument needs to be either '
-                        'app_label.codename or app_label.* (e.g. accounts.change_user or accounts.*)'
+                        "The permission in the perms argument needs to be either "
+                        "app_label.codename or app_label.* (e.g. accounts.change_user or accounts.*)"
                     )
 
-                app_label, codename = perm.split('.')
-                if codename == '*':
+                app_label, codename = perm.split(".")
+                if codename == "*":
                     _filter = _filter | Q(content_type__app_label=app_label)
                 else:
-                    _filter = _filter | Q(content_type__app_label=app_label, codename=codename)
+                    _filter = _filter | Q(
+                        content_type__app_label=app_label, codename=codename
+                    )
 
             test_user.user_permissions.add(*list(Permission.objects.filter(_filter)))
 
         return test_user
 
     def assertNumQueriesLessThan(self, num, *args, **kwargs):
-        func = kwargs.pop('func', None)
+        func = kwargs.pop("func", None)
         using = kwargs.pop("using", DEFAULT_DB_ALIAS)
         conn = connections[using]
 
@@ -310,7 +320,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
         Ensures URL returns a 200 status and that generates less than 50
         database queries.
         """
-        query_count = kwargs.pop('test_query_count', 50)
+        query_count = kwargs.pop("test_query_count", 50)
 
         with self.assertNumQueriesLessThan(query_count):
             response = self.get(url_name, *args, **kwargs)
@@ -369,6 +379,7 @@ class TestCase(DjangoTestCase, BaseTestCase):
     """
     Django TestCase with helpful additional features
     """
+
     user_factory = None
 
     def __init__(self, *args, **kwargs):
@@ -423,8 +434,8 @@ class CBVTestCase(TestCase):
         Pass a "request" kwarg in order for your tests to have particular
         request attributes.
         """
-        initkwargs = kwargs.pop('initkwargs', None)
-        request = kwargs.pop('request', None)
+        initkwargs = kwargs.pop("initkwargs", None)
+        request = kwargs.pop("request", None)
         if initkwargs is None:
             initkwargs = {}
         instance = view_cls(**initkwargs)
@@ -438,11 +449,11 @@ class CBVTestCase(TestCase):
         Calls view_cls.get() method after instantiating view class.
         Renders view templates and sets context if appropriate.
         """
-        data = kwargs.pop('data', None)
+        data = kwargs.pop("data", None)
         instance = self.get_instance(view_cls, *args, **kwargs)
         if not instance.request:
             # Use a basic request
-            instance.request = RequestFactory().get('/', data)
+            instance.request = RequestFactory().get("/", data)
         self.last_response = self.get_response(instance.request, instance.get)
         self.context = self.last_response.context
         return self.last_response
@@ -452,13 +463,13 @@ class CBVTestCase(TestCase):
         Calls view_cls.post() method after instantiating view class.
         Renders view templates and sets context if appropriate.
         """
-        data = kwargs.pop('data', None)
+        data = kwargs.pop("data", None)
         if data is None:
             data = {}
         instance = self.get_instance(view_cls, *args, **kwargs)
         if not instance.request:
             # Use a basic request
-            instance.request = RequestFactory().post('/', data)
+            instance.request = RequestFactory().post("/", data)
         self.last_response = self.get_response(instance.request, instance.post)
         self.context = self.last_response.context
         return self.last_response
@@ -479,7 +490,7 @@ class CBVTestCase(TestCase):
         try:
             response = view_func(request)
 
-            if hasattr(response, 'render') and callable(response.render):
+            if hasattr(response, "render") and callable(response.render):
                 response = response.render()
                 # Add any rendered template detail to the response.
                 response.templates = data.get("templates", [])
@@ -512,7 +523,7 @@ class CBVTestCase(TestCase):
         Ensures view returns a 200 status and that generates less than 50
         database queries.
         """
-        query_count = kwargs.pop('test_query_count', 50)
+        query_count = kwargs.pop("test_query_count", 50)
 
         with self.assertNumQueriesLessThan(query_count):
             response = super(CBVTestCase, self).get(url_name, *args, **kwargs)
