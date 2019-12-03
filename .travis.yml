@@ -17,7 +17,7 @@ install:
       printf '\n\n    CONSTANT = ignore\n' >> $VIRTUAL_ENV/lib/python*/site-packages/pyflakes/checker.py;
     fi
 script:
-  - flake8 . --ignore=E501,E402
+  - black --check .
   - tox
 after_success:
   - coveralls
