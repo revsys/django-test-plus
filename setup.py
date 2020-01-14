@@ -29,7 +29,7 @@ setup(
     setup_requires=["pytest-runner", "pytest-django"],
     tests_require=[
         "pytest<6.0",
-        "pytest-django==3.7.0",
+        "pytest-django==3.8.0",
         "pytest-cov==2.8.1",
         "pytest-pythonpath==0.7.3",
         "factory-boy>=2.11.1",
