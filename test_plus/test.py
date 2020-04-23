@@ -172,9 +172,9 @@ class BaseTestCase(StatusCodeAssertionMixin):
         else:
             return response
 
-    def _assert_response_code(self, status_code, response=None):
+    def _assert_response_code(self, status_code, response=None, msg=None):
         response = self._which_response(response)
-        self.assertEqual(response.status_code, status_code)
+        self.assertEqual(response.status_code, status_code, msg)
 
     def response_200(self, response=None, msg=None):
         """ Given response has status_code 200 """
