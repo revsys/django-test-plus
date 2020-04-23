@@ -1,9 +1,9 @@
 Usage
 -----
 
-Using django-test-plus is pretty easy, simply have your tests inherit
+To use django-test-plus, have your tests inherit
 from test\_plus.test.TestCase rather than the normal
-django.test.TestCase like so::
+django.test.TestCase::
 
     from test_plus.test import TestCase
 
@@ -11,10 +11,10 @@ django.test.TestCase like so::
         ...
 
 This is sufficient to get things rolling, but you are encouraged to
-create *your own* sub-class on a per project basis. This will allow you
-to add your own project specific helper methods.
+create *your own* sub-classes for your projects. This will allow you
+to add your own project-specific helper methods.
 
-For example, if you have a django project named 'myproject', you might
+For example, if you have a Django project named 'myproject', you might
 create the following in ``myproject/test.py``::
 
     from test_plus.test import TestCase as PlusTestCase
@@ -29,10 +29,28 @@ And then in your tests use::
     class MyViewTests(TestCase):
         ...
 
-Note that you can also option to import it like this if you want, which is
-more similar to the regular importing of Django's TestCase::
+This import, which is similar to the way you would import Django's TestCase, 
+is also valid::
 
     from test_plus import TestCase
+
+pytest Usage
+~~~~~~~~~~~~
+
+You can get a TestCase like object as a pytest fixture now by asking for `tp`. All of the methods below would then work in pytest functions. For
+example::
+
+    def test_url_reverse(tp):
+        expected_url = '/api/'
+        reversed_url = tp.reverse('api')
+        assert expected_url == reversed_url
+
+The ``tp_api`` fixture will provide a ``TestCase`` that uses django-rest-framework's `APIClient()`::
+
+    def test_url_reverse(tp_api):
+        response = tp_api.client.post("myapi", format="json")
+        assert response.status_code == 200
+
 
 Testing DRF views
 ~~~~~~~~~~~~~~~~~

@@ -1,0 +1,8 @@
+[run]
+omit =
+    test_project/*
+    */.virtualenvs/*
+    */site-packages/*
+    test_plus/compat.py
+    .eggs/*
+    .tox/*

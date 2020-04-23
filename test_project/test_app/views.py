@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import generic
 
-from .forms import TestDataForm, TestNameForm
+from .forms import DataForm, NameForm
 from .models import Data
 
 try:
@@ -17,12 +17,25 @@ except ImportError:
 
 # Function-based test views
 
+def status_code_view(request, status=200):
+    status = int(status)
+    if status in (301, 302):
+        is_perm = True if status == 301 else False
+        return redirect('view-200', permanent=is_perm)
+
+    return HttpResponse('', status=status)
+
+
 def view_200(request):
     return HttpResponse('', status=200)
 
 
 def view_201(request):
     return HttpResponse('', status=201)
+
+
+def view_204(request):
+    return HttpResponse('', status=204)
 
 
 def view_301(request):
@@ -142,7 +155,7 @@ class CBDataView(generic.UpdateView):
 
     model = Data
     template_name = "test.html"
-    form_class = TestDataForm
+    form_class = DataForm
 
     def get_success_url(self):
         return reverse("view-200")
@@ -166,5 +179,5 @@ class CBTemplateView(generic.TemplateView):
 
 
 class FormErrors(generic.FormView):
-    form_class = TestNameForm
+    form_class = NameForm
     template_name = 'form_errors.html'

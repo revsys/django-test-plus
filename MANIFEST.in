@@ -1,0 +1,5 @@
+include README.md LICENSE AUTHORS.txt CHANGELOG.md requirements.txt pytest.ini setup.cfg
+recursive-include tests *.py
+prune .eggs
+prune build
+prune dist
