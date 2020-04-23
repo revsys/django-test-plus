@@ -18,7 +18,7 @@ time... you really want to test the overridden method directly.
 
 CBVTestCase to the rescue!
 
-As with TestCase above, simply have your tests inherit
+As with TestCase above, have your tests inherit
 from test\_plus.test.CBVTestCase rather than TestCase like so::
 
     from test_plus.test import CBVTestCase

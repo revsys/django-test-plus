@@ -4,9 +4,7 @@ Authentication Helpers
 assertLoginRequired(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It's pretty easy to add a new view to a project and forget to restrict
-it to be login required, this method helps make it easy to test that a
-given named URL requires auth::
+This method helps you test that a given named URL requires authorization::
 
     def test_auth(self):
         self.assertLoginRequired('my-restricted-url')
@@ -18,7 +16,7 @@ login context
 
 Along with ensuing a view requires login and creating users, the next
 thing you end up doing is logging in as various users to test our your
-restriction logic. This can be made easier with the following context::
+restriction logic::
 
     def test_restrictions(self):
         user1 = self.make_user('u1')
