@@ -321,6 +321,13 @@ class TestPlusViewTests(TestCase):
         # Test without response option
         self.response_405()
 
+    def test_response_409(self):
+        res = self.get('view-409')
+        self.response_409(res)
+
+        # Test without response option
+        self.response_409()
+
     def test_response_410(self):
         res = self.get('view-410')
         self.response_410(res)
