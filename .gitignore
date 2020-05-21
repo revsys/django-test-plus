@@ -5,6 +5,8 @@ htmlcov/
 *.pyc
 _build/
 .idea/*
+# Vim
+*.sw*
 .tox/*
 *.egg
 dist/
