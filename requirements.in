@@ -1,4 +1,4 @@
-Django
+Django<3.2
 factory-boy
 flake8
 pyflakes
