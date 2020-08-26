@@ -66,6 +66,10 @@ def view_405(request):
     return HttpResponse('', status=405)
 
 
+def view_409(request):
+    return HttpResponse('', status=409)
+
+
 def view_410(request):
     return HttpResponseGone()
 

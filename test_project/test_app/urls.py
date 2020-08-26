@@ -6,7 +6,7 @@ except ImportError:
 from .views import (
     FormErrors, data_1, data_5, needs_login, view_200, view_201, view_204,
     view_301, view_302, view_400, view_401, view_403, view_404, view_405,
-    view_410, view_contains, view_context_with, view_context_without,
+    view_409, view_410, view_contains, view_context_with, view_context_without,
     view_headers, view_is_ajax, view_json, view_redirect,
     CBLoginRequiredView, CBView,
     status_code_view,
@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^view/403/$', view_403, name='view-403'),
     url(r'^view/404/$', view_404, name='view-404'),
     url(r'^view/405/$', view_405, name='view-405'),
+    url(r'^view/409/$', view_409, name='view-409'),
     url(r'^view/410/$', view_410, name='view-410'),
     url(r'^view/json/$', view_json, name='view-json'),
     url(r'^view/redirect/$', view_redirect, name='view-redirect'),
