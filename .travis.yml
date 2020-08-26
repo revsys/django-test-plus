@@ -9,7 +9,7 @@ python:
 cache: pip
 install:
   - pip install tox-travis
-  - pip install -r requirements.txt
+  - pip install flake8
   - if [[ $TRAVIS_PYTHON_VERSION = *-dev ]]; then
       printf '\n\n    CONSTANT = ignore\n' >> $VIRTUAL_ENV/lib/python*/site-packages/pyflakes/checker.py;
     fi
