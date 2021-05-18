@@ -14,9 +14,9 @@ least 3 weeks!
 
 ## Support
 
-Supports: Python 2 and Python 3
+Supports: Python 3.5, 3.6, 3.7, and 3.8
 
-Supports Django Versions: 1.10, 1.11, 2.0, 2.1, 2.2, 3.0
+Supports Django Versions: 2.0, 2.1, 2.2, 3.0, and 3.1
 
 ## Documentation
 
@@ -261,7 +261,8 @@ The `response_###()` methods that are deprecated, but still available for use, i
 - `response_403()`
 - `response_404()` 
 - `response_405()`
-- `response_410()` 
+- `response_409()`
+- `response_410()`
 
 All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the `assert_http_###_<status_name>()` methods, these methods will use the last response if it's available. 
 

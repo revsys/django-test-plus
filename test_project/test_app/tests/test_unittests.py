@@ -2,6 +2,7 @@ import re
 
 import django
 import factory
+import factory.django
 import sys
 import unittest
 
@@ -45,7 +46,7 @@ def redirect_stdout(new_target):
         sys.stdout = old_target
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: 'user{}'.format(n))
     email = factory.Sequence(lambda n: 'user{}@example.com'.format(n))
 
@@ -320,6 +321,13 @@ class TestPlusViewTests(TestCase):
 
         # Test without response option
         self.response_405()
+
+    def test_response_409(self):
+        res = self.get('view-409')
+        self.response_409(res)
+
+        # Test without response option
+        self.response_409()
 
     def test_response_410(self):
         res = self.get('view-410')
