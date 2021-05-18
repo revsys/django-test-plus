@@ -1,0 +1,8 @@
+Django<3.2
+factory-boy
+flake8
+pyflakes
+pytest
+pytest-cov
+pytest-django
+pytest-pythonpath
