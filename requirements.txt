@@ -28,7 +28,7 @@ packaging==20.4
     # via pytest
 pluggy==0.13.1
     # via pytest
-py==1.9.0
+py==1.10.0
     # via pytest
 pycodestyle==2.6.0
     # via flake8
