@@ -1,3 +1,5 @@
+from django.test import TestCase as DjangoTestCase
+
 try:
     from django.urls import reverse, NoReverseMatch
 except ImportError:
@@ -19,3 +21,10 @@ def get_api_client():
         def APIClient(*args, **kwargs):
             raise ImproperlyConfigured('django-rest-framework must be installed in order to use APITestCase.')
     return APIClient
+
+
+if hasattr(DjangoTestCase, 'assertURLEqual'):
+    assertURLEqual = DjangoTestCase.assertURLEqual
+else:
+    def assertURLEqual(t, url1, url2, msg_prefix=''):
+        raise NotImplementedError("Your version of Django does not support `assertURLEqual`")

@@ -1,5 +1,4 @@
 import pytest
-from django.test import TestCase as DjangoTestCase
 
 from .compat import get_api_client
 from .test import BaseTestCase
@@ -10,10 +9,6 @@ class TestCase(BaseTestCase):
     pytest plugin version of test_plus.TestCase with helpful additional features
     """
     user_factory = None
-    # assertLoginRequired needs an implementation of assertRedirects...
-    assertRedirects = DjangoTestCase.assertRedirects
-    # ... which needs assertURLEqual.
-    assertURLEqual = DjangoTestCase.assertURLEqual
 
     def __init__(self, *args, **kwargs):
         self.last_response = None
