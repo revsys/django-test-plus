@@ -1,5 +1,10 @@
 # Changes
 
+## version 2...0 - May 18th, 2021
+
+  - Drops Python 2.7, 3.4, and pypy and Django 1.11 support.
+  - Add Django 3.1 support.
+
 ## version 1.4.0 - December 3rd, 2019
 
   - Added Django 3.0 support
