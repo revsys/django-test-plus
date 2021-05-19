@@ -14,7 +14,7 @@ from django.test.utils import CaptureQueriesContext
 from functools import partial
 
 from test_plus.status_codes import StatusCodeAssertionMixin
-from .compat import reverse, NoReverseMatch, get_api_client
+from .compat import assertURLEqual, reverse, NoReverseMatch, get_api_client
 
 
 class NoPreviousResponse(Exception):
@@ -237,6 +237,9 @@ class BaseTestCase(StatusCodeAssertionMixin):
         login_url = str(resolve_url(settings.LOGIN_URL))
         expected_url = "{0}?next={1}".format(login_url, reversed_url)
         self.assertRedirects(response, expected_url)
+
+    assertRedirects = DjangoTestCase.assertRedirects
+    assertURLEqual = assertURLEqual
 
     def login(self, *args, **credentials):
         """ Login a user """
