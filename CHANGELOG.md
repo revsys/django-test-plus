@@ -1,5 +1,9 @@
 # Changes
 
+## version 2.1.1 - May 19th, 2021
+
+  - Add official support for Python 3.9.
+
 ## version 2.0.1 - May 19th, 2021
 
   - Make assertLoginRequired work for pytest tp fixture.
