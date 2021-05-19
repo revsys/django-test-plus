@@ -1,5 +1,9 @@
 # Changes
 
+## version 2.2.0 - May 19th, 2021
+
+  - Add support for Django 3.2.
+
 ## version 2.1.1 - May 19th, 2021
 
   - Add official support for Python 3.9.
