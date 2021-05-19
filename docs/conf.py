@@ -63,7 +63,7 @@ author = 'Frank Wiles'
 # built documents.
 #
 # The short X.Y version.
-version = '2.0.0'
+version = '2.0.1'
 # The full version, including alpha/beta/rc tags.
 release = version
 
