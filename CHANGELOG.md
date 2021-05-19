@@ -1,6 +1,10 @@
 # Changes
 
-## version 2...0 - May 18th, 2021
+## version 2.0.1 - May 19th, 2021
+
+  - Make assertLoginRequired work for pytest tp fixture.
+
+## version 2.0.0 - May 18th, 2021
 
   - Drops Python 2.7, 3.4, and pypy and Django 1.11 support.
   - Add Django 3.1 support.
