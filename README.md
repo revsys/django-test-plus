@@ -14,9 +14,9 @@ least 3 weeks!
 
 ## Support
 
-Supports: Python 3.5, 3.6, 3.7, and 3.8
+Supports: Python 3.5, 3.6, 3.7, 3.8 and 3.9.
 
-Supports Django Versions: 2.0, 2.1, 2.2, 3.0, and 3.1
+Supports Django Versions: 2.0, 2.1, 2.2, 3.0, and 3.1.
 
 ## Documentation
 
