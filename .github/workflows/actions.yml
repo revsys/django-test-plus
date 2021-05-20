@@ -83,7 +83,7 @@ jobs:
           python -m pip install -U pip
 
       - name: Install Django ${{ matrix.django-version }}
-        if: ${{ matrix.drf-version == 'false' }}
+        if: ${{ matrix.drf-version == '' }}
         run: |
           python -m pip install "Django~=${{ matrix.django-version }}.0"
 
