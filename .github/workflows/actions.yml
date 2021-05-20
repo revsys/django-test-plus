@@ -89,9 +89,6 @@ jobs:
       - run: |
           pytest .
 
-      # - run: |
-      #     python setup.py test
-
       - name: Lint with flake8
         run: |
           flake8 . --ignore=E501,E402
