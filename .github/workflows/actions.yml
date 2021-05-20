@@ -66,8 +66,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: actions/cache@v2
-        name: Configure pip caching
+      - name: Configure pip caching
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-pip-${{ hashFiles('**/requirements.in') }}
