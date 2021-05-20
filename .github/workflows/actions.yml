@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: true
+      PYTHONPATH: test_project
     strategy:
       # By default, GitHub will maximize the number of jobs run in parallel
       # depending on the available runners on GitHub-hosted virtual machines.
