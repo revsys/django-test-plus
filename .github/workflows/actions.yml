@@ -35,7 +35,7 @@ jobs:
             django-version: "2.0"
           - python-version: "3.8"
             django-version: "2.1"
-          # # Python 3.9 is compatible with Django 3.1+
+          # Python 3.9 is compatible with Django 3.1+
           - python-version: "3.9"
             django-version: "2.0"
           - python-version: "3.9"
@@ -44,7 +44,7 @@ jobs:
             django-version: "2.2"
           - python-version: "3.9"
             django-version: "3.0"
-          # # Python 3.10 is compatible with Django 3.1+
+          # Python 3.10 is compatible with Django 3.1+
           - python-version: "3.10-dev"
             django-version: "2.0"
           - python-version: "3.10-dev"
@@ -77,9 +77,11 @@ jobs:
           python -m pip install -r requirements.in
 
       - run: |
-          pip list
+          python setup.py test
 
       - run: |
-          python setup.py test
-          # pytest
-          # flake8 . --ignore=E501,E402
+          pytest .
+
+      - name: Lint with flake8
+        run: |
+          flake8 . --ignore=E501,E402
