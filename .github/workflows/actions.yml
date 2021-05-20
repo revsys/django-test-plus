@@ -28,8 +28,6 @@ jobs:
         exclude:
           # Python 3.8 is compatible with Django 2.2+
           - python-version: "3.8"
-            django-version: "1.11"
-          - python-version: "3.8"
             django-version: "2.0"
           - python-version: "3.8"
             django-version: "2.1"
@@ -82,4 +80,6 @@ jobs:
           pip list
 
       - run: |
-          pytest .
+          python setup.py test
+          # pytest
+          # flake8 . --ignore=E501,E402
