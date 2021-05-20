@@ -86,15 +86,11 @@ jobs:
         run: |
           python -m pip install -e ".[test]"
 
-      # - name: Install our local requirements
-      #   run: |
-      #     python -m pip install -r requirements.in
-
       - run: |
           pytest .
 
-      - run: |
-          python setup.py test
+      # - run: |
+      #     python setup.py test
 
       - name: Lint with flake8
         run: |
