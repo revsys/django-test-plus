@@ -82,15 +82,19 @@ jobs:
         run: |
           python -m pip install "Django~=${{ matrix.django-version }}.0"
 
-      - name: Install our local requirements
+      - name: Install dependencies
         run: |
-          python -m pip install -r requirements.in
+          python -m pip install -e ".[test]"
 
-      - run: |
-          python setup.py test
+      # - name: Install our local requirements
+      #   run: |
+      #     python -m pip install -r requirements.in
 
       - run: |
           pytest .
+
+      - run: |
+          python setup.py test
 
       - name: Lint with flake8
         run: |
