@@ -70,9 +70,9 @@ jobs:
         name: Configure pip caching
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.in') }}
+          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-pip-${{ hashFiles('**/requirements.in') }}
           restore-keys: |
-            ${{ runner.os }}-pip-
+            ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-pip-
 
       - name: Upgrade pip version
         run: |
