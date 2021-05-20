@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-pip-${{ hashFiles('**/requirements.in') }}
+          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-pip-${{ hashFiles('**/setup.cfg') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-pip-
 
