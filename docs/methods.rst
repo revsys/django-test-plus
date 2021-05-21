@@ -148,7 +148,7 @@ With django-test-plus you can shorten that to be::
         response = self.get('my-url-name')
         self.assert_http_200_ok(response)
 
-Django-test-plus provides a majority of the status codes assertions for you. The status assertions can be found in their own `mixin <https://github.com/revsys/django-test-plus/blob/master/test_plus/status_codes.py>`__ and should be searchable if you're using an IDE like pycharm. It should be noted that in previous versions, django-test-plus had assertion methods in the pattern of ``response_###()``, which are still available but have since been deprecated. See below for a list of those methods. 
+Django-test-plus provides a majority of the status codes assertions for you. The status assertions can be found in their own `mixin <https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py>`__ and should be searchable if you're using an IDE like pycharm. It should be noted that in previous versions, django-test-plus had assertion methods in the pattern of ``response_###()``, which are still available but have since been deprecated. See below for a list of those methods.
 
 Each of the assertion methods takes an optional Django test client ``response`` and a string ``msg`` argument that, if specified, is used as the error message when a failure occurs. The methods, ``assert_http_301_moved_permanently`` and ``assert_http_302_found`` also take an optional ``url`` argument that if passed, will check to make sure the ``response.url`` matches.
 

@@ -228,7 +228,7 @@ def test_better_status(self):
 ```
 
 Django-test-plus provides a majority of the status codes assertions for you. The status assertions
-can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/master/test_plus/status_codes.py)
+can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py)
 and should be searchable if you're using an IDE like pycharm. It should be noted that in previous
 versions, django-test-plus had assertion methods in the pattern of `response_###()`, which are still
 available but have since been deprecated. See below for a list of those methods. 

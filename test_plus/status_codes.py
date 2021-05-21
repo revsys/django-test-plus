@@ -5,7 +5,7 @@ class StatusCodeAssertionMixin(object):
     methods, which could be deprecated at some point. The assert methods contain both the number and the status name
     slug so that people that remember them best by their numeric code and people that remember best by their name will
     be able to easily find the assertion they need. This was also directly patterned off of what the `Django Rest
-    Framework uses <https://github.com/encode/django-rest-framework/blob/master/rest_framework/status.py>`_.
+    Framework uses <https://github.com/encode/django-rest-framework/blob/main/rest_framework/status.py>`_.
     """
 
     def _assert_http_status(self, status_code, response=None, msg=None, url=None):
