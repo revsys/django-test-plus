@@ -22,11 +22,6 @@ faker==8.2.0
     # via factory-boy
 flake8==3.9.2
     # via -r requirements.in
-importlib-metadata==4.0.1
-    # via
-    #   flake8
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 mccabe==0.6.1
@@ -47,7 +42,7 @@ pyparsing==2.4.7
     # via packaging
 pytest-cov==2.12.0
     # via -r requirements.in
-pytest-django==4.3.0
+pytest-django==4.4.0
     # via -r requirements.in
 pytest-pythonpath==0.7.3
     # via -r requirements.in
@@ -71,9 +66,3 @@ toml==0.10.2
     # via
     #   coverage
     #   pytest
-typing-extensions==3.10.0.0
-    # via
-    #   asgiref
-    #   importlib-metadata
-zipp==3.4.1
-    # via importlib-metadata
