@@ -10,7 +10,7 @@ attrs==21.2.0
     # via pytest
 coverage[toml]==5.5
     # via pytest-cov
-django==3.2.3
+django==3.2.4
     # via
     #   -r requirements.in
     #   djangorestframework
@@ -22,11 +22,6 @@ faker==8.2.0
     # via factory-boy
 flake8==3.9.2
     # via -r requirements.in
-importlib-metadata==4.0.1
-    # via
-    #   flake8
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 mccabe==0.6.1
@@ -71,9 +66,3 @@ toml==0.10.2
     # via
     #   coverage
     #   pytest
-typing-extensions==3.10.0.0
-    # via
-    #   asgiref
-    #   importlib-metadata
-zipp==3.4.1
-    # via importlib-metadata
