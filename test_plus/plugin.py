@@ -1,7 +1,7 @@
 import pytest
 
 from .compat import get_api_client
-from .test import BaseTestCase
+from .test import TestCase as BaseTestCase
 
 
 class TestCase(BaseTestCase):
@@ -13,12 +13,6 @@ class TestCase(BaseTestCase):
     def __init__(self, *args, **kwargs):
         self.last_response = None
         super(TestCase, self).__init__(*args, **kwargs)
-
-    def assertEqual(self, first, second, msg=None):
-        if not msg:
-            msg = "Elements Not Equal"
-
-        assert first == second, msg
 
 
 @pytest.fixture
