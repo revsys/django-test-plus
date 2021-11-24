@@ -78,18 +78,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Configure pip caching
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-${{ matrix.drf-version }}-pip-${{ hashFiles('**/setup.cfg') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.django-version }}-${{ matrix.drf-version }}-pip-
-
-      - name: Upgrade pip version
-        run: |
-          python -m pip install -U pip
+          cache: "pip"
 
       - name: Install Django ${{ matrix.django-version }}
         if: ${{ matrix.drf-version == '' }}
