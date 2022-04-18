@@ -1,7 +1,10 @@
 try:
-    from django.conf.urls import url, include
+    from django.urls import include, re_path as url
 except ImportError:
-    from django.conf.urls.defaults import url, include
+    try:
+        from django.conf.urls import url, include
+    except ImportError:
+        from django.conf.urls.defaults import url, include
 
 from .views import (
     FormErrors, data_1, data_5, needs_login, view_200, view_201, view_204,

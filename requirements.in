@@ -1,4 +1,4 @@
-Django<4.0
+Django
 djangorestframework
 factory-boy
 flake8
@@ -7,3 +7,4 @@ pytest
 pytest-cov
 pytest-django
 pytest-pythonpath
+pytz
