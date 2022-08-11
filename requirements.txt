@@ -10,7 +10,7 @@ attrs==21.2.0
     # via pytest
 coverage[toml]==6.0.1
     # via pytest-cov
-django==3.2.14
+django==3.2.15
     # via
     #   -r requirements.in
     #   djangorestframework
