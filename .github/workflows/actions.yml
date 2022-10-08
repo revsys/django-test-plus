@@ -87,7 +87,7 @@ jobs:
             django-version: "4.0"
           - python-version: "3.7"
             django-version: "4.0"
-          # Django 4.0 is compatible with Python 3.8+
+          # Django 4.1 is compatible with Python 3.8+
           - python-version: "3.6"
             django-version: "4.1"
           - python-version: "3.7"
