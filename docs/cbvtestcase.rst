@@ -87,7 +87,7 @@ TestCase assertion methods work with ``CBVTestCase.get()``.
 
 If you need special request attributes, i.e. 'user', you can create a
 custom Request with RequestFactory, assign to ``request.user``,
-and use that in the ``get()``:
+and use that in the ``get()``::
 
     def test_request_attribute(self):
         request = django.test.RequestFactory().get('/')
@@ -116,7 +116,7 @@ TestCase assertion methods work with ``CBVTestCase.post()``.
 
 If you need special request attributes, i.e. 'user', you can create a
 custom Request with RequestFactory, assign to ``request.user``,
-and use that in the ``post()``:
+and use that in the ``post()``::
 
     def test_request_attribute(self):
         request = django.test.RequestFactory().post('/')
