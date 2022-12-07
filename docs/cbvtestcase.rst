@@ -89,11 +89,11 @@ If you need special request attributes, i.e. 'user', you can create a
 custom Request with RequestFactory, assign to ``request.user``,
 and use that in the ``get()``:
 
-        def test_request_attribute(self):
-            request = django.test.RequestFactory().get('/')
-            request.user = some_user
-            self.get(MyViewClass, request=request, pk=data.pk)
-            self.assertContext('user', some_user)
+    def test_request_attribute(self):
+        request = django.test.RequestFactory().get('/')
+        request.user = some_user
+        self.get(MyViewClass, request=request, pk=data.pk)
+        self.assertContext('user', some_user)
 
 **NOTE:** This method bypasses Django's middleware, and therefore context
 variables created by middleware are not available. If this affects your
@@ -118,11 +118,11 @@ If you need special request attributes, i.e. 'user', you can create a
 custom Request with RequestFactory, assign to ``request.user``,
 and use that in the ``post()``:
 
-        def test_request_attribute(self):
-            request = django.test.RequestFactory().post('/')
-            request.user = some_user
-            self.post(MyViewClass, request=request, pk=self.data.pk, data={})
-            self.assertContext('user', some_user)
+    def test_request_attribute(self):
+        request = django.test.RequestFactory().post('/')
+        request.user = some_user
+        self.post(MyViewClass, request=request, pk=self.data.pk, data={})
+        self.assertContext('user', some_user)
 
 **NOTE:** This method bypasses Django's middleware, and therefore context
 variables created by middleware are not available. If this affects your
