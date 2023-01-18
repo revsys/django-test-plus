@@ -1,3 +1,5 @@
+import json
+
 import django
 
 from distutils.version import LooseVersion
@@ -380,6 +382,28 @@ class APITestCase(TestCase):
     def __init__(self, *args, **kwargs):
         self.client_class = get_api_client()
         super(APITestCase, self).__init__(*args, **kwargs)
+
+    # APITest requests now default to JSON
+    def request(self, method, url_name, *args, **kwargs):
+        data = kwargs.get("data")
+        kwargs["data"] = json.dumps(data) if data is not None else None
+        kwargs["extra"] = {
+            "content_type": "application/json",
+            "HTTP_X_REQUESTED_WITH": "XMLHttpRequest",
+        }
+        return getattr(self, method)(url_name, *args, **kwargs)
+
+    def post(self, url_name, *args, **kwargs):
+        return self.request("post", url_name, *args, **kwargs)
+
+    def get(self, url_name, *args, **kwargs):
+        return self.request("get", url_name, *args, **kwargs)
+
+    def put(self, url_name, *args, **kwargs):
+        return self.request("put", url_name, *args, **kwargs)
+
+    def delete(self, url_name, *args, **kwargs):
+        return self.request("delete", url_name, *args, **kwargs)
 
 
 # Note this class inherits from TestCase defined above.
