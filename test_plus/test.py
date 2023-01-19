@@ -387,10 +387,6 @@ class APITestCase(TestCase):
     def request(self, method, url_name, *args, **kwargs):
         data = kwargs.get("data")
         kwargs["data"] = json.dumps(data) if data is not None else None
-        kwargs["extra"] = {
-            "content_type": "application/json",
-            "HTTP_X_REQUESTED_WITH": "XMLHttpRequest",
-        }
         return getattr(self, method)(url_name, *args, **kwargs)
 
     def post(self, url_name, *args, **kwargs):
