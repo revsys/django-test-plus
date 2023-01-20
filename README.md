@@ -15,9 +15,9 @@ least 3 weeks!
 
 ## Support
 
-Supports: Python 3.6, 3.7, 3.8, 3.9, and 3.10.
+Supports: Python 3.6, 3.7, 3.8, 3.9, 3.10, and 3.11.
 
-Supports Django Versions: 2.0, 2.1, 2.2, 3.0, 3.1. and 3.2.
+Supports Django Versions: 2.0, 2.1, 2.2, 3.0, 3.1, 3.2, 4.0, and 4.1.
 
 ## Documentation
 
@@ -92,7 +92,7 @@ def test_url_reverse(tp_api):
 
 ## Methods
 
-### reverse(url_name, *args, **kwargs)
+### `reverse(url_name, *args, **kwargs)`
 
 When testing views you often find yourself needing to reverse the URL's name. With django-test-plus there is no need for the `from django.core.urlresolvers import reverse` boilerplate. Instead, use:
 
@@ -106,7 +106,7 @@ def test_something(self):
 As you can see our reverse also passes along any args or kwargs you need
 to pass in.
 
-## get(url_name, follow=True, *args, **kwargs)
+## `get(url_name, follow=True, *args, **kwargs)`
 
 Another thing you do often is HTTP get urls. Our `get()` method
 assumes you are passing in a named URL with any args or kwargs necessary
@@ -161,7 +161,7 @@ def test_testplus_get_query(self):
 
 Would GET `/search/?query=testing`.
 
-## post(url_name, data, follow=True, *args, **kwargs)
+## `post(url_name, data, follow=True, *args, **kwargs)`
 
 Our `post()` method takes a named URL, an optional dictionary of data you wish
 to post and any args or kwargs necessary to reverse the url_name.
@@ -175,7 +175,7 @@ def test_post_named_url(self):
 
 *NOTE* Along with the frequently used get and post, we support all of the HTTP verbs such as put, patch, head, trace, options, and delete in the same fashion.
 
-## get_context(key)
+## `get_context(key)`
 
 Often you need to get things out of the template context:
 
@@ -185,7 +185,7 @@ def test_context_data(self):
     slug = self.get_context('slug')
 ```
 
-## assertInContext(key)
+## `assertInContext(key)`
 
 You can ensure a specific key exists in the last response's context by
 using:
@@ -196,7 +196,7 @@ def test_in_context(self):
     self.assertInContext('some-key')
 ```
 
-## assertContext(key, value)
+## `assertContext(key, value)`
 
 We can get context values and ensure they exist, but we can also test
 equality while we're at it. This asserts that key == value:
@@ -207,7 +207,7 @@ def test_in_context(self):
     self.assertContext('some-key', 'expected value')
 ```
 
-## assert_http_###_<status_name>(response, msg=None) - status code checking
+## `assert_http_###_<status_name>(response, msg=None)` - status code checking
 
 Another test you often need to do is check that a response has a certain
 HTTP status code. With Django's default TestCase you would write:
@@ -267,7 +267,7 @@ The `response_###()` methods that are deprecated, but still available for use, i
 
 All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the `assert_http_###_<status_name>()` methods, these methods will use the last response if it's available. 
 
-## get_check_200(url_name, *args, **kwargs)
+## `get_check_200(url_name, *args, **kwargs)`
 
 GETing and checking views return status 200 is a common test. This method makes it more convenient::
 
@@ -319,7 +319,7 @@ You can also pass in user permissions by passing in a string of
 user2 = self.make_user(perms=['myapp.create_widget', 'otherapp.*'])
 ```
 
-## print_form_errors(response_or_form=None)
+## `print_form_errors(response_or_form=None)`
 
 When debugging a failing test for a view with a form, this method helps you
 quickly look at any form errors.
@@ -345,7 +345,7 @@ class MyFormTest(TestCase):
 
 ## Authentication Helpers
 
-### assertLoginRequired(url_name, *args, **kwargs)
+### `assertLoginRequired(url_name, *args, **kwargs)`
 
 This method helps you test that a given named URL requires authorization:
 
@@ -356,7 +356,7 @@ def test_auth(self):
     self.assertLoginRequired('my-restricted-object', slug='something')
 ```
 
-### login context
+### `login()` context
 
 Along with ensuring a view requires login and creating users, the next
 thing you end up doing is logging in as various users to test your
@@ -403,10 +403,10 @@ def test_restrictions(self):
 
 ## Ensuring low query counts
 
-### assertNumQueriesLessThan(number) - context
+### `assertNumQueriesLessThan(number)` - context
 
 Django provides
-[assertNumQueries](https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries)
+[`assertNumQueries`](https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries)
 which is great when your code generates a specific number of
 queries. However, if this number varies due to the nature of your data, with 
 this method you can still test to ensure the code doesn't start producing a ton
@@ -419,7 +419,7 @@ def test_something_out(self):
         self.get('some-view-with-6-queries')
 ```
 
-### assertGoodView(url_name, *args, **kwargs)
+### `assertGoodView(url_name, *args, **kwargs)`
 
 This method does a few things for you. It:
 
@@ -496,7 +496,7 @@ class MyViewTests(CBVTestCase):
 
 ## Methods
 
-### get_instance(cls, initkwargs=None, request=None, *args, **kwargs)
+### `get_instance(cls, initkwargs=None, request=None, *args, **kwargs)`
 
 This core method simplifies the instantiation of your class, giving you
 a way to invoke class methods directly.
@@ -525,7 +525,7 @@ class MyTests(CBVTestCase):
         self.assertEqual(context['answer'], 42)
 ```
 
-### get(cls, initkwargs=None, *args, **kwargs)
+### `get(cls, initkwargs=None, *args, **kwargs)`
 
 Invokes `cls.get()` and returns the response, rendering template if possible.
 Builds on the `CBVTestCase.get_instance()` foundation.
@@ -544,7 +544,7 @@ TestCase assertion methods work with `CBVTestCase.get()`.
 variables created by middleware are not available. If this affects your
 template/context testing, you should use TestCase instead of CBVTestCase.
 
-### post(cls, data=None, initkwargs=None, *args, **kwargs)
+### `post(cls, data=None, initkwargs=None, *args, **kwargs)`
 
 Invokes `cls.post()` and returns the response, rendering template if possible.
 Builds on the `CBVTestCase.get_instance()` foundation.
@@ -564,7 +564,7 @@ TestCase assertion methods work with `CBVTestCase.post()`.
 variables created by middleware are not available. If this affects your
 template/context testing you should use TestCase instead of CBVTestCase.
 
-### get_check_200(cls, initkwargs=None, *args, **kwargs)
+### `get_check_200(cls, initkwargs=None, *args, **kwargs)`
 
 Works just like `TestCase.get_check_200()`.
 Caller must provide a view class instead of a URL name or path parameter.
@@ -572,7 +572,7 @@ Caller must provide a view class instead of a URL name or path parameter.
 All test_plus TestCase side-effects are honored and all test_plus
 TestCase assertion methods work with `CBVTestCase.post()`.
 
-### assertGoodView(cls, initkwargs=None, *args, **kwargs)
+### `assertGoodView(cls, initkwargs=None, *args, **kwargs)`
 
 Works just like `TestCase.assertGoodView()`.
 Caller must provide a view class instead of a URL name or path parameter.
@@ -582,11 +582,16 @@ TestCase assertion methods work with `CBVTestCase.post()`.
 
 ## Development
 
-To work on django-test-plus itself, clone this repository and run the following commands:
+To work on django-test-plus itself, clone this repository and run the following command:
 
 ```shell
-$ pip install -r requirements.txt
-$ pip install -e .
+$ pip install -e .[test]
+```
+
+## To run all tests:
+
+```shell
+$ nox
 ```
 
 **NOTE**: You will also need to ensure that the `test_project` directory, located
