@@ -36,24 +36,8 @@ jobs:
           - "4.1"
         drf-version:
           - ""
-          - "3.11"
-          - "3.12"
-          - "3.13"
-          - "3.14"
+          - "3.14"  # only testing latest version for now
         exclude:
-          # DRF 3.11 and 3.12 is not compatible with Django 2.0 and 2.1
-          - django-version: "2.0"
-            drf-version: "3.11"
-          - django-version: "2.1"
-            drf-version: "3.11"
-          - django-version: "2.0"
-            drf-version: "3.12"
-          - django-version: "2.1"
-            drf-version: "3.12"
-          - django-version: "2.0"
-            drf-version: "3.13"
-          - django-version: "2.1"
-            drf-version: "3.13"
           # DRF 3.14 is not compatible with Django 2.0, 2.1, and 2.2
           - django-version: "2.0"
             drf-version: "3.14"
