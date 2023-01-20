@@ -585,6 +585,7 @@ TestCase assertion methods work with `CBVTestCase.post()`.
 To work on django-test-plus itself, clone this repository and run the following command:
 
 ```shell
+$ pip install -e .
 $ pip install -e .[test]
 ```
 
