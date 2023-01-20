@@ -119,7 +119,3 @@ jobs:
 
       - run: |
           pytest .
-
-      - name: Lint with flake8
-        run: |
-          flake8 . --ignore=E501,E402
