@@ -636,8 +636,8 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         self.post('view-json', data=data, extra={'format': 'json'})
         self.response_200()
 
-# pytest tests
 
+# pytest tests
 def test_tp_loads(tp):
     from django.test import Client
     assert isinstance(tp.client, Client)
