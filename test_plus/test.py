@@ -385,21 +385,14 @@ class APITestCase(TestCase):
 
     # APITest requests now default to JSON
     def request(self, method, url_name, *args, **kwargs):
-        data = kwargs.get("data")
+        data = kwargs.pop("data", {})
+        extra = kwargs.pop("extra", {})
         kwargs["data"] = json.dumps(data) if data is not None else None
-        return getattr(self, method)(url_name, *args, **kwargs)
-
-    def post(self, url_name, *args, **kwargs):
-        return self.request("post", url_name, *args, **kwargs)
-
-    def get(self, url_name, *args, **kwargs):
-        return self.request("get", url_name, *args, **kwargs)
-
-    def put(self, url_name, *args, **kwargs):
-        return self.request("put", url_name, *args, **kwargs)
-
-    def delete(self, url_name, *args, **kwargs):
-        return self.request("delete", url_name, *args, **kwargs)
+        if extra and "format" in extra:
+            extra.pop("format")
+        extra.update({"content_type": "application/json"})
+        kwargs["extra"] = extra
+        return super().request(method, url_name, *args, **kwargs)
 
 
 # Note this class inherits from TestCase defined above.
