@@ -628,9 +628,13 @@ class TestAPITestCaseDRFInstalled(APITestCase):
 
     def test_post(self):
         data = {'testing': {'prop': 'value'}}
-        self.post('view-json', data=data, extra={'format': 'json'})
+        self.post('view-json', data=data)
         self.response_200()
 
+    def test_post_with_format(self):
+        data = {'testing': {'prop': 'value'}}
+        self.post('view-json', data=data, extra={'format': 'json'})
+        self.response_200()
 
 # pytest tests
 
