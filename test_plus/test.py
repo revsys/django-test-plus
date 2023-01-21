@@ -388,9 +388,27 @@ class APITestCase(TestCase):
         data = kwargs.pop("data", {})
         extra = kwargs.pop("extra", {})
         kwargs["data"] = json.dumps(data) if data is not None else None
+
         if extra and "format" in extra:
-            extra.pop("format")
-        extra.update({"content_type": "application/json"})
+            format = extra.pop("format")
+        else:
+            format = None
+
+        if extra and "content_type" in extra:
+            content_type = extra.pop("content_type")
+        else:
+            content_type = None
+
+        # DRF wants either `format` or `content_type` but not both
+        if format and content_type:
+            extra.update({"content_type": "application/json"})
+        elif content_type:
+            extra.update({"content_type": "application/json"})
+        elif format:
+            extra.update({"format": "json"})
+        else:
+            extra.update({"content_type": "application/json"})
+
         kwargs["extra"] = extra
         return super().request(method, url_name, *args, **kwargs)
 
