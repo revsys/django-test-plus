@@ -400,11 +400,7 @@ class APITestCase(TestCase):
             content_type = None
 
         # DRF wants either `format` or `content_type` but not both
-        if format and content_type:
-            extra.update({"content_type": "application/json"})
-        elif content_type:
-            extra.update({"content_type": "application/json"})
-        elif format:
+        if format and content_type is None:
             extra.update({"format": "json"})
         else:
             extra.update({"content_type": "application/json"})
