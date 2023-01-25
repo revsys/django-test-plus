@@ -628,12 +628,30 @@ class TestAPITestCaseDRFInstalled(APITestCase):
 
     def test_post(self):
         data = {'testing': {'prop': 'value'}}
-        self.post('view-json', data=data, extra={'format': 'json'})
+        response = self.post('view-json', data=data)
+        assert response["content-type"] == "application/json"
+        self.response_200()
+
+    def test_post_with_format(self):
+        data = {'testing': {'prop': 'value'}}
+        response = self.post('view-json', data=data, extra={'format': 'json'})
+        assert response["content-type"] == "application/json"
+        self.response_200()
+
+    def test_post_with_content_type(self):
+        data = {'testing': {'prop': 'value'}}
+        response = self.post('view-json', data=data, extra={'content_type': 'application/json'})
+        assert response["content-type"] == "application/json"
+        self.response_200()
+
+    def test_post_with_format_and_content_type(self):
+        data = {'testing': {'prop': 'value'}}
+        response = self.post('view-json', data=data, extra={'format': 'json', 'content_type': 'application/json'})
+        assert response["content-type"] == "application/json"
         self.response_200()
 
 
 # pytest tests
-
 def test_tp_loads(tp):
     from django.test import Client
     assert isinstance(tp.client, Client)

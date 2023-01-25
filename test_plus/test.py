@@ -1,3 +1,5 @@
+import json
+
 import django
 
 from distutils.version import LooseVersion
@@ -380,6 +382,31 @@ class APITestCase(TestCase):
     def __init__(self, *args, **kwargs):
         self.client_class = get_api_client()
         super(APITestCase, self).__init__(*args, **kwargs)
+
+    # APITest requests now default to JSON
+    def request(self, method, url_name, *args, **kwargs):
+        data = kwargs.pop("data", {})
+        extra = kwargs.pop("extra", {})
+        kwargs["data"] = json.dumps(data) if data is not None else None
+
+        if extra and "format" in extra:
+            format = extra.pop("format")
+        else:
+            format = None
+
+        if extra and "content_type" in extra:
+            content_type = extra.pop("content_type")
+        else:
+            content_type = None
+
+        # DRF wants either `format` or `content_type` but not both
+        if format and content_type is None:
+            extra.update({"format": "json"})
+        else:
+            extra.update({"content_type": "application/json"})
+
+        kwargs["extra"] = extra
+        return super().request(method, url_name, *args, **kwargs)
 
 
 # Note this class inherits from TestCase defined above.
