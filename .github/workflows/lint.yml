@@ -1,4 +1,4 @@
-name: CI
+name: Lint
 
 on:
   pull_request:
@@ -13,13 +13,14 @@ jobs:
       PYTHONDONTWRITEBYTECODE: true
       PYTHONPATH: test_project
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-          # cache: "pip"
+          cache: "pip"
+          cache-dependency-path: '**/setup.cfg'
 
       - name: Install dependencies
         run: |
