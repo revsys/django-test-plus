@@ -1,5 +1,13 @@
 # Changes
 
+## Upcoming version
+
+  - Fix issue with User creation helper when User model doesn't have a username field
+
+## version 2.2.1 - October 12, 2022
+
+  - Add Django 4.2 support
+
 ## version 2.2.0 - May 19th, 2021
 
   - Add support for Django 3.2.
