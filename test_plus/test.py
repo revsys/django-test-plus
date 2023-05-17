@@ -323,12 +323,6 @@ class BaseTestCase(StatusCodeAssertionMixin):
 
         return response
 
-    def assertInContext(self, key):
-        if self.last_response is not None:
-            self.assertTrue(key in self.last_response.context)
-        else:
-            raise NoPreviousResponse("There isn't a previous response to query")
-
     def assertResponseContains(self, text, response=None, html=True, **kwargs):
         """ Convenience wrapper for assertContains """
         response = self._which_response(response)
@@ -361,6 +355,9 @@ class BaseTestCase(StatusCodeAssertionMixin):
             return self.last_response.context[key]
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
+
+    def assertInContext(self, key):
+        return self.get_context(key)
 
     def assertContext(self, key, value):
         self.assertEqual(self.get_context(key), value)
