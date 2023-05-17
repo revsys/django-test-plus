@@ -17,3 +17,4 @@ Jeff Triplett <jeff.triplett@gmail.com>
 Fábio C. Barrionuevo da Lu
 Lacey Williams Henschel <laceynwilliams@gmail.com>
 Anton - https://github.com/singleton11
+Natalia Bidart - https://github.com/nessita
