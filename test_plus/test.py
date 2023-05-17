@@ -257,22 +257,17 @@ class BaseTestCase(StatusCodeAssertionMixin):
         Build a user with <username> and password of 'password' for testing
         purposes.
         """
-        User = get_user_model()
-
         if cls.user_factory:
-            USERNAME_FIELD = getattr(
-                cls.user_factory._meta.model, 'USERNAME_FIELD', 'username')
-            test_user = cls.user_factory(**{
-                USERNAME_FIELD: username,
-            })
-            test_user.set_password(password)
-            test_user.save()
+            User = cls.user_factory._meta.model
+            user_factory = cls.user_factory
         else:
-            test_user = User.objects.create_user(
-                username,
-                '{0}@example.com'.format(username),
-                password,
-            )
+            User = get_user_model()
+            user_factory = User.objects.create_user
+
+        USERNAME_FIELD = getattr(User, 'USERNAME_FIELD', 'username')
+        test_user = user_factory(**{USERNAME_FIELD: username})
+        test_user.set_password(password)
+        test_user.save()
 
         if perms:
             from django.contrib.auth.models import Permission
