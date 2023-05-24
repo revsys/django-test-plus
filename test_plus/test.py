@@ -29,9 +29,10 @@ CAPTURE = True
 
 
 class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
-    def __init__(self, test_case, num, connection):
+    def __init__(self, test_case, num, connection, verbose=False):
         self.test_case = test_case
         self.num = num
+        self.verbose = verbose
         super(_AssertNumQueriesLessThanContext, self).__init__(connection)
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -39,11 +40,11 @@ class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
         if exc_type is not None:
             return
         executed = len(self)
-        self.test_case.assertTrue(
-            executed < self.num, "%d queries executed, expected less than %d" % (
-                executed, self.num
-            )
-        )
+        msg = "%d queries executed, expected less than %d" % (executed, self.num)
+        if self.verbose:
+            queries = "\n\n".join(q["sql"] for q in self.captured_queries)
+            msg += ". Executed queries were:\n\n%s" % queries
+        self.test_case.assertLess(executed, self.num, msg)
 
 
 class login(object):
@@ -292,16 +293,17 @@ class BaseTestCase(StatusCodeAssertionMixin):
     def assertNumQueriesLessThan(self, num, *args, **kwargs):
         func = kwargs.pop('func', None)
         using = kwargs.pop("using", DEFAULT_DB_ALIAS)
+        verbose = kwargs.pop("verbose", False)
         conn = connections[using]
 
-        context = _AssertNumQueriesLessThanContext(self, num, conn)
+        context = _AssertNumQueriesLessThanContext(self, num, conn, verbose=verbose)
         if func is None:
             return context
 
         with context:
             func(*args, **kwargs)
 
-    def assertGoodView(self, url_name, *args, **kwargs):
+    def assertGoodView(self, url_name, *args, verbose=False, **kwargs):
         """
         Quick-n-dirty testing of a given url name.
         Ensures URL returns a 200 status and that generates less than 50
@@ -309,18 +311,12 @@ class BaseTestCase(StatusCodeAssertionMixin):
         """
         query_count = kwargs.pop('test_query_count', 50)
 
-        with self.assertNumQueriesLessThan(query_count):
+        with self.assertNumQueriesLessThan(query_count, verbose=verbose):
             response = self.get(url_name, *args, **kwargs)
 
         self.response_200(response)
 
         return response
-
-    def assertInContext(self, key):
-        if self.last_response is not None:
-            self.assertTrue(key in self.last_response.context)
-        else:
-            raise NoPreviousResponse("There isn't a previous response to query")
 
     def assertResponseContains(self, text, response=None, html=True, **kwargs):
         """ Convenience wrapper for assertContains """
@@ -350,16 +346,16 @@ class BaseTestCase(StatusCodeAssertionMixin):
 
     def get_context(self, key):
         if self.last_response is not None:
-            self.assertTrue(key in self.last_response.context)
+            self.assertIn(key, self.last_response.context)
             return self.last_response.context[key]
         else:
             raise NoPreviousResponse("There isn't a previous response to query")
 
+    def assertInContext(self, key):
+        return self.get_context(key)
+
     def assertContext(self, key, value):
-        if self.last_response is not None:
-            self.assertEqual(self.last_response.context[key], value)
-        else:
-            raise NoPreviousResponse("There isn't a previous response to query")
+        self.assertEqual(self.get_context(key), value)
 
 
 class TestCase(DjangoTestCase, BaseTestCase):
