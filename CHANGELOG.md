@@ -1,8 +1,10 @@
 # Changes
 
-## Upcoming version
+## Version 2.2.2 - June 27, 2023
 
   - Fix issue with User creation helper when User model doesn't have a username field
+  - Improve assertNumQueriesLessThan
+  - Add assertInContext
 
 ## version 2.2.1 - October 12, 2022
 
