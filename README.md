@@ -13,6 +13,10 @@ an attempt to cut down on some of that when writing Django tests. We
 guarantee it will increase the time before you get carpal tunnel by at
 least 3 weeks!
 
+If you would like to get started testing your Django apps or improve how your
+team is testing we offer [TestStart](https://www.revsys.com/teststart/)
+to help your team dramatically improve your productivity.
+
 ## Support
 
 Supports: Python 3.6, 3.7, 3.8, 3.9, 3.10, and 3.11.
@@ -63,7 +67,7 @@ class MyViewTests(TestCase):
     ...
 ```
 
-This import, which is similar to the way you would import Django's TestCase, 
+This import, which is similar to the way you would import Django's TestCase,
 is also valid:
 
 ```python
@@ -232,7 +236,7 @@ Django-test-plus provides a majority of the status codes assertions for you. The
 can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py)
 and should be searchable if you're using an IDE like pycharm. It should be noted that in previous
 versions, django-test-plus had assertion methods in the pattern of `response_###()`, which are still
-available but have since been deprecated. See below for a list of those methods. 
+available but have since been deprecated. See below for a list of those methods.
 
 Each of the assertion methods takes an optional Django test client `response` and a string `msg` argument
 that, if specified, is used as the error message when a failure occurs. The methods,
@@ -250,22 +254,22 @@ def test_status(self):
 
 Which is a bit shorter.
 
-The `response_###()` methods that are deprecated, but still available for use, include: 
+The `response_###()` methods that are deprecated, but still available for use, include:
 
 - `response_200()`
-- `response_201()` 
-- `response_204()` 
+- `response_201()`
+- `response_204()`
 - `response_301()`
-- `response_302()` 
+- `response_302()`
 - `response_400()`
-- `response_401()` 
+- `response_401()`
 - `response_403()`
-- `response_404()` 
+- `response_404()`
 - `response_405()`
 - `response_409()`
 - `response_410()`
 
-All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the `assert_http_###_<status_name>()` methods, these methods will use the last response if it's available. 
+All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the `assert_http_###_<status_name>()` methods, these methods will use the last response if it's available.
 
 ## `get_check_200(url_name, *args, **kwargs)`
 
@@ -408,7 +412,7 @@ def test_restrictions(self):
 Django provides
 [`assertNumQueries`](https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries)
 which is great when your code generates a specific number of
-queries. However, if this number varies due to the nature of your data, with 
+queries. However, if this number varies due to the nature of your data, with
 this method you can still test to ensure the code doesn't start producing a ton
 more queries than you expect:
 
@@ -605,5 +609,3 @@ If you have a question about this project, please open a GitHub issue. If you lo
 <a href="https://revsys.com?utm_medium=github&utm_source=django-test-plus"><img src="https://pbs.twimg.com/profile_images/915928618840285185/sUdRGIn1_400x400.jpg" height="50" /></a>
 <a href="https://twitter.com/revsys"><img src="https://cdn1.iconfinder.com/data/icons/new_twitter_icon/256/bird_twitter_new_simple.png" height="43" /></a>
 <a href="https://www.facebook.com/revsysllc/"><img src="https://cdn3.iconfinder.com/data/icons/picons-social/57/06-facebook-512.png" height="50" /></a>
-<a href="https://github.com/revsys/"><img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" height="53" /></a>
-<a href="https://gitlab.com/revsys"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/GitLab_Logo.svg/2000px-GitLab_Logo.svg.png" height="44" /></a>
