@@ -60,10 +60,19 @@ class TestPlusUserFactoryOption(TestCase):
     def test_make_user_factory(self):
         u1 = self.make_user('factory')
         self.assertEqual(u1.username, 'factory')
+        self.assertEqual(u1.email, 'user1@example.com')
 
     def test_invalid_perms_for_user(self):
         with self.assertRaises(ImproperlyConfigured):
             self.make_user(perms=['fake'])
+
+
+class TestMakeUser(TestCase):
+
+    def test_make_user(self):
+        u1 = self.make_user()
+        self.assertEqual(u1.username, 'testuser')
+        self.assertEqual(u1.email, 'testuser@example.com')
 
 
 class TestPlusViewTests(TestCase):
