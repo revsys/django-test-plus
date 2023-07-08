@@ -83,8 +83,12 @@ def view_json(request):
     if not ctype.startswith('application/json'):
         raise ValueError("Request's content-type should be 'application/json'. Got '{}' instead.".format(ctype))
 
-    data = json.loads(request.body.decode('utf-8'))
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        return HttpResponse(json.dumps(data), content_type='application/json')
+
+    return HttpResponse('', content_type='application/json')
+
 
 
 @login_required
