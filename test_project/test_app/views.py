@@ -79,11 +79,10 @@ def view_redirect(request):
 
 
 def view_json(request):
-    ctype = request.META['CONTENT_TYPE']
-    if not ctype.startswith('application/json'):
-        raise ValueError("Request's content-type should be 'application/json'. Got '{}' instead.".format(ctype))
-
     if request.method == 'POST':
+        ctype = request.META['CONTENT_TYPE']
+        if not ctype.startswith('application/json'):
+            raise ValueError("Request's content-type should be 'application/json'. Got '{}' instead.".format(ctype))
         data = json.loads(request.body.decode('utf-8'))
         return HttpResponse(json.dumps(data), content_type='application/json')
 
