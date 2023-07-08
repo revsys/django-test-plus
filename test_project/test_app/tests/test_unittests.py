@@ -650,6 +650,12 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         assert response["content-type"] == "application/json"
         self.response_200()
 
+    def test_get_with_content_type(self):
+        data = {'testing': {'prop': 'value'}}
+        response = self.get('view-json', data=data, extra={'content_type': 'application/json'})
+        assert response["content-type"] == "application/json"
+        self.response_200()
+
 
 # pytest tests
 def test_tp_loads(tp):
