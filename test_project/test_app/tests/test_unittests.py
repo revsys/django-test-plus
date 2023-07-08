@@ -1,4 +1,5 @@
 import re
+import uuid
 
 import django
 import factory
@@ -650,9 +651,21 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         assert response["content-type"] == "application/json"
         self.response_200()
 
+    def test_post_with_non_primitive_data_type(self):
+        data = {"uuid": uuid.uuid4()}
+        response = self.post('view-json', data=data)
+        assert response["content-type"] == "application/json"
+        self.response_200()
+
     def test_get_with_content_type(self):
         data = {'testing': {'prop': 'value'}}
         response = self.get('view-json', data=data, extra={'content_type': 'application/json'})
+        assert response["content-type"] == "application/json"
+        self.response_200()
+
+    def test_get_with_non_primitive_data_type(self):
+        data = {"uuid": uuid.uuid4()}
+        response = self.get('view-json', data=data)
         assert response["content-type"] == "application/json"
         self.response_200()
 
