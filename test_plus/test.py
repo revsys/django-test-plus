@@ -266,8 +266,8 @@ class BaseTestCase(StatusCodeAssertionMixin):
             user_factory = User.objects.create_user
 
         USERNAME_FIELD = getattr(User, 'USERNAME_FIELD', 'username')
-        EMAIL_FIELD = getattr(User, 'EMAIL_FIELD', None)
         user_data = {USERNAME_FIELD: username}
+        EMAIL_FIELD = getattr(User, 'EMAIL_FIELD', None)
         if EMAIL_FIELD is not None and cls.user_factory is None:
             user_data[EMAIL_FIELD] = '{}@example.com'.format(username)
         test_user = user_factory(**user_data)
