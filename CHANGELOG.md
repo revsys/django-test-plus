@@ -1,5 +1,9 @@
 # Changes
 
+## Version 2.2.3 - July 11th, 2023
+
+  - Fix bug where email addresses were not created by make_user()
+
 ## Version 2.2.2 - June 27, 2023
 
   - Fix issue with User creation helper when User model doesn't have a username field
