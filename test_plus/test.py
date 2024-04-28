@@ -2,7 +2,10 @@ import json
 
 import django
 
-from distutils.version import LooseVersion
+try:
+    from packaging.version import parse as parse_version
+except ImportError:
+    from distutils.version import LooseVersion as parse_version
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -157,7 +160,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
         return self.request('head', url_name, *args, **kwargs)
 
     def trace(self, url_name, *args, **kwargs):
-        if LooseVersion(django.get_version()) >= LooseVersion('1.8.2'):
+        if parse_version(django.get_version()) >= parse_version('1.8.2'):
             return self.request('trace', url_name, *args, **kwargs)
         else:
             raise LookupError("client.trace is not available for your version of django. Please\
