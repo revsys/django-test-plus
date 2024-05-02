@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m uv
+          python -m pip install uv
           python -m uv pip install --system -e "."
           python -m uv pip install --system -e ".[test]"
 
