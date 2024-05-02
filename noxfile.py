@@ -1,15 +1,18 @@
 import nox
 
-DJANGO_VERSIONS = ["2.2", "3.2", "4.1", "4.2"]
+DJANGO_VERSIONS = ["2.2", "3.2", "4.2", "5.0"]
 DRF_VERSIONS = ["3.11", "3.12", "3.13", "3.14"]
-PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
+PYTHON_VERSIONS = ["3.10", "3.11", "3.12"]
 
 INVALID_PYTHON_DJANGO_SESSIONS = [
     ("3.11", "3.2"),
+    ("3.12", "2.2"),
+    ("3.12", "3.2"),
+    ("3.12", "3.2"),
 ]
 
 
-@nox.session(python=PYTHON_VERSIONS, tags=["django"])
+@nox.session(python=PYTHON_VERSIONS, tags=["django"], venv_backend="uv")
 @nox.parametrize("django", DJANGO_VERSIONS)
 def tests(session: nox.Session, django: str) -> None:
     if (session.python, django) in INVALID_PYTHON_DJANGO_SESSIONS:
@@ -19,7 +22,7 @@ def tests(session: nox.Session, django: str) -> None:
     session.run("pytest", *session.posargs)
 
 
-@nox.session(python=["3.10"], tags=["drf"])
+@nox.session(python=["3.10"], tags=["drf"], venv_backend="uv")
 @nox.parametrize("django", ["3.2"])
 @nox.parametrize("drf", DRF_VERSIONS)
 def tests_drf(session: nox.Session, django: str, drf: str) -> None:

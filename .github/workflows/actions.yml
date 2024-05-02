@@ -25,11 +25,12 @@ jobs:
           - "3.9"
           - "3.10"
           - "3.11"
+          - "3.12"
         django-version:
           - "2.2"  # LTS
           - "3.2"  # LTS
-          - "4.1"
           - "4.2"  # LTS
+          - "5.0"
         drf-version:
           - ""
           - "3.14"  # only testing latest version for now
@@ -48,21 +49,25 @@ jobs:
             django-version: "2.2"
           - python-version: "3.11"
             django-version: "3.2"
-          # Django 4.0 is compatible with Python 3.8+
-          - python-version: "3.6"
-            django-version: "4.0"
-          - python-version: "3.7"
-            django-version: "4.0"
-          # Django 4.1 is compatible with Python 3.8+
-          - python-version: "3.6"
-            django-version: "4.1"
-          - python-version: "3.7"
-            django-version: "4.1"
+          # Python 3.11 is compatible with Django 4.2+
+          - python-version: "3.12"
+            django-version: "2.2"
+          - python-version: "3.12"
+            django-version: "3.2"
           # Django 4.2 is compatible with Python 3.8+
           - python-version: "3.6"
             django-version: "4.2"
           - python-version: "3.7"
             django-version: "4.2"
+          # Django 5.0 is compatible with Python 3.10+
+          - python-version: "3.6"
+            django-version: "5.0"
+          - python-version: "3.7"
+            django-version: "5.0"
+          - python-version: "3.8"
+            django-version: "5.0"
+          - python-version: "3.9"
+            django-version: "5.0"
 
     steps:
       - uses: actions/checkout@v3
@@ -74,19 +79,23 @@ jobs:
           cache: "pip"
           cache-dependency-path: '**/setup.cfg'
 
+      - name: Install dependencies
+        run: |
+          python -m pip install uv
+
       - name: Install Django ${{ matrix.django-version }}
         if: ${{ matrix.drf-version == '' }}
         run: |
-          python -m pip install "Django~=${{ matrix.django-version }}.0"
+          python -m uv pip install --system "Django~=${{ matrix.django-version }}.0"
 
       - name: Install DRF ${{ matrix.drf-version }} and Django ${{ matrix.django-version }}
         if: ${{ matrix.drf-version }}
         run: |
-          python -m pip install pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django~=${{ matrix.django-version }}.0"
+          python -m uv pip install --system pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django~=${{ matrix.django-version }}.0"
 
       - name: Install dependencies
         run: |
-          python -m pip install -e ".[test]"
+          python -m uv pip install --system -e ".[test]"
 
       - run: |
           pytest .
