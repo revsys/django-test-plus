@@ -2,10 +2,11 @@ import nox
 
 DJANGO_VERSIONS = ["2.2", "3.2", "4.1", "4.2"]
 DRF_VERSIONS = ["3.11", "3.12", "3.13", "3.14"]
-PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
+PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 INVALID_PYTHON_DJANGO_SESSIONS = [
     ("3.11", "3.2"),
+    ("3.12", "3.2"),
 ]
 
 
