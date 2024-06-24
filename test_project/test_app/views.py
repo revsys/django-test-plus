@@ -89,7 +89,6 @@ def view_json(request):
     return HttpResponse('', content_type='application/json')
 
 
-
 @login_required
 def needs_login(request):
     return HttpResponse('', status=200)
