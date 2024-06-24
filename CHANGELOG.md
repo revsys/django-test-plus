@@ -1,5 +1,9 @@
 # Changes
 
+## Version 2.2.4 - June 24th, 2024
+
+  - Fix bug with APITest case 
+
 ## Version 2.2.3 - July 11th, 2023
 
   - Fix bug where email addresses were not created by make_user()
