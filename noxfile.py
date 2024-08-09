@@ -15,6 +15,7 @@ INVALID_PYTHON_DJANGO_SESSIONS = [
 nox.options.default_venv_backend = "uv|venv"
 nox.options.reuse_existing_virtualenvs = True
 
+
 @nox.session(python=PYTHON_VERSIONS, tags=["django"], venv_backend="uv")
 @nox.parametrize("django", DJANGO_VERSIONS)
 def tests(session: nox.Session, django: str) -> None:
