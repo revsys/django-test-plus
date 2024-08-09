@@ -34,32 +34,3 @@ def tests_drf(session: nox.Session, django: str, drf: str) -> None:
     session.install(f"django~={django}")
     session.install(f"djangorestframework~={drf}")
     session.run("pytest", *session.posargs)
-
-
-@nox.session
-@nox.parametrize(
-    "env", [
-        ("3.9", "3.2", None),
-        ("3.9", "4.2", None),
-        ("3.9", "3.2", "3.12"),
-        ("3.9", "4.2", "3.12"),
-    ]
-)
-def tests_env(session, env):
-    python_version, django_version, drf_version = env
-    # Specify the Python version for the session
-    session.python = python_version
-
-    # # Install Django
-    # session.install(f"Django=={django_version}")
-
-    # # Install DRF if specified
-    # if drf_version:
-    #     session.install(f"djangorestframework=={drf_version}")
-
-    # # Additional dependencies
-    # # session.install('pytest', 'pytest-django')
-
-    # # Run your tests
-    # session.run("pytest")
-    session.run("python", "--version")
