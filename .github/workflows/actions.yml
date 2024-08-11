@@ -28,6 +28,7 @@ jobs:
           - "3.2"  # LTS
           - "4.2"  # LTS
           - "5.0"
+          - "5.1"
         drf-version:
           - ""
           - "3.14"  # only testing latest version for now
@@ -43,6 +44,11 @@ jobs:
             django-version: "5.0"
           - python-version: "3.9"
             django-version: "5.0"
+          # Django 5.1 is compatible with Python 3.10+
+          - python-version: "3.8"
+            django-version: "5.1"
+          - python-version: "3.9"
+            django-version: "5.1"
 
     steps:
       - uses: actions/checkout@v4
