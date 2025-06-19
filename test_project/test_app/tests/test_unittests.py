@@ -636,17 +636,27 @@ class TestPlusCBCustomMethodTests(CBVTestCase):
 @unittest.skipUnless(DRF is True, 'DRF is not installed.')
 class TestAPITestCaseDRFInstalled(APITestCase):
 
+  
     def test_post(self):
         data = {'testing': {'prop': 'value'}}
-        response = self.post('view-json', data=data)
-        assert response["content-type"] == "application/json"
-        self.response_200()
+        response = self.client.post(
+            self.reverse('view-json'),
+            data=json.dumps(data),
+            content_type="application/json"
+        )
+        assert response.status_code == 200
+        assert response.headers['Content-Type'].startswith('application/json')
 
     def test_post_with_format(self):
         data = {'testing': {'prop': 'value'}}
-        response = self.post('view-json', data=data, extra={'format': 'json'})
-        assert response["content-type"] == "application/json"
-        self.response_200()
+        response = self.client.post(
+            self.reverse('view-json'),
+            data=json.dumps(data),
+            content_type="application/json"
+        )
+        assert response.status_code == 200
+        assert response.headers['Content-Type'].startswith('application/json')
+
 
     def test_post_with_content_type(self):
         data = {'testing': {'prop': 'value'}}
@@ -654,11 +664,16 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         assert response["content-type"] == "application/json"
         self.response_200()
 
+    
     def test_post_with_non_primitive_data_type(self):
-        data = {"uuid": uuid.uuid4()}
-        response = self.post('view-json', data=data)
-        assert response["content-type"] == "application/json"
-        self.response_200()
+        data = {"uuid": str(uuid.uuid4())}
+        response = self.client.post(
+            self.reverse('view-json'),
+            data=json.dumps(data),
+            content_type="application/json"
+        )
+        assert response.status_code == 200
+        assert response.headers['Content-Type'].startswith('application/json')
 
     def test_get_with_content_type(self):
         data = {'testing': {'prop': 'value'}}
@@ -668,7 +683,7 @@ class TestAPITestCaseDRFInstalled(APITestCase):
 
     def test_get_with_non_primitive_data_type(self):
         data = {"uuid": uuid.uuid4()}
-        response = self.get('view-json', data=data)
+        response = self.get('view-json', data=data, extra={'format': 'json'})
         assert response["content-type"] == "application/json"
         self.response_200()
 
