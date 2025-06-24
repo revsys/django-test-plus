@@ -1,28 +1,15 @@
 import nox
 
-DJANGO_VERSIONS = ["3.2", "4.2", "5.0", "5.1", "5.2"]
-DRF_VERSIONS = ["3.11", "3.12", "3.13", "3.14", "3.15", "3.16"]
-PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+DJANGO_VERSIONS = ["4.2","5.1","5.2"]
+DRF_VERSIONS = ["3.12", "3.13", "3.14", "3.15","3.16"]
+PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
 INVALID_PYTHON_DJANGO_SESSIONS = [
-    ("3.8", "5.0"),
-    ("3.8", "5.1"),
-    ("3.8", "5.2"),
-    ("3.9", "5.0"),
     ("3.9", "5.1"),
     ("3.9", "5.2"),
-    ("3.11", "3.2"),
-    ("3.12", "3.2"),
-    ("3.13", "3.2"),        
 ]
-INVALID_DRF_DJANGO_SESSIONS = [
-    ("3.16", "3.2"),
-
-]
-INVALID_DRF_PYTHON_SESSIONS = [
-    ("3.16", "3.8"),  
-]
-
+INVALID_DRF_DJANGO_SESSIONS = []
+INVALID_DRF_PYTHON_SESSIONS = []
 
 nox.options.default_venv_backend = "uv|venv"
 nox.options.reuse_existing_virtualenvs = True
