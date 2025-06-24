@@ -117,10 +117,8 @@ def view_context_without(request):
 
 
 def view_is_ajax(request):
-    if hasattr(request, "is_ajax"):
-        status = 200 if request.is_ajax() else 404
-    else:  # Django 4.0 compatible
-        status = 200 if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 404
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+    status = 200 if is_ajax else 404
     return HttpResponse('', status=status)
 
 
