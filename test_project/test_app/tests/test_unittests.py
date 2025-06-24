@@ -636,7 +636,6 @@ class TestPlusCBCustomMethodTests(CBVTestCase):
 @unittest.skipUnless(DRF is True, 'DRF is not installed.')
 class TestAPITestCaseDRFInstalled(APITestCase):
 
-  
     def test_post(self):
         data = {'testing': {'prop': 'value'}}
         response = self.client.post(
@@ -657,14 +656,12 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         assert response.status_code == 200
         assert response.headers['Content-Type'].startswith('application/json')
 
-
     def test_post_with_content_type(self):
         data = {'testing': {'prop': 'value'}}
         response = self.post('view-json', data=json.dumps(data), extra={'content_type': 'application/json'})
         assert response["content-type"] == "application/json"
         self.response_200()
 
-    
     def test_post_with_non_primitive_data_type(self):
         data = {"uuid": str(uuid.uuid4())}
         response = self.client.post(

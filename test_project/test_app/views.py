@@ -121,6 +121,7 @@ def view_is_ajax(request):
     status = 200 if is_ajax else 404
     return HttpResponse('', status=status)
 
+
 def view_contains(request):
     return render(request, 'test.html', {})
 
