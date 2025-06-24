@@ -26,7 +26,7 @@ jobs:
         django-version:
           - "4.2"  # LTS
           - "5.1"
-          - "5.2"
+          - "5.2"  # LTS
         drf-version:
           - ""
           - "3.12"
