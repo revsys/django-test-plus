@@ -19,9 +19,9 @@ to help your team dramatically improve your productivity.
 
 ## Support
 
-Supports: Python 3.8, 3.9, 3.10, 3.11, and 3.12.
+Supports: Python 3.9, 3.10, 3.11, 3.12, and 3.13.
 
-Supports Django Versions: 3.2, 4.2, 5.0, and 5.1.
+Supports Django Versions: 4.2 LTS, 5.1, and 5.2 LTS.
 
 ## Documentation
 
