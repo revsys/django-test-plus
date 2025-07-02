@@ -1,5 +1,12 @@
 # Changes
 
+## Version 2.3.0 - July 2nd, 2025
+
+  - Add Django 5.2 support 
+  - Drop Django 3.2 tests
+  - Add Python 3.13 tests 
+  - Cleanup Github Actions and README a bit
+
 ## Version 2.2.4 - June 24th, 2024
 
   - Fix bug with APITest case 
