@@ -76,23 +76,95 @@ from test_plus import TestCase
 
 ## pytest Usage
 
-You can get a TestCase like object as a pytest fixture now by asking for `tp`. All of the methods below would then work in pytest functions. For
-example:
+Django-test-plus provides comprehensive pytest integration through fixtures and a pytest plugin. The plugin is automatically registered when you install django-test-plus.
+
+### Basic Fixtures
+
+#### `tp` fixture
+You can get a TestCase-like object as a pytest fixture by asking for `tp`. All of the methods below will work in pytest functions:
 
 ```python
 def test_url_reverse(tp):
     expected_url = '/api/'
     reversed_url = tp.reverse('api')
     assert expected_url == reversed_url
+
+def test_user_creation(tp):
+    user = tp.make_user('testuser')
+    assert user.username == 'testuser'
+    assert user.email == 'testuser@example.com'
+
+def test_view_with_context(tp):
+    tp.get('my-view')
+    tp.assertInContext('some-key')
+    tp.assertContext('some-key', 'expected-value')
 ```
 
-The `tp_api` fixture will provide a `TestCase` that uses django-rest-framework's `APIClient()`:
+#### `tp_api` fixture
+The `tp_api` fixture provides a TestCase that uses django-rest-framework's `APIClient()`:
 
 ```python
-def test_url_reverse(tp_api):
+def test_api_endpoint(tp_api):
     response = tp_api.client.post("myapi", format="json")
     assert response.status_code == 200
+    
+def test_api_with_auth(tp_api):
+    user = tp_api.make_user('apiuser')
+    with tp_api.login(user):
+        response = tp_api.get('protected-api')
+        tp_api.assert_http_200_ok(response)
 ```
+
+### Advanced pytest Integration
+
+#### All TestCase methods available
+Both `tp` and `tp_api` fixtures provide access to all django-test-plus TestCase methods:
+
+```python
+def test_comprehensive_view(tp):
+    # URL helpers
+    response = tp.get('my-view')
+    
+    # Response testing
+    tp.assertResponseContains('Welcome')
+    tp.assertResponseHeaders({'Content-Type': 'text/html'})
+    
+    # Status code assertions
+    tp.assert_http_200_ok()
+    
+    # Context testing
+    tp.assertInContext('user')
+    tp.assertContext('title', 'My Page')
+    
+    # Query count testing
+    with tp.assertNumQueriesLessThan(5):
+        tp.get('efficient-view')
+```
+
+#### Mixed with pytest features
+You can combine django-test-plus fixtures with other pytest features:
+
+```python
+import pytest
+
+@pytest.mark.django_db
+def test_database_operations(tp):
+    user = tp.make_user('dbuser')
+    assert user.pk is not None
+    
+@pytest.mark.parametrize('username', ['user1', 'user2', 'admin'])
+def test_multiple_users(tp, username):
+    user = tp.make_user(username)
+    assert user.username == username
+    assert user.email == f'{username}@example.com'
+
+def test_form_errors(tp):
+    response = tp.post('form-view', data={})
+    tp.print_form_errors(response)  # Debug helper
+```
+
+### Plugin Registration
+The pytest plugin is automatically registered via entry points in `setup.cfg`. No additional configuration is needed - just install django-test-plus and the fixtures will be available.
 
 ## Methods
 
@@ -211,6 +283,51 @@ def test_in_context(self):
     self.assertContext('some-key', 'expected value')
 ```
 
+## Response Testing Helper Methods
+
+### `assertResponseContains(text, response=None, html=True, **kwargs)`
+
+Convenience wrapper for Django's `assertContains` method. Tests that the response contains the given text:
+
+```python
+def test_response_contains(self):
+    self.get('my-view')
+    self.assertResponseContains('Welcome to my site')
+    
+    # Or with explicit response
+    response = self.get('my-view')
+    self.assertResponseContains('Welcome to my site', response)
+```
+
+### `assertResponseNotContains(text, response=None, html=True, **kwargs)`
+
+Convenience wrapper for Django's `assertNotContains` method. Tests that the response does not contain the given text:
+
+```python
+def test_response_not_contains(self):
+    self.get('my-view')
+    self.assertResponseNotContains('Secret admin content')
+```
+
+### `assertResponseHeaders(headers, response=None)`
+
+Check that the headers in the response are as expected. Only headers defined in the `headers` parameter are compared, other keys present on the response will be ignored:
+
+```python
+def test_response_headers(self):
+    self.get('my-api-view')
+    self.assertResponseHeaders({
+        'Content-Type': 'application/json',
+        'X-Custom-Header': 'my-value'
+    })
+    
+    # Or with explicit response
+    response = self.get('my-api-view')
+    self.assertResponseHeaders({
+        'Content-Type': 'application/json'
+    }, response)
+```
+
 ## `assert_http_###_<status_name>(response, msg=None)` - status code checking
 
 Another test you often need to do is check that a response has a certain
@@ -232,19 +349,11 @@ def test_better_status(self):
     self.assert_http_200_ok(response)
 ```
 
-Django-test-plus provides a majority of the status codes assertions for you. The status assertions
-can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py)
-and should be searchable if you're using an IDE like pycharm. It should be noted that in previous
-versions, django-test-plus had assertion methods in the pattern of `response_###()`, which are still
-available but have since been deprecated. See below for a list of those methods.
+Django-test-plus provides **62 different HTTP status code assertions** covering the complete range of standard HTTP status codes. The status assertions can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py) and should be searchable if you're using an IDE like PyCharm.
 
-Each of the assertion methods takes an optional Django test client `response` and a string `msg` argument
-that, if specified, is used as the error message when a failure occurs. The methods,
-`assert_http_301_moved_permanently` and `assert_http_302_found` also take an optional `url` argument that
-if passed, will check to make sure the `response.url` matches.
+Each of the assertion methods takes an optional Django test client `response` and a string `msg` argument that, if specified, is used as the error message when a failure occurs. The methods `assert_http_301_moved_permanently` and `assert_http_302_found` also take an optional `url` argument that if passed, will check to make sure the `response.url` matches.
 
-If it's available, the `assert_http_###_<status_name>` methods will use the last response. So you
-can do:
+If it's available, the `assert_http_###_<status_name>` methods will use the last response. So you can do:
 
 ```python
 def test_status(self):
@@ -253,6 +362,77 @@ def test_status(self):
 ```
 
 Which is a bit shorter.
+
+### Available HTTP Status Code Assertions
+
+**Informational (1xx):**
+- `assert_http_100_continue()`
+- `assert_http_101_switching_protocols()`
+
+**Successful (2xx):**
+- `assert_http_200_ok()`
+- `assert_http_201_created()`
+- `assert_http_202_accepted()`
+- `assert_http_203_non_authoritative_information()`
+- `assert_http_204_no_content()`
+- `assert_http_205_reset_content()`
+- `assert_http_206_partial_content()`
+- `assert_http_207_multi_status()`
+- `assert_http_208_already_reported()`
+- `assert_http_226_im_used()`
+
+**Redirection (3xx):**
+- `assert_http_300_multiple_choices()`
+- `assert_http_301_moved_permanently(url=None)` - takes optional `url` parameter
+- `assert_http_302_found(url=None)` - takes optional `url` parameter
+- `assert_http_303_see_other()`
+- `assert_http_304_not_modified()`
+- `assert_http_305_use_proxy()`
+- `assert_http_306_reserved()`
+- `assert_http_307_temporary_redirect()`
+- `assert_http_308_permanent_redirect()`
+
+**Client Error (4xx):**
+- `assert_http_400_bad_request()`
+- `assert_http_401_unauthorized()`
+- `assert_http_402_payment_required()`
+- `assert_http_403_forbidden()`
+- `assert_http_404_not_found()`
+- `assert_http_405_method_not_allowed()`
+- `assert_http_406_not_acceptable()`
+- `assert_http_407_proxy_authentication_required()`
+- `assert_http_408_request_timeout()`
+- `assert_http_409_conflict()`
+- `assert_http_410_gone()`
+- `assert_http_411_length_required()`
+- `assert_http_412_precondition_failed()`
+- `assert_http_413_request_entity_too_large()`
+- `assert_http_414_request_uri_too_long()`
+- `assert_http_415_unsupported_media_type()`
+- `assert_http_416_requested_range_not_satisfiable()`
+- `assert_http_417_expectation_failed()`
+- `assert_http_422_unprocessable_entity()`
+- `assert_http_423_locked()`
+- `assert_http_424_failed_dependency()`
+- `assert_http_426_upgrade_required()`
+- `assert_http_428_precondition_required()`
+- `assert_http_429_too_many_requests()`
+- `assert_http_431_request_header_fields_too_large()`
+- `assert_http_451_unavailable_for_legal_reasons()`
+
+**Server Error (5xx):**
+- `assert_http_500_internal_server_error()`
+- `assert_http_501_not_implemented()`
+- `assert_http_502_bad_gateway()`
+- `assert_http_503_service_unavailable()`
+- `assert_http_504_gateway_timeout()`
+- `assert_http_505_http_version_not_supported()`
+- `assert_http_506_variant_also_negotiates()`
+- `assert_http_507_insufficient_storage()`
+- `assert_http_508_loop_detected()`
+- `assert_http_509_bandwidth_limit_exceeded()`
+- `assert_http_510_not_extended()`
+- `assert_http_511_network_authentication_required()`
 
 The `response_###()` methods that are deprecated, but still available for use, include:
 
@@ -292,6 +472,54 @@ def test_user_stuff(self)
     user2 = self.make_user('u2')
 ```
 
+### Advanced Features
+
+#### **Automatic Email Generation**
+The method automatically generates email addresses using the format `{username}@example.com`:
+
+```python
+def test_user_email(self):
+    user = self.make_user('john')
+    # user.email will be 'john@example.com'
+    self.assertEqual(user.email, 'john@example.com')
+```
+
+#### **Custom User Model Support**
+The method works with custom user models by detecting the `USERNAME_FIELD` and `EMAIL_FIELD` attributes:
+
+```python
+# Works with custom user models that use email as username
+class CustomUserModel(AbstractUser):
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+```
+
+#### **Complex Permission Handling**
+You can pass in user permissions using either specific permission names or wildcard patterns:
+
+```python
+def test_user_permissions(self):
+    # Specific permission
+    user1 = self.make_user('user1', perms=['myapp.add_widget'])
+    
+    # Multiple specific permissions
+    user2 = self.make_user('user2', perms=[
+        'myapp.add_widget',
+        'myapp.change_widget',
+        'otherapp.view_model'
+    ])
+    
+    # Wildcard permissions (all permissions for an app)
+    admin_user = self.make_user('admin', perms=['myapp.*'])
+    
+    # Mix of specific and wildcard permissions
+    power_user = self.make_user('power', perms=[
+        'myapp.*',
+        'otherapp.view_model'
+    ])
+```
+
+#### **Factory Boy Integration**
 If creating a User in your project is more complicated, say for example
 you removed the `username` field from the default Django Auth model,
 you can provide a [Factory
@@ -316,12 +544,8 @@ class MySpecialTest(TestCase):
 set to the string 'password' by default, in order to ease testing.
 If you need a specific password, override the `password` parameter.
 
-You can also pass in user permissions by passing in a string of
-'`<app_name>.<perm name>`' or '`<app_name>.*`'.  For example:
-
-```python
-user2 = self.make_user(perms=['myapp.create_widget', 'otherapp.*'])
-```
+**NOTE:** When using Factory Boy, automatic email generation is disabled 
+and the factory is responsible for setting all user fields.
 
 ## `print_form_errors(response_or_form=None)`
 
@@ -584,6 +808,48 @@ Caller must provide a view class instead of a URL name or path parameter.
 All test_plus TestCase side-effects are honored and all test_plus
 TestCase assertion methods work with `CBVTestCase.post()`.
 
+## NoLoggingRunner Test Runner
+
+Django-test-plus includes a custom test runner that disables logging during tests to reduce noise and improve performance. This is particularly useful when your application has extensive logging that clutters test output.
+
+### Usage
+
+To use the NoLoggingRunner, update your Django settings:
+
+```python
+# settings.py
+TEST_RUNNER = 'test_plus.runner.NoLoggingRunner'
+```
+
+### How it works
+
+The NoLoggingRunner extends Django's default `DiscoverRunner` and disables all logging below the CRITICAL level during test execution. This means:
+
+- DEBUG, INFO, WARNING, and ERROR log messages are suppressed
+- CRITICAL log messages will still appear
+- Logging is only disabled during test runs, not in your actual application
+
+### When to use
+
+Consider using NoLoggingRunner when:
+
+- Your tests produce excessive log output that makes it hard to read test results
+- You want to improve test performance by reducing I/O operations
+- You're running tests in CI/CD environments where log output isn't needed
+- You have many tests and want cleaner output
+
+### Alternative usage
+
+You can also use it selectively by importing and using it directly:
+
+```python
+# In your test configuration
+from test_plus.runner import NoLoggingRunner
+
+# Use it as needed
+runner = NoLoggingRunner()
+```
+
 ## Development
 
 To work on django-test-plus itself, clone this repository and run the following command:
@@ -593,10 +859,68 @@ $ pip install -e .
 $ pip install -e .[test]
 ```
 
-## To run all tests:
+### Testing with Nox
+
+Django-test-plus uses [Nox](https://nox.thea.codes/) to test against multiple Python and Django version combinations. This ensures compatibility across the supported matrix.
+
+#### Version Matrix
+
+The project tests against:
+
+**Python versions:** 3.9, 3.10, 3.11, 3.12, 3.13
+**Django versions:** 4.2 LTS, 5.1, 5.2 LTS  
+**Django REST Framework versions:** 3.14, 3.15, 3.16
+
+**Note:** Python 3.9 is not compatible with Django 5.1+ and those combinations are automatically skipped.
+
+#### Running Tests
 
 ```shell
+# Run all tests across all Python/Django combinations
 $ nox
+
+# Run tests for all Python versions with latest Django
+$ nox -s tests
+
+# Run tests with Django REST Framework
+$ nox -s tests_drf
+
+# Run tests for specific Python version
+$ nox -s tests-3.11
+
+# Run tests for specific Django version
+$ nox -s tests --django=4.2
+
+# Run with pytest arguments
+$ nox -s tests -- -v --tb=short
+
+# List all available sessions
+$ nox -l
+```
+
+#### Session Details
+
+- **tests**: Runs the standard test suite against Django without DRF
+- **tests_drf**: Runs tests with Django REST Framework installed
+- Sessions use `uv` for faster virtual environment creation when available
+- Virtual environments are reused by default for faster subsequent runs
+
+#### Local Development
+
+For local development, you can also run tests directly with pytest:
+
+```shell
+# Run tests with current environment (uses pytest.ini config)
+$ pytest
+
+# Run tests reusing database (faster for development)
+$ pytest --reuse-db
+
+# Run specific test file
+$ pytest test_project/test_app/tests/test_unittests.py
+
+# Run specific test method
+$ pytest test_project/test_app/tests/test_unittests.py::TestCasePlusTests::test_get
 ```
 
 **NOTE**: You will also need to ensure that the `test_project` directory, located
