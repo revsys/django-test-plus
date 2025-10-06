@@ -10,7 +10,7 @@ from .views import (
     FormErrors, data_1, data_5, needs_login, view_200, view_201, view_204,
     view_301, view_302, view_400, view_401, view_403, view_404, view_405,
     view_409, view_410, view_contains, view_context_with, view_context_without,
-    view_headers, view_is_ajax, view_json, view_redirect,
+    view_headers, view_is_ajax, view_json, view_redirect, view_with_messages,
     CBLoginRequiredView, CBView,
     status_code_view,
 )
@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^view/contains/$', view_contains, name='view-contains'),
     url(r'^view/form-errors/$', FormErrors.as_view(), name='form-errors'),
     url(r'^view/headers/$', view_headers, name='view-headers'),
+    url(r'^view/with-messages/$', view_with_messages, name='view-with-messages'),
     url(r'^cbview/needs-login/$', CBLoginRequiredView.as_view(), name='cbview-needs-login'),
     url(r'^cbview/$', CBView.as_view(), name='cbview'),
 ]

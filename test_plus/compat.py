@@ -28,3 +28,14 @@ if hasattr(DjangoTestCase, 'assertURLEqual'):
 else:
     def assertURLEqual(t, url1, url2, msg_prefix=''):
         raise NotImplementedError("Your version of Django does not support `assertURLEqual`")
+
+
+try:
+    from django.contrib.messages.test import MessagesTestMixin
+    assertMessages = MessagesTestMixin.assertMessages
+except ImportError:
+    def assertMessages(t, response, expected_messages, ordered=True):
+        raise NotImplementedError(
+            "Your version of Django does not support `assertMessages`. "
+            "This method is only available in Django 5.0 and later."
+        )
