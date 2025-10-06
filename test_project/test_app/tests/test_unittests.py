@@ -11,9 +11,15 @@ import pytest
 
 from contextlib import contextmanager
 from django.contrib.auth import get_user_model
-from django.contrib.messages import Message
-from django.contrib.messages.constants import INFO, SUCCESS, WARNING
 from django.core.exceptions import ImproperlyConfigured
+
+try:
+    from django.contrib.messages import Message
+    from django.contrib.messages.constants import INFO, SUCCESS, WARNING
+except ImportError:
+    # Message class not available in Django < 5.0
+    Message = None
+    SUCCESS = INFO = WARNING = None
 
 try:
     from StringIO import StringIO
