@@ -17,7 +17,7 @@ from django.test.utils import CaptureQueriesContext
 from functools import partial
 
 from test_plus.status_codes import StatusCodeAssertionMixin
-from .compat import assertURLEqual, reverse, NoReverseMatch, get_api_client
+from .compat import assertMessages, assertURLEqual, reverse, NoReverseMatch, get_api_client
 
 
 class NoPreviousResponse(Exception):
@@ -361,6 +361,19 @@ class BaseTestCase(StatusCodeAssertionMixin):
 
     def assertContext(self, key, value):
         self.assertEqual(self.get_context(key), value)
+
+    def assertResponseMessages(self, expected_messages, response=None, ordered=True):
+        """
+        Convenience wrapper for assertMessages that uses the last response by default.
+
+        Tests that the messages in the response match the expected messages.
+
+        :param expected_messages: List of Message objects to compare against
+        :param response: Response to check messages against (defaults to last_response)
+        :param ordered: If True, messages must match in order (default: True)
+        """
+        response = self._which_response(response)
+        assertMessages(self, response, expected_messages, ordered=ordered)
 
 
 class TestCase(DjangoTestCase, BaseTestCase):

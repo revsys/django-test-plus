@@ -14,6 +14,14 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
 
 try:
+    from django.contrib.messages import Message
+    from django.contrib.messages.constants import INFO, SUCCESS, WARNING
+except ImportError:
+    # Message class not available in Django < 5.0
+    Message = None
+    SUCCESS = INFO = WARNING = None
+
+try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
@@ -478,6 +486,36 @@ class TestPlusViewTests(TestCase):
         self.assertResponseHeaders({'X-Custom': '1'})
         self.assertResponseHeaders({'X-Custom': '1', 'X-Non-Existent': None})
         self.assertResponseHeaders({'X-Non-Existent': None})
+
+    @unittest.skipIf(django.VERSION < (5, 0), "assertResponseMessages is only available in Django 5.0+")
+    def test_assert_response_messages(self):
+        """Test assertResponseMessages with Django 5.0+ messages framework using last_response"""
+        expected_messages = [
+            Message(level=SUCCESS, message='Success message'),
+            Message(level=INFO, message='Info message'),
+            Message(level=WARNING, message='Warning message'),
+        ]
+        self.get('view-with-messages')
+        self.assertResponseMessages(expected_messages)
+
+    @unittest.skipIf(django.VERSION < (5, 0), "assertResponseMessages is only available in Django 5.0+")
+    def test_assert_response_messages_with_explicit_response(self):
+        """Test assertResponseMessages with explicit response parameter"""
+        expected_messages = [
+            Message(level=SUCCESS, message='Success message'),
+            Message(level=INFO, message='Info message'),
+            Message(level=WARNING, message='Warning message'),
+        ]
+        response = self.get('view-with-messages')
+        self.assertResponseMessages(expected_messages, response=response)
+
+    @unittest.skipUnless(django.VERSION < (5, 0), "Test for Django versions before 5.0")
+    def test_assert_response_messages_not_available(self):
+        """Test that assertResponseMessages raises NotImplementedError on Django < 5.0"""
+        self.get('view-200')
+
+        with self.assertRaisesRegex(NotImplementedError, r"does not support `assertMessages`.*Django 5\.0"):
+            self.assertResponseMessages([])
 
 
 class TestPlusCBViewTests(CBVTestCase):

@@ -1,5 +1,6 @@
 import json
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseGone
 from django.shortcuts import redirect, render
@@ -189,3 +190,10 @@ class CBTemplateView(generic.TemplateView):
 class FormErrors(generic.FormView):
     form_class = NameForm
     template_name = 'form_errors.html'
+
+
+def view_with_messages(request):
+    messages.success(request, 'Success message')
+    messages.info(request, 'Info message')
+    messages.warning(request, 'Warning message')
+    return render(request, 'base.html', {})
