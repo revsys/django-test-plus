@@ -68,12 +68,12 @@ jobs:
       - name: Install Django ${{ matrix.django-version }}
         if: ${{ matrix.drf-version == '' }}
         run: |
-          python -m uv pip install --system --prerelease=if-necessary-or-explicit "Django~=${{ matrix.django-version }}.0"
+          python -m uv pip install --system --prerelease=if-necessary-or-explicit "Django>=${{ matrix.django-version }}a1,<${{ matrix.django-version | int + 1 }}"
 
       - name: Install DRF ${{ matrix.drf-version }} and Django ${{ matrix.django-version }}
         if: ${{ matrix.drf-version }}
         run: |
-          python -m uv pip install --system --prerelease=if-necessary-or-explicit pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django~=${{ matrix.django-version }}.0"
+          python -m uv pip install --system --prerelease=if-necessary-or-explicit pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django>=${{ matrix.django-version }}a1,<${{ matrix.django-version | int + 1 }}"
 
       - name: Install dependencies
         run: |
