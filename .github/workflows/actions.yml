@@ -66,14 +66,24 @@ jobs:
           python -m pip install uv
 
       - name: Install Django ${{ matrix.django-version }}
-        if: ${{ matrix.drf-version == '' }}
+        if: ${{ matrix.drf-version == '' && matrix.django-version != '6.0' }}
         run: |
-          python -m uv pip install --system --prerelease=if-necessary-or-explicit "Django>=${{ matrix.django-version }}a1,<${{ matrix.django-version | int + 1 }}"
+          python -m uv pip install --system "Django~=${{ matrix.django-version }}.0"
+
+      - name: Install Django ${{ matrix.django-version }} (pre-release)
+        if: ${{ matrix.drf-version == '' && matrix.django-version == '6.0' }}
+        run: |
+          python -m uv pip install --system --prerelease=if-necessary-or-explicit "Django>=6.0a1,<6.1"
 
       - name: Install DRF ${{ matrix.drf-version }} and Django ${{ matrix.django-version }}
-        if: ${{ matrix.drf-version }}
+        if: ${{ matrix.drf-version && matrix.django-version != '6.0' }}
         run: |
-          python -m uv pip install --system --prerelease=if-necessary-or-explicit pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django>=${{ matrix.django-version }}a1,<${{ matrix.django-version | int + 1 }}"
+          python -m uv pip install --system pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django~=${{ matrix.django-version }}.0"
+
+      - name: Install DRF ${{ matrix.drf-version }} and Django ${{ matrix.django-version }} (pre-release)
+        if: ${{ matrix.drf-version && matrix.django-version == '6.0' }}
+        run: |
+          python -m uv pip install --system --prerelease=if-necessary-or-explicit pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django>=6.0a1,<6.1"
 
       - name: Install dependencies
         run: |
