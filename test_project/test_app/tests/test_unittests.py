@@ -684,6 +684,10 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         assert response["content-type"] == "application/json"
         self.response_200()
 
+    def test_force_authenticate(self):
+        u1 = self.make_user()
+        self.client.force_authenticate(u1)
+
 
 # pytest tests
 def test_tp_loads(tp):
