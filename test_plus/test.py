@@ -1,4 +1,5 @@
 import django
+import warnings
 
 try:
     from packaging.version import parse as parse_version
@@ -181,57 +182,117 @@ class BaseTestCase(StatusCodeAssertionMixin):
         self.assertEqual(response.status_code, status_code, msg)
 
     def response_200(self, response=None, msg=None):
-        """ Given response has status_code 200 """
+        """Request succeeded."""
+        warnings.warn(
+            'response_200() is deprecated, use assert_http_200_ok() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(200, response, msg)
 
     def response_201(self, response=None, msg=None):
-        """ Given response has status_code 201 """
+        """Request succeeded and a new resource was created."""
+        warnings.warn(
+            'response_201() is deprecated, use assert_http_201_created() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(201, response, msg)
 
     def response_204(self, response=None, msg=None):
-        """ Given response has status_code 204 """
+        """Request succeeded but no content to send back."""
+        warnings.warn(
+            'response_204() is deprecated, use assert_http_204_no_content() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(204, response, msg)
 
     def response_301(self, response=None, msg=None):
-        """ Given response has status_code 301 """
+        """URL of requested resource has been changed permanently."""
+        warnings.warn(
+            'response_301() is deprecated, use assert_http_301_moved_permanently() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(301, response, msg)
 
     def response_302(self, response=None, msg=None):
-        """ Given response has status_code 302 """
+        """Resource temporarily located at a different URI."""
+        warnings.warn(
+            'response_302() is deprecated, use assert_http_302_found() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(302, response, msg)
 
     def response_400(self, response=None, msg=None):
-        """ Given response has status_code 400 """
+        """Server cannot process request due to client error."""
+        warnings.warn(
+            'response_400() is deprecated, use assert_http_400_bad_request() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(400, response, msg)
 
     def response_401(self, response=None, msg=None):
-        """ Given response has status_code 401 """
+        """Request requires user authentication."""
+        warnings.warn(
+            'response_401() is deprecated, use assert_http_401_unauthorized() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(401, response, msg)
 
     def response_403(self, response=None, msg=None):
-        """ Given response has status_code 403 """
+        """Server refuses to authorize the request."""
+        warnings.warn(
+            'response_403() is deprecated, use assert_http_403_forbidden() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(403, response, msg)
 
     def response_404(self, response=None, msg=None):
-        """ Given response has status_code 404 """
+        """Server cannot find the requested resource."""
+        warnings.warn(
+            'response_404() is deprecated, use assert_http_404_not_found() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(404, response, msg)
 
     def response_405(self, response=None, msg=None):
-        """ Given response has status_code 405 """
+        """Request method not supported for the requested resource."""
+        warnings.warn(
+            'response_405() is deprecated, use assert_http_405_method_not_allowed() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(405, response, msg)
 
     def response_409(self, response=None, msg=None):
-        """ Given response has status_code 409 """
+        """Request conflicts with current state of the server."""
+        warnings.warn(
+            'response_409() is deprecated, use assert_http_409_conflict() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(409, response, msg)
 
     def response_410(self, response=None, msg=None):
-        """ Given response has status_code 410 """
+        """Requested resource is permanently unavailable."""
+        warnings.warn(
+            'response_410() is deprecated, use assert_http_410_gone() instead',
+            DeprecationWarning,
+            stacklevel=2
+        )
         self._assert_response_code(410, response, msg)
 
     def get_check_200(self, url, *args, **kwargs):
         """ Test that we can GET a page and it returns a 200 """
         response = self.get(url, *args, **kwargs)
-        self.response_200(response)
+        self.assert_http_200_ok(response)
         return response
 
     def assertLoginRequired(self, url, *args, **kwargs):
@@ -319,7 +380,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
         with self.assertNumQueriesLessThan(query_count, verbose=verbose):
             response = self.get(url_name, *args, **kwargs)
 
-        self.response_200(response)
+        self.assert_http_200_ok(response)
 
         return response
 
@@ -493,7 +554,7 @@ class CBVTestCase(TestCase):
     def get_check_200(self, url, *args, **kwargs):
         """ Test that we can GET a page and it returns a 200 """
         response = super(CBVTestCase, self).get(url, *args, **kwargs)
-        self.response_200(response)
+        self.assert_http_200_ok(response)
         return response
 
     def assertLoginRequired(self, url, *args, **kwargs):
@@ -514,5 +575,5 @@ class CBVTestCase(TestCase):
 
         with self.assertNumQueriesLessThan(query_count):
             response = super(CBVTestCase, self).get(url_name, *args, **kwargs)
-        self.response_200(response)
+        self.assert_http_200_ok(response)
         return response

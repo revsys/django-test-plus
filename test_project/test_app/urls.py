@@ -7,9 +7,11 @@ except ImportError:
         from django.conf.urls.defaults import url, include
 
 from .views import (
-    FormErrors, data_1, data_5, needs_login, view_200, view_201, view_204,
-    view_301, view_302, view_400, view_401, view_403, view_404, view_405,
-    view_409, view_410, view_contains, view_context_with, view_context_without,
+    FormErrors, data_1, data_5, needs_login,
+    view_200, view_201, view_204,
+    view_301, view_302,
+    view_400, view_401, view_403, view_404, view_405, view_409, view_410,
+    view_contains, view_context_with, view_context_without,
     view_headers, view_is_ajax, view_json, view_redirect,
     CBLoginRequiredView, CBView,
     status_code_view,

@@ -101,7 +101,8 @@ class TestPlusViewTests(TestCase):
         self.assertTrue('This field is required.' in output)
 
         self.post('form-errors')
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
         output = StringIO()
         with redirect_stdout(output):
             self.print_form_errors()
@@ -264,87 +265,111 @@ class TestPlusViewTests(TestCase):
 
     def test_response_200(self):
         res = self.get('view-200')
-        self.response_200(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_200(res)
 
         # Test without response option
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
 
     def test_response_201(self):
         res = self.get('view-201')
-        self.response_201(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_201(res)
 
         # Test without response option
-        self.response_201()
+        with self.assertWarns(DeprecationWarning):
+            self.response_201()
 
     def test_response_204(self):
         res = self.get('view-204')
-        self.response_204(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_204(res)
 
         # Test without response option
-        self.response_204()
+        with self.assertWarns(DeprecationWarning):
+            self.response_204()
 
     def test_response_301(self):
         res = self.get('view-301')
-        self.response_301(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_301(res)
 
         # Test without response option
-        self.response_301()
+        with self.assertWarns(DeprecationWarning):
+            self.response_301()
 
     def test_response_302(self):
         res = self.get('view-302')
-        self.response_302(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_302(res)
 
         # Test without response option
-        self.response_302()
+        with self.assertWarns(DeprecationWarning):
+            self.response_302()
 
     def test_response_400(self):
         res = self.get('view-400')
-        self.response_400(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_400(res)
 
         # Test without response option
-        self.response_400()
+        with self.assertWarns(DeprecationWarning):
+            self.response_400()
 
     def test_response_401(self):
         res = self.get('view-401')
-        self.response_401(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_401(res)
 
         # Test without response option
-        self.response_401()
+        with self.assertWarns(DeprecationWarning):
+            self.response_401()
 
     def test_response_403(self):
         res = self.get('view-403')
-        self.response_403(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_403(res)
 
         # Test without response option
-        self.response_403()
+        with self.assertWarns(DeprecationWarning):
+            self.response_403()
 
     def test_response_404(self):
         res = self.get('view-404')
-        self.response_404(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_404(res)
 
         # Test without response option
-        self.response_404()
+        with self.assertWarns(DeprecationWarning):
+            self.response_404()
 
     def test_response_405(self):
         res = self.get('view-405')
-        self.response_405(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_405(res)
 
         # Test without response option
-        self.response_405()
+        with self.assertWarns(DeprecationWarning):
+            self.response_405()
 
     def test_response_409(self):
         res = self.get('view-409')
-        self.response_409(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_409(res)
 
         # Test without response option
-        self.response_409()
+        with self.assertWarns(DeprecationWarning):
+            self.response_409()
 
     def test_response_410(self):
         res = self.get('view-410')
-        self.response_410(res)
+        with self.assertWarns(DeprecationWarning):
+            self.response_410(res)
 
         # Test without response option
-        self.response_410()
+        with self.assertWarns(DeprecationWarning):
+            self.response_410()
 
     def test_make_user(self):
         """ Test make_user using django.contrib.auth defaults """
@@ -459,13 +484,15 @@ class TestPlusViewTests(TestCase):
     def test_get_is_ajax(self):
         response = self.get('view-is-ajax',
                             extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
-        self.response_200(response)
+        with self.assertWarns(DeprecationWarning):
+            self.response_200(response)
 
     def test_post_is_ajax(self):
         response = self.post('view-is-ajax',
                              data={'item': 1},
                              extra={'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
-        self.response_200(response)
+        with self.assertWarns(DeprecationWarning):
+            self.response_200(response)
 
     def test_assertresponsecontains(self):
         self.get('view-contains')
@@ -484,16 +511,19 @@ class TestPlusCBViewTests(CBVTestCase):
 
     def test_get(self):
         self.get(CBView)
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
 
     def test_post(self):
         data = {'testing': True}
         self.post(CBView, data=data)
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
 
         # Test without data
         self.post(CBView)
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
 
     def test_get_check_200(self):
         self.get_check_200('cbview')
@@ -660,7 +690,8 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         data = {'testing': {'prop': 'value'}}
         response = self.post('view-json', data=json.dumps(data), extra={'content_type': 'application/json'})
         assert response["content-type"] == "application/json"
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
 
     def test_post_with_non_primitive_data_type(self):
         data = {"uuid": str(uuid.uuid4())}
@@ -676,13 +707,15 @@ class TestAPITestCaseDRFInstalled(APITestCase):
         data = {'testing': {'prop': 'value'}}
         response = self.get('view-json', data=data, extra={'content_type': 'application/json'})
         assert response["content-type"] == "application/json"
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
 
     def test_get_with_non_primitive_data_type(self):
         data = {"uuid": uuid.uuid4()}
         response = self.get('view-json', data=data, extra={'format': 'json'})
         assert response["content-type"] == "application/json"
-        self.response_200()
+        with self.assertWarns(DeprecationWarning):
+            self.response_200()
 
 
 # pytest tests
@@ -708,5 +741,7 @@ def test_tp_response_200(tp):
     url = tp.reverse('view-200')
     data = {'testing': True}
     res = tp.post(url, data=data)
-    tp.response_200()
-    tp.response_200(res)
+    with pytest.warns(DeprecationWarning):
+        tp.response_200()
+    with pytest.warns(DeprecationWarning):
+        tp.response_200(res)

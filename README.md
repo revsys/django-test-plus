@@ -232,11 +232,14 @@ def test_better_status(self):
     self.assert_http_200_ok(response)
 ```
 
-Django-test-plus provides a majority of the status codes assertions for you. The status assertions
+Django-test-plus provides assertions for all standard HTTP status codes. The status assertions
 can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py)
-and should be searchable if you're using an IDE like pycharm. It should be noted that in previous
-versions, django-test-plus had assertion methods in the pattern of `response_###()`, which are still
-available but have since been deprecated. See below for a list of those methods.
+and should be searchable if you're using an IDE like pycharm.
+
+It should be noted that in previous versions, django-test-plus had assertion methods in the pattern
+of `response_###()`. These methods are still available but are now **deprecated** and will emit
+`DeprecationWarning` when used. You should migrate to the new `assert_http_###_<status_name>()`
+methods. See below for a list of the deprecated methods.
 
 Each of the assertion methods takes an optional Django test client `response` and a string `msg` argument
 that, if specified, is used as the error message when a failure occurs. The methods,
