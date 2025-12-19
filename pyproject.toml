@@ -1,0 +1,104 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-test-plus"
+version = "2.4.0"
+description = "django-test-plus provides useful additions to Django's default TestCase"
+authors = [{ name = "Frank Wiles", email = "frank@revsys.com" }]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = ["packaging"]
+requires-python = ">=3.10"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Changelog = "https://github.com/revsys/django-test-plus/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/revsys/django-test-plus/"
+
+[project.entry-points]
+pytest11 = { test_plus = "test_plus.plugin" }
+
+[project.optional-dependencies]
+docs = ["sphinx", "furo", "sphinx-copybutton", "sphinx-prompt"]
+lint = ["pre-commit"]
+test = ["factory-boy", "pytest", "pytest-cov", "pytest-django"]
+testing = ["django-test-plus[test]"]
+
+[tool.bumpver]
+current_version = "2.4.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"docs/conf.py" = ["version = '{version}'"]
+
+[tool.coverage.paths]
+source = ["test_plus"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if DEBUG:",
+    "if not DEBUG:",
+    "if settings.DEBUG:",
+    "if TYPE_CHECKING:",
+    'def __str__\(self\)\s?\-?\>?\s?\w*\:',
+]
+fail_under = 75
+
+[tool.coverage.run]
+omit = ["docs/*"]
+source = ["test_plus"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["test_plus"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/test_plus",
+    "/CHANGELOG.md",
+    "/README.md",
+]
+
+[tool.isort]
+profile = "black"
+honor_noqa = true
+
+[tool.ruff]
+line-length = 120
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "test_project.settings"
+# addopts = "--reuse-db --cov"
+addopts = "--reuse-db"
+norecursedirs = ".* build dist docs .eggs/* *.egg-info htmlcov test_plus .git .tox"
+python_files = "tests.py test_*.py *_tests.py"
+pythonpath = ["test_project"]
+testpaths = ["test_project"]
