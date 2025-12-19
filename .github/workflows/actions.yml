@@ -45,6 +45,9 @@ jobs:
           # Django 4.2 is not compatible with Python 3.14
           - python-version: "3.14"
             django-version: "4.2"
+          # Django 5.1 is not compatible with Python 3.14
+          - python-version: "3.14"
+            django-version: "5.1"
           
     steps:
       - uses: actions/checkout@v4
