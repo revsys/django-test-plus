@@ -1,5 +1,10 @@
 # Changes
 
+## Version 2.4.1 - December 19th, 2025
+
+  - Migrate from setup.py/setup.cfg to pyproject.toml with hatchling
+  - Use uv for building and publishing
+
 ## Version 2.4.0 - December 19th, 2025
 
   - Add Django 6.0 support
