@@ -7,7 +7,7 @@
 
 # Bump version (use: just bump patch, just bump minor, just bump major)
 @bump *ARGS="--help":
-    uv tool run bumpversion {{ ARGS }}
+    uv tool run bumpver {{ ARGS }}
 
 @coverage *ARGS="--no-install --reuse-existing-virtualenvs":
     python -m nox {{ ARGS }} --session "coverage"
