@@ -45,6 +45,6 @@
 # Build and publish a release to PyPI
 @release:
     rm -rf build dist
-    python setup.py sdist bdist_wheel
+    uv build
     git push --tags
-    twine upload dist/*
+    uv publish
