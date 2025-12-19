@@ -6,7 +6,10 @@ build-backend = "hatchling.build"
 name = "django-test-plus"
 version = "2.4.0"
 description = "django-test-plus provides useful additions to Django's default TestCase"
-authors = [{ name = "Frank Wiles", email = "frank@revsys.com" }]
+authors = [
+    { name = "Frank Wiles", email = "frank@revsys.com" },
+    { name = "Jeff Triplett", email = "jeff@revsys.com" },
+]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
