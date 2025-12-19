@@ -1,11 +1,12 @@
 @_default:
     just --list
 
+# Install development dependencies
 @bootstrap:
     python -m pip install --upgrade pip uv
     python -m uv pip install --upgrade nox
 
-# Bump version (use: just bump patch, just bump minor, just bump major)
+# Run bumpver with optional arguments
 @bump *ARGS="--help":
     uv tool run bumpver {{ ARGS }}
 
@@ -17,38 +18,29 @@
 @bump-minor *ARGS="--dry":
     uv tool run bumpver update --minor {{ ARGS }}
 
+# Run test coverage report
 @coverage *ARGS="--no-install --reuse-existing-virtualenvs":
     python -m nox {{ ARGS }} --session "coverage"
 
+# Build documentation
 @docs *ARGS="--no-install --reuse-existing-virtualenvs":
     python -m nox {{ ARGS }} --session "docs"
 
+# Format justfile
 @fmt:
     just --fmt --unstable
 
+# Run linting checks
 @lint *ARGS="--no-install --reuse-existing-virtualenvs":
     python -m nox {{ ARGS }} --session "lint"
 
+# Compile requirements lock file
 @lock:
     python -m piptools compile --resolver=backtracking
 
+# Run all nox sessions
 @nox *ARGS="--no-install --reuse-existing-virtualenvs":
     python -m nox {{ ARGS }}
-
-@test *ARGS="--no-install --reuse-existing-virtualenvs":
-    python -m nox {{ ARGS }}
-
-@test-drf *ARGS="--no-install --reuse-existing-virtualenvs":
-    python -m nox {{ ARGS }} --session "tests_drf"
-
-@test-latest *ARGS="--no-install --reuse-existing-virtualenvs":
-    python -m nox {{ ARGS }} --session "tests-3.12(django='5.1')"
-
-# @test-alphas *ARGS="--no-install --reuse-existing-virtualenvs":
-#     python -m nox {{ ARGS }} --session "tests-3.12(django='5.1a1')"
-
-@test-env *ARGS="--no-install --reuse-existing-virtualenvs":
-    python -m nox {{ ARGS }} --session "tests_env"
 
 # Build and publish a release to PyPI
 @release:
@@ -56,3 +48,19 @@
     uv build
     git push --tags
     uv publish
+
+# Run all tests
+@test *ARGS="--no-install --reuse-existing-virtualenvs":
+    python -m nox {{ ARGS }}
+
+# Run tests with Django REST Framework
+@test-drf *ARGS="--no-install --reuse-existing-virtualenvs":
+    python -m nox {{ ARGS }} --session "tests_drf"
+
+# Run tests in current environment
+@test-env *ARGS="--no-install --reuse-existing-virtualenvs":
+    python -m nox {{ ARGS }} --session "tests_env"
+
+# Run tests with latest Python and Django versions
+@test-latest *ARGS="--no-install --reuse-existing-virtualenvs":
+    python -m nox {{ ARGS }} --session "tests-3.12(django='5.1')"
