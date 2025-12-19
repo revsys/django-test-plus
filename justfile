@@ -13,10 +13,12 @@
 # Bump patch version (dry run by default, use ARGS="" to apply)
 @bump-patch *ARGS="--dry":
     uv tool run bumpver update --patch {{ ARGS }}
+    uv lock
 
 # Bump minor version (dry run by default, use ARGS="" to apply)
 @bump-minor *ARGS="--dry":
     uv tool run bumpver update --minor {{ ARGS }}
+    uv lock
 
 # Run test coverage report
 @coverage *ARGS="--no-install --reuse-existing-virtualenvs":
