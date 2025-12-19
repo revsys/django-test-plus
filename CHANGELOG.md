@@ -1,5 +1,11 @@
 # Changes
 
+## Version 2.4.0 - December 19th, 2025
+
+  - Add Django 6.0 support
+  - Add Python 3.14 support
+  - Drop Python 3.9 support
+
 ## Version 2.3.0 - July 2nd, 2025
 
   - Add Django 5.2 support 
