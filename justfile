@@ -9,6 +9,14 @@
 @bump *ARGS="--help":
     uv tool run bumpver {{ ARGS }}
 
+# Bump patch version (dry run by default, use ARGS="" to apply)
+@bump-patch *ARGS="--dry":
+    uv tool run bumpver update --patch {{ ARGS }}
+
+# Bump minor version (dry run by default, use ARGS="" to apply)
+@bump-minor *ARGS="--dry":
+    uv tool run bumpver update --minor {{ ARGS }}
+
 @coverage *ARGS="--no-install --reuse-existing-virtualenvs":
     python -m nox {{ ARGS }} --session "coverage"
 
