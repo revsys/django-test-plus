@@ -220,6 +220,30 @@ You might also want to check standard headers::
         self.get('my-json-view')
         self.assertResponseHeaders({'Content-Type': 'application/json'})
 
+assertResponseTemplateUsed(template\_name, response=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can check that a specific template was used to render the last response::
+
+    def test_template_used(self):
+        self.get('my-view')
+        self.assertResponseTemplateUsed('my_template.html')
+
+This is a convenience wrapper around Django's ``assertTemplateUsed`` that automatically
+uses ``self.last_response`` if no response is provided.
+
+assertResponseTemplateNotUsed(template\_name, response=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can check that a specific template was not used to render the last response::
+
+    def test_template_not_used(self):
+        self.get('my-view')
+        self.assertResponseTemplateNotUsed('other_template.html')
+
+This is a convenience wrapper around Django's ``assertTemplateNotUsed`` that automatically
+uses ``self.last_response`` if no response is provided.
+
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

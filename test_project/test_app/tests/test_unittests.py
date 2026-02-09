@@ -486,6 +486,14 @@ class TestPlusViewTests(TestCase):
         self.assertResponseContains("<p>Hello world</p>")
         self.assertResponseNotContains("<p>Hello Frank</p>")
 
+    def test_assertresponsetemplateused(self):
+        self.get("view-contains")
+        self.assertResponseTemplateUsed("test.html")
+
+    def test_assertresponsetemplatenotused(self):
+        self.get("view-contains")
+        self.assertResponseTemplateNotUsed("other.html")
+
     def test_assert_response_headers(self):
         self.get("view-headers")
         self.assertResponseHeaders({"Content-Type": "text/plain"})
