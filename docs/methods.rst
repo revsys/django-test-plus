@@ -243,6 +243,43 @@ You can check that a specific template was not used to render the last response:
 
 This is a convenience wrapper around Django's ``assertTemplateNotUsed`` that automatically
 uses ``self.last_response`` if no response is provided.
+assertResponseMessages(expected_messages, response=None, ordered=True)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Available in Django 5.0+**
+
+Convenience wrapper for Django's ``MessagesTestMixin.assertMessages`` that uses ``self.last_response`` by default. For full details on the underlying assertion, see the `Django documentation on testing messages <https://docs.djangoproject.com/en/stable/ref/contrib/messages/#testing>`_.
+
+Example usage::
+
+    from django.contrib.messages import Message
+    from django.contrib.messages.constants import SUCCESS, ERROR
+
+    def test_success_message(self):
+        self.post('my-form-view', data={'name': 'Test'})
+        expected_messages = [
+            Message(level=SUCCESS, message='Form saved successfully!'),
+        ]
+        self.assertResponseMessages(expected_messages)
+
+    def test_multiple_messages(self):
+        self.post('my-form-view', data={'invalid': 'data'})
+        expected_messages = [
+            Message(level=ERROR, message='Name is required.'),
+            Message(level=ERROR, message='Email is required.'),
+        ]
+        self.assertResponseMessages(expected_messages)
+
+For Django versions before 5.0, this method will raise a ``NotImplementedError``. To skip tests conditionally::
+
+    import unittest
+    import django
+
+    @unittest.skipIf(django.VERSION < (5, 0), "assertResponseMessages requires Django 5.0+")
+    def test_messages(self):
+        self.get('view-with-messages')
+        expected_messages = [Message(level=SUCCESS, message='Done!')]
+        self.assertResponseMessages(expected_messages)
 
 get\_check\_200(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
