@@ -86,6 +86,14 @@ def test_url_reverse(tp):
     assert expected_url == reversed_url
 ```
 
+The pytest plugin is auto-registered via `pytest11`, so no extra configuration is required beyond installing the package and pytest-django. In addition to `tp` and `tp_api`, the plugin also provides a raw `api_client` fixture:
+
+```python
+def test_api_client(api_client):
+    response = api_client.get("/api/")
+    assert response.status_code == 200
+```
+
 The `tp_api` fixture will provide a `TestCase` that uses django-rest-framework's `APIClient()`:
 
 ```python
@@ -271,6 +279,21 @@ The `response_###()` methods that are deprecated, but still available for use, i
 
 All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the `assert_http_###_<status_name>()` methods, these methods will use the last response if it's available.
 
+## Response helpers and stored context
+
+Every request made through `test_plus` stores the last response on `self.last_response` and the template context on `self.context`.
+These methods build on that behavior:
+
+- `assertResponseContains(text, response=None, html=True, **kwargs)`
+- `assertResponseNotContains(text, response=None, html=True, **kwargs)`
+- `assertResponseHeaders(headers, response=None)` - compares only the provided headers
+
+The context helpers work against the last response:
+
+- `get_context(key)`
+- `assertInContext(key)`
+- `assertContext(key, value)`
+
 ## `get_check_200(url_name, *args, **kwargs)`
 
 GETing and checking views return status 200 is a common test. This method makes it more convenient::
@@ -423,6 +446,8 @@ def test_something_out(self):
         self.get('some-view-with-6-queries')
 ```
 
+`assertNumQueriesLessThan` also supports `verbose=True` to include the SQL in assertion failures, and `using="alias"` for multi-database projects. If you pass `func=callable`, it will execute the callable inside the query context.
+
 ### `assertGoodView(url_name, *args, **kwargs)`
 
 This method does a few things for you. It:
@@ -439,6 +464,8 @@ can use it like this:
 def test_better_than_nothing(self):
     response = self.assertGoodView('my-url-name')
 ```
+
+If you want a different query threshold, pass `test_query_count=...` to `assertGoodView`.
 
 ## Testing DRF views
 
