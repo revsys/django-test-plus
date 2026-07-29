@@ -1,6 +1,11 @@
 Methods
 -------
 
+These examples are written in the unittest style, on a ``TestCase`` subclass.
+Every method here is also available on the pytest ``tp`` fixture — write
+``tp.get('my-url-name')`` where these read ``self.get('my-url-name')``. See
+:ref:`pytest-usage` for the details.
+
 reverse(url\_name, \*args, \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -306,12 +311,21 @@ query string parameters::
 print\_form\_errors(response\_or\_form=None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A utility method for quickly debugging responses with form errors. It accepts
-either a response or a form instance, and defaults to ``self.last_response``::
+When debugging a failing test for a view with a form, this method helps you
+quickly look at any form errors. It accepts either a response or a form
+instance, and defaults to ``self.last_response``::
 
     def test_form_errors(self):
-        self.post('my-form-view', data={'name': ''})
+        self.post('my-form-view', data={})
         self.print_form_errors()
+
+    def test_form_errors_explicit_response(self):
+        resp = self.post('my-form-view', data={})
+        self.print_form_errors(resp)
+
+    def test_form_errors_from_a_form(self):
+        form = MyForm(data={})
+        self.print_form_errors(form)
 
 make\_user(username='testuser', password='password', perms=None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

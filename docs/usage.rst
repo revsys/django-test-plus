@@ -34,6 +34,8 @@ is also valid::
 
     from test_plus import TestCase
 
+.. _pytest-usage:
+
 pytest Usage
 ~~~~~~~~~~~~
 
@@ -44,6 +46,46 @@ example::
         expected_url = '/api/'
         reversed_url = tp.reverse('api')
         assert expected_url == reversed_url
+
+Everything documented in :doc:`methods`, :doc:`auth_helpers`,
+:doc:`low_query_counts` and :doc:`cbvtestcase` is available on ``tp``. Anywhere
+those pages write ``self.<method>()``, a pytest test writes ``tp.<method>()``.
+The same test written both ways::
+
+    # unittest style
+    from test_plus.test import TestCase
+
+    class MyViewTests(TestCase):
+
+        def test_the_view(self):
+            self.get('my-url-name')
+            self.response_200()
+            self.assertInContext('some-key')
+
+        def test_auth(self):
+            user = self.make_user('u1')
+            self.assertLoginRequired('my-protected-view')
+            with self.login(user):
+                self.get_check_200('my-protected-view')
+
+    # pytest style
+    def test_the_view(tp):
+        tp.get('my-url-name')
+        tp.response_200()
+        tp.assertInContext('some-key')
+
+    def test_auth(tp, db):
+        user = tp.make_user('u1')
+        tp.assertLoginRequired('my-protected-view')
+        with tp.login(user):
+            tp.get_check_200('my-protected-view')
+
+Note that ``tp`` does not manage database access for you the way
+``django.test.TestCase`` does. Ask for pytest-django's ``db`` fixture (or apply
+``@pytest.mark.django_db``) in any test that touches the database. That
+includes ``make_user()`` and the ``login()`` context, and also the query
+counting helpers ``assertNumQueriesLessThan()`` and ``assertGoodView()``, which
+open a database connection in order to count.
 
 The pytest plugin is auto-registered via ``pytest11``, so no extra configuration
 is required beyond installing the package and pytest-django. In addition to
