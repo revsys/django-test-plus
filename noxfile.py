@@ -44,6 +44,26 @@ def lint(session: nox.Session) -> None:
     session.run("prek", "run", "--all-files", *session.posargs)
 
 
+@nox.session(venv_backend="uv")
+def docs(session: nox.Session) -> None:
+    session.install(".[docs]")
+    session.run("sphinx-build", "-b", "html", "docs", "docs/_build/html", *session.posargs)
+
+
+@nox.session(venv_backend="uv")
+def coverage(session: nox.Session) -> None:
+    # Editable, so coverage measures ./test_plus rather than a copy in
+    # site-packages that it would never see reported.
+    session.install("-e", ".[test]", "django", "djangorestframework")
+    session.run("pytest", "--cov", "--cov-report=term-missing", *session.posargs)
+
+
+@nox.session(venv_backend="none")
+def tests_env(session: nox.Session) -> None:
+    """Run the tests in the active environment, without building a virtualenv."""
+    session.run("pytest", *session.posargs)
+
+
 @nox.session(python=PYTHON_VERSIONS, tags=["drf"], venv_backend="uv")
 @nox.parametrize("django", DJANGO_VERSIONS)
 @nox.parametrize("drf", DRF_VERSIONS)
