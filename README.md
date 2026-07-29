@@ -288,12 +288,29 @@ These methods build on that behavior:
 - `assertResponseContains(text, response=None, html=True, **kwargs)`
 - `assertResponseNotContains(text, response=None, html=True, **kwargs)`
 - `assertResponseHeaders(headers, response=None)` - compares only the provided headers
+- `assertResponseTemplateUsed(template_name, response=None, **kwargs)`
+- `assertResponseTemplateNotUsed(template_name, response=None, **kwargs)`
+- `assertResponseMessages(expected_messages, response=None, ordered=True)` - Django 5.0+
 
 The context helpers work against the last response:
 
 - `get_context(key)`
 - `assertInContext(key)`
 - `assertContext(key, value)`
+
+`assertResponseMessages` wraps Django's `MessagesTestMixin.assertMessages`:
+
+```python
+from django.contrib.messages import Message
+from django.contrib.messages.constants import SUCCESS
+
+def test_success_message(self):
+    self.post('my-form-view', data={'name': 'Test'})
+    self.assertResponseMessages([Message(level=SUCCESS, message='Form saved successfully!')])
+```
+
+Pass `ordered=False` if the order of the messages does not matter. On Django
+versions before 5.0 this method raises `NotImplementedError`.
 
 ## `get_check_200(url_name, *args, **kwargs)`
 
@@ -373,7 +390,7 @@ class MyFormTest(TestCase):
 
 ## Authentication Helpers
 
-### `assertLoginRequired(url_name, *args, **kwargs)`
+### `assertLoginRequired(url_name, *args, method='get', **kwargs)`
 
 This method helps you test that a given named URL requires authorization:
 
@@ -383,6 +400,25 @@ def test_auth(self):
     self.assertLoginRequired('my-restricted-object', pk=12)
     self.assertLoginRequired('my-restricted-object', slug='something')
 ```
+
+Like `self.get()` and friends, a plain URL works too when the name cannot be
+reversed:
+
+```python
+def test_auth_by_url(self):
+    self.assertLoginRequired('/restricted/')
+```
+
+Pass `method` to check a verb other than GET, which is useful for views that
+only accept writes:
+
+```python
+def test_auth_on_post(self):
+    self.assertLoginRequired('my-restricted-url', method='post')
+```
+
+`method` accepts any verb supported by `request()`: `get`, `post`, `put`,
+`patch`, `head`, `trace`, `options`, and `delete`.
 
 ### `login()` context
 
@@ -449,7 +485,7 @@ def test_something_out(self):
 
 `assertNumQueriesLessThan` also supports `verbose=True` to include the SQL in assertion failures, and `using="alias"` for multi-database projects. If you pass `func=callable`, it will execute the callable inside the query context.
 
-### `assertGoodView(url_name, *args, **kwargs)`
+### `assertGoodView(url_name, *args, verbose=False, **kwargs)`
 
 This method does a few things for you. It:
 
@@ -467,6 +503,7 @@ def test_better_than_nothing(self):
 ```
 
 If you want a different query threshold, pass `test_query_count=...` to `assertGoodView`.
+Pass `verbose=True` to include the executed SQL in the assertion failure.
 
 ## Testing DRF views
 
