@@ -385,9 +385,10 @@ class TestCase(DjangoTestCase, BaseTestCase):
 
 
 class APITestCase(TestCase):
-    def __init__(self, *args, **kwargs):
-        self.client_class = get_api_client()
-        super().__init__(*args, **kwargs)
+    def setUp(self):
+        super().setUp()
+        api_client_class = get_api_client()
+        self.client = api_client_class()
 
 
 # Note this class inherits from TestCase defined above.
