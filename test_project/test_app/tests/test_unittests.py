@@ -504,6 +504,23 @@ class TestPlusViewTests(TestCase):
         with self.assertRaises(NoPreviousResponse):
             self.get_context("testvalue")
 
+    def test_no_response_status_code(self):
+        # Previously an AttributeError on NoneType, unlike the context helpers
+        with self.assertRaises(NoPreviousResponse):
+            self.response_200()
+
+    def test_no_response_assert_http_status(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.assert_http_200_ok()
+
+    def test_no_response_contains(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.assertResponseContains("anything")
+
+    def test_no_response_headers(self):
+        with self.assertRaises(NoPreviousResponse):
+            self.assertResponseHeaders({"X-Test": "1"})
+
     def test_get_is_ajax(self):
         response = self.get("view-is-ajax", extra={"HTTP_X_REQUESTED_WITH": "XMLHttpRequest"})
         self.response_200(response)

@@ -178,10 +178,13 @@ class BaseTestCase(StatusCodeAssertionMixin):
         return self.request("delete", url_name, *args, **kwargs)
 
     def _which_response(self, response=None):
-        if response is None and self.last_response is not None:
-            return self.last_response
-        else:
+        if response is not None:
             return response
+
+        if self.last_response is None:
+            raise NoPreviousResponse("There isn't a previous response to query")
+
+        return self.last_response
 
     def _assert_response_code(self, status_code, response=None, msg=None):
         response = self._which_response(response)
