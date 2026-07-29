@@ -291,6 +291,18 @@ GETing and checking views return status 200 is a common test. This method makes 
     def test_even_better_status(self):
         response = self.get_check_200('my-url-name')
 
+assertRedirects(response, expected\_url, ...) and assertURLEqual(url1, url2)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Both are Django's own assertions, re-exported so they are available on
+``TestCase`` without an extra import.
+
+``assertURLEqual`` compares two URLs for equality, ignoring the ordering of
+query string parameters::
+
+    def test_urls_match(self):
+        self.assertURLEqual('/search/?a=1&b=2', '/search/?b=2&a=1')
+
 print\_form\_errors(response\_or\_form=None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

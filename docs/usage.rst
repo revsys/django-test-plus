@@ -45,6 +45,14 @@ example::
         reversed_url = tp.reverse('api')
         assert expected_url == reversed_url
 
+The pytest plugin is auto-registered via ``pytest11``, so no extra configuration
+is required beyond installing the package and pytest-django. In addition to
+``tp`` and ``tp_api``, the plugin also provides a raw ``api_client`` fixture::
+
+    def test_api_client(api_client):
+        response = api_client.get("/api/")
+        assert response.status_code == 200
+
 The ``tp_api`` fixture will provide a ``TestCase`` that uses django-rest-framework's `APIClient()`::
 
     def test_url_reverse(tp_api):

@@ -17,6 +17,7 @@ Contents:
    low_query_counts
    cbvtestcase
    disable_logging
+   modules/modules
 
 
 
