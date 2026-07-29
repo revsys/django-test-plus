@@ -332,6 +332,16 @@ class BaseTestCase(StatusCodeAssertionMixin):
         response = self._which_response(response)
         self.assertNotContains(response, text, html=html, **kwargs)
 
+    def assertResponseTemplateUsed(self, template_name, response=None, **kwargs):
+        """Convenience wrapper for assertTemplateUsed"""
+        response = self._which_response(response)
+        self.assertTemplateUsed(response, template_name, **kwargs)
+
+    def assertResponseTemplateNotUsed(self, template_name, response=None, **kwargs):
+        """Convenience wrapper for assertTemplateNotUsed"""
+        response = self._which_response(response)
+        self.assertTemplateNotUsed(response, template_name, **kwargs)
+
     def assertResponseHeaders(self, headers, response=None):
         """
         Check that the headers in the response are as expected.
