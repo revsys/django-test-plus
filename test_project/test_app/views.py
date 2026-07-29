@@ -80,6 +80,11 @@ def view_redirect(request):
     return redirect("view-200")
 
 
+def view_bad_reverse(request):
+    # Deliberately raises NoReverseMatch from *inside* the view
+    return HttpResponse(reverse("this-url-name-does-not-exist"))
+
+
 def view_json(request):
     if request.method == "POST":
         ctype = request.META["CONTENT_TYPE"]
