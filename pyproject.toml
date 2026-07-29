@@ -47,7 +47,8 @@ Homepage = "https://github.com/revsys/django-test-plus/"
 pytest11 = { test_plus = "test_plus.plugin" }
 
 [project.optional-dependencies]
-docs = ["sphinx", "furo", "sphinx-copybutton", "sphinx-prompt"]
+# docs/conf.py calls django.setup(), so Django is needed to build the docs.
+docs = ["django", "sphinx", "furo", "sphinx-copybutton", "sphinx-prompt"]
 lint = ["prek"]
 test = ["factory-boy", "pytest", "pytest-cov", "pytest-django"]
 testing = ["django-test-plus[test]"]
