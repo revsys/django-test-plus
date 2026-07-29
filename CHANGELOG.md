@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## Version 2.5.0 - July 29th, 2026
 
   - `assertLoginRequired()` now accepts a plain URL, matching what `get()` and
     the other request helpers accept
