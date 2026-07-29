@@ -7,11 +7,10 @@ on:
       - main
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     env:
       PYTHONDONTWRITEBYTECODE: true
-      PYTHONPATH: test_project
     steps:
       - uses: actions/checkout@v4
 
@@ -19,15 +18,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-          cache: "pip"
-          cache-dependency-path: '**/setup.cfg'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install uv
-          python -m uv pip install --system -e "."
-          python -m uv pip install --system -e ".[test]"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
-      - name: Lint with flake8
-        run: |
-          flake8 . --ignore=E501,E402
+      - name: Cache prek hooks
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/prek
+          key: prek-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Run prek
+        run: uvx prek run --all-files --show-diff-on-failure

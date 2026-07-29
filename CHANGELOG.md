@@ -13,14 +13,14 @@
 
 ## Version 2.3.0 - July 2nd, 2025
 
-  - Add Django 5.2 support 
+  - Add Django 5.2 support
   - Drop Django 3.2 tests
-  - Add Python 3.13 tests 
+  - Add Python 3.13 tests
   - Cleanup Github Actions and README a bit
 
 ## Version 2.2.4 - June 24th, 2024
 
-  - Fix bug with APITest case 
+  - Fix bug with APITest case
 
 ## Version 2.2.3 - July 11th, 2023
 
@@ -62,7 +62,7 @@
 
   - Made `make_user` and `get_instance` class based methods, so they can be used
     in `setupUpTestData`. Thanks @avelis for the report.
-  
+
 ## version 1.3.0 - July 31st, 2019
 
   - Add `tp_api` pytest fixture.
@@ -74,17 +74,17 @@
 ## version 1.1.1 - July 2nd, 2018
 
   - Fix premature loading of Django settings under pytest
-   
+
 ## version 1.1.0 - May 20th, 2018
 
-  - Added real pytest fixture support! 
+  - Added real pytest fixture support!
   - Stopped testing support below Django 1.11.x. django-test-plus should probably continue to work for a long time, but Django 1.11 is the only pre-2.x version that is still supported so all we are going to worry about.
   - Moved README and docs to Markdown
-   
+
   ## version 1.0.22 - January 9th, 2018
 
   - Fix bug where we did not pass data dictionary to RequestFactory.get() properly
-  
+
 ## version 1.0.21 - December 15th, 2017
 
   - Add response_204 method

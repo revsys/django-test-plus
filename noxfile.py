@@ -29,6 +29,12 @@ def tests(session: nox.Session, django: str) -> None:
     session.run("pytest", *session.posargs)
 
 
+@nox.session(venv_backend="uv")
+def lint(session: nox.Session) -> None:
+    session.install(".[lint]")
+    session.run("prek", "run", "--all-files", *session.posargs)
+
+
 @nox.session(python=PYTHON_VERSIONS, tags=["drf"], venv_backend="uv")
 @nox.parametrize("django", DJANGO_VERSIONS)
 @nox.parametrize("drf", DRF_VERSIONS)

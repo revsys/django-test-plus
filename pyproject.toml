@@ -46,7 +46,7 @@ pytest11 = { test_plus = "test_plus.plugin" }
 
 [project.optional-dependencies]
 docs = ["sphinx", "furo", "sphinx-copybutton", "sphinx-prompt"]
-lint = ["pre-commit"]
+lint = ["prek"]
 test = ["factory-boy", "pytest", "pytest-cov", "pytest-django"]
 testing = ["django-test-plus[test]"]
 
@@ -96,6 +96,13 @@ honor_noqa = true
 
 [tool.ruff]
 line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+# Django declares these as plain class attributes by convention; ClassVar
+# annotations would be wrong here (migrations are generated code).
+"**/migrations/*.py" = ["RUF012"]
+"**/forms.py" = ["RUF012"]
+"**/models.py" = ["RUF012"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "test_project.settings"

@@ -160,21 +160,21 @@ If it's available, the ``assert_http_###_<status_name>`` methods will use the la
 
 Which is a bit shorter.
 
-The ``response_###()`` methods that are deprecated, but still available for use, include: 
+The ``response_###()`` methods that are deprecated, but still available for use, include:
 
 - ``response_200()``
 - ``response_201()``
-- ``response_204()`` 
+- ``response_204()``
 - ``response_301()``
-- ``response_302()`` 
+- ``response_302()``
 - ``response_400()``
-- ``response_401()`` 
+- ``response_401()``
 - ``response_403()``
-- ``response_404()`` 
+- ``response_404()``
 - ``response_405()``
-- ``response_410()`` 
+- ``response_410()``
 
-All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the ``assert_http_###_<status_name>()`` methods, these methods will use the last response if it's available. 
+All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the ``assert_http_###_<status_name>()`` methods, these methods will use the last response if it's available.
 
 assertResponseContains(text, response=None, html=True)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

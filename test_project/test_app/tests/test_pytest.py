@@ -19,6 +19,6 @@ def test_assert_login_required(tp):
 
 
 def test_assert_in_context(tp):
-    response = tp.get('view-context-with')
-    assert 'testvalue' in response.context
-    tp.assertInContext('testvalue')
+    response = tp.get("view-context-with")
+    assert "testvalue" in response.context
+    tp.assertInContext("testvalue")
