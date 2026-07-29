@@ -142,9 +142,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
         else:
             raise LookupError(f"Cannot find the method {method_name}")
 
-        self.last_response = method(
-            self._resolve_url(url_name, *args, **kwargs), data=data, follow=follow, **extra
-        )
+        self.last_response = method(self._resolve_url(url_name, *args, **kwargs), data=data, follow=follow, **extra)
 
         self.context = self.last_response.context
         return self.last_response
