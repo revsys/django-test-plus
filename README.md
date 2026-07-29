@@ -19,9 +19,10 @@ to help your team dramatically improve your productivity.
 
 ## Support
 
-- Python 3.10, 3.11, 3.12, 3.13, and 3.14.
+- Python 3.10, 3.11, 3.12, 3.13, and 3.14, including the 3.14 free-threaded
+  build (3.14t).
 
-- Django 4.2 LTS, 5.1, 5.2 LTS, and 6.0.
+- Django 4.2 LTS, 5.1, 5.2 LTS, 6.0, and 6.1.
 
 ## Documentation
 

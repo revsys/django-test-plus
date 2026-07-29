@@ -30,6 +30,7 @@ jobs:
           - "5.1"
           - "5.2"  # LTS
           - "6.0"
+          - "6.1"
         drf-version:
           - ""
           # - "3.12"
@@ -43,6 +44,11 @@ jobs:
             django-version: "6.0"
           - python-version: "3.11"
             django-version: "6.0"
+          # Django 6.1 is compatible with Python 3.12+
+          - python-version: "3.10"
+            django-version: "6.1"
+          - python-version: "3.11"
+            django-version: "6.1"
           # Django 4.2 is not compatible with Python 3.14+
           - python-version: "3.14"
             django-version: "4.2"
@@ -68,15 +74,26 @@ jobs:
         run: |
           python -m pip install uv
 
+      - name: Resolve Django ${{ matrix.django-version }} specifier
+        run: |
+          # Django versions without a final release need a specifier that opts
+          # in to pre-releases. Naming the pre-release also lets the same spec
+          # pick up the final release once it ships, so these cases can just be
+          # dropped then.
+          case "${{ matrix.django-version }}" in
+            6.1) echo 'DJANGO_SPEC=Django>=6.1rc1,<6.2' >> "$GITHUB_ENV" ;;
+            *)   echo 'DJANGO_SPEC=Django~=${{ matrix.django-version }}.0' >> "$GITHUB_ENV" ;;
+          esac
+
       - name: Install Django ${{ matrix.django-version }}
         if: ${{ matrix.drf-version == '' }}
         run: |
-          python -m uv pip install --system "Django~=${{ matrix.django-version }}.0"
+          python -m uv pip install --system "$DJANGO_SPEC"
 
       - name: Install DRF ${{ matrix.drf-version }} and Django ${{ matrix.django-version }}
         if: ${{ matrix.drf-version }}
         run: |
-          python -m uv pip install --system pytz "djangorestframework~=${{ matrix.drf-version }}.0" "Django~=${{ matrix.django-version }}.0"
+          python -m uv pip install --system pytz "djangorestframework~=${{ matrix.drf-version }}.0" "$DJANGO_SPEC"
 
       - name: Install dependencies
         run: |
