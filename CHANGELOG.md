@@ -1,5 +1,11 @@
 # Changes
 
+## Unreleased
+
+  - Add Django 6.1 support
+  - Advertise support for the Python 3.14 free-threaded build (3.14t), which
+    was already covered by the test matrix
+
 ## Version 2.4.1 - December 19th, 2025
 
   - Migrate from setup.py/setup.cfg to pyproject.toml with hatchling

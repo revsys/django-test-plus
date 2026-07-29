@@ -1,12 +1,21 @@
 import nox
 
-DJANGO_VERSIONS = ["4.2", "5.1", "5.2", "6.0"]
+DJANGO_VERSIONS = ["4.2", "5.1", "5.2", "6.0", "6.1"]
 DRF_VERSIONS = ["3.15", "3.16"]
 PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.14t"]
+
+# Django versions that have no final release yet need a specifier that opts in
+# to pre-releases. Naming the pre-release also lets the same spec pick up the
+# final release once it ships, so these entries can just be deleted then.
+DJANGO_SPECS = {
+    "6.1": "django>=6.1rc1,<6.2",
+}
 
 INVALID_PYTHON_DJANGO_SESSIONS = [
     ("3.10", "6.0"),
     ("3.11", "6.0"),
+    ("3.10", "6.1"),
+    ("3.11", "6.1"),
     ("3.14", "4.2"),
     ("3.14", "5.1"),
     ("3.14t", "4.2"),
@@ -25,7 +34,7 @@ def tests(session: nox.Session, django: str) -> None:
     if (session.python, django) in INVALID_PYTHON_DJANGO_SESSIONS:
         session.skip()
     session.install(".[test]")
-    session.install(f"django~={django}")
+    session.install(DJANGO_SPECS.get(django, f"django~={django}"))
     session.run("pytest", *session.posargs)
 
 
@@ -46,6 +55,6 @@ def tests_drf(session: nox.Session, django: str, drf: str) -> None:
     if (drf, session.python) in INVALID_DRF_PYTHON_SESSIONS:
         session.skip()
     session.install(".[test]")
-    session.install(f"django~={django}")
+    session.install(DJANGO_SPECS.get(django, f"django~={django}"))
     session.install(f"djangorestframework~={drf}")
     session.run("pytest", *session.posargs)
