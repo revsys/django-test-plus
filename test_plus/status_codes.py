@@ -1,4 +1,4 @@
-class StatusCodeAssertionMixin(object):
+class StatusCodeAssertionMixin:
     """
     The following `assert_http_###_status_name` methods were intentionally added statically instead of dynamically so
     that code completion in IDEs like PyCharm would work. It is preferred to use these methods over the response_XXX

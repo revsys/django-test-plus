@@ -8,7 +8,6 @@ class NameForm(forms.Form):
 
 
 class DataForm(forms.ModelForm):
-
     class Meta:
         model = Data
-        fields = ['name']
+        fields = ["name"]

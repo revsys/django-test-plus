@@ -29,7 +29,7 @@ And then in your tests use::
     class MyViewTests(TestCase):
         ...
 
-This import, which is similar to the way you would import Django's TestCase, 
+This import, which is similar to the way you would import Django's TestCase,
 is also valid::
 
     from test_plus import TestCase
