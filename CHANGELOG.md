@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+  - `assertLoginRequired()` now accepts a plain URL, matching what `get()` and
+    the other request helpers accept
+  - Add a `method` argument to `assertLoginRequired()` for testing views that
+    require login on verbs other than GET
+  - Resolve URLs outside the `NoReverseMatch` handler in `request()`, so a
+    failing request no longer reports an unrelated `reverse()` traceback and a
+    `NoReverseMatch` raised by the view itself is no longer swallowed
   - Add Django 6.1 support
   - Advertise support for the Python 3.14 free-threaded build (3.14t), which
     was already covered by the test matrix

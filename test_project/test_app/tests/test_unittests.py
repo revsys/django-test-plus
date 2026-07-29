@@ -420,6 +420,18 @@ class TestPlusViewTests(TestCase):
         with self.login(user):
             self.get_check_200("view-needs-login")
 
+    def test_login_required_with_method(self):
+        self.assertLoginRequired("view-needs-login", method="post")
+        self.assertLoginRequired("view-needs-login", method="put")
+        self.assertLoginRequired("view-needs-login", method="delete")
+
+    def test_login_required_with_plain_url(self):
+        self.assertLoginRequired("/view/needs-login/")
+
+    def test_login_required_with_bad_method(self):
+        with self.assertRaises(LookupError):
+            self.assertLoginRequired("view-needs-login", method="nope")
+
     def test_reverse(self):
         self.assertEqual(self.reverse("view-200"), "/view/200/")
 
@@ -578,6 +590,11 @@ class TestPlusCBViewTests(CBVTestCase):
         self.make_user("test")
         with self.login(username="test", password="password"):
             self.get_check_200("cbview-needs-login")
+
+    def test_login_required_with_plain_url(self):
+        # assertLoginRequired is inherited from BaseTestCase and still takes a
+        # URL, not a view class, even though this class overrides get()
+        self.assertLoginRequired("/cbview/needs-login/")
 
 
 class TestPlusCBDataViewTests(CBVTestCase):

@@ -241,12 +241,16 @@ class BaseTestCase(StatusCodeAssertionMixin):
         self.response_200(response)
         return response
 
-    def assertLoginRequired(self, url, *args, **kwargs):
-        """Ensure login is required to GET this URL"""
-        response = self.get(url, *args, **kwargs)
-        reversed_url = reverse(url, args=args, kwargs=kwargs)
+    def assertLoginRequired(self, url, *args, method="get", **kwargs):
+        """
+        Ensure login is required to access this URL via <method> (default GET)
+
+        `url` may be a url name or a plain URL, matching what request() accepts.
+        """
+        response = self.request(method, url, *args, **kwargs)
+        resolved_url = self._resolve_url(url, *args, **kwargs)
         login_url = str(resolve_url(settings.LOGIN_URL))
-        expected_url = f"{login_url}?next={reversed_url}"
+        expected_url = f"{login_url}?next={resolved_url}"
         self.assertRedirects(response, expected_url)
 
     assertRedirects = DjangoTestCase.assertRedirects
@@ -529,13 +533,9 @@ class CBVTestCase(TestCase):
         self.response_200(response)
         return response
 
-    def assertLoginRequired(self, url, *args, **kwargs):
-        """Ensure login is required to GET this URL"""
-        response = super().get(url, *args, **kwargs)
-        reversed_url = reverse(url, args=args, kwargs=kwargs)
-        login_url = str(resolve_url(settings.LOGIN_URL))
-        expected_url = f"{login_url}?next={reversed_url}"
-        self.assertRedirects(response, expected_url)
+    # assertLoginRequired is inherited from BaseTestCase. It goes through
+    # request() rather than get(), so it is unaffected by this class
+    # overriding get() to take a view class.
 
     def assertGoodView(self, url_name, *args, **kwargs):
         """

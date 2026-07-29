@@ -1,7 +1,7 @@
 Authentication Helpers
 ----------------------
 
-assertLoginRequired(url\_name, \*args, \*\*kwargs)
+assertLoginRequired(url\_name, \*args, method='get', \*\*kwargs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This method helps you test that a given named URL requires authorization::
@@ -10,6 +10,21 @@ This method helps you test that a given named URL requires authorization::
         self.assertLoginRequired('my-restricted-url')
         self.assertLoginRequired('my-restricted-object', pk=12)
         self.assertLoginRequired('my-restricted-object', slug='something')
+
+Like ``self.get()`` and friends, a plain URL works too when the name cannot be
+reversed::
+
+    def test_auth_by_url(self):
+        self.assertLoginRequired('/restricted/')
+
+Pass ``method`` to check a verb other than GET, which is useful for views that
+only accept writes::
+
+    def test_auth_on_post(self):
+        self.assertLoginRequired('my-restricted-url', method='post')
+
+``method`` accepts any verb supported by ``request()``: ``get``, ``post``,
+``put``, ``patch``, ``head``, ``trace``, ``options``, and ``delete``.
 
 login context
 ~~~~~~~~~~~~~
