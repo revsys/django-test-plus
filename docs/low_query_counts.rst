@@ -32,3 +32,14 @@ can use it like this::
 
     def test_better_than_nothing(self):
         response = self.assertGoodView('my-url-name')
+
+Both helpers are available on the pytest ``tp`` fixture too (see
+:ref:`pytest-usage`). Both count queries, so they need database access — ask
+for pytest-django's ``db`` fixture alongside ``tp``::
+
+    def test_better_than_nothing(tp, db):
+        response = tp.assertGoodView('my-url-name')
+
+    def test_something_out(tp, db):
+        with tp.assertNumQueriesLessThan(7):
+            tp.get('some-view-with-6-queries')

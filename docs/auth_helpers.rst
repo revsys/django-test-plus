@@ -26,6 +26,12 @@ only accept writes::
 ``method`` accepts any verb supported by ``request()``: ``get``, ``post``,
 ``put``, ``patch``, ``head``, ``trace``, ``options``, and ``delete``.
 
+The same thing with the pytest ``tp`` fixture (see :ref:`pytest-usage`)::
+
+    def test_auth(tp):
+        tp.assertLoginRequired('my-restricted-url')
+        tp.assertLoginRequired('my-restricted-url', method='post')
+
 login context
 ~~~~~~~~~~~~~
 
@@ -65,3 +71,13 @@ shorten that up even further like this::
 
         with self.login(user1):
             response = self.get('my-protected-view')
+
+The login context works the same way on the pytest ``tp`` fixture. Because
+``tp`` does not set up database access on its own, ask for pytest-django's
+``db`` fixture in any test that creates a user::
+
+    def test_restrictions(tp, db):
+        user1 = tp.make_user('u1')
+
+        with tp.login(user1):
+            response = tp.get('my-protected-view')
