@@ -17,8 +17,8 @@ more queries than you expect::
             self.get('some-view-with-6-queries')
 
 
-assertGoodView(url\_name, \*args, \*\*kwargs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+assertGoodView(url\_name, \*args, verbose=False, \*\*kwargs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This method does a few things for you. It:
 

@@ -2,7 +2,7 @@ Authentication Helpers
 ----------------------
 
 assertLoginRequired(url\_name, \*args, method='get', \*\*kwargs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This method helps you test that a given named URL requires authorization::
 

@@ -77,27 +77,27 @@ put(url\_name, follow=False, \*args, \*\*kwargs)
 To support all HTTP methods
 
 patch(url\_name, follow=False, \*args, \*\*kwargs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To support all HTTP methods
 
 head(url\_name, follow=False, \*args, \*\*kwargs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To support all HTTP methods
 
 trace(url\_name, follow=False, \*args, \*\*kwargs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To support all HTTP methods
 
 options(url\_name, follow=False, \*args, \*\*kwargs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To support all HTTP methods
 
 delete(url\_name, follow=False, \*args, \*\*kwargs)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To support all HTTP methods
 
@@ -131,7 +131,7 @@ equality while we're at it. This asserts that key == value::
         self.assertContext('some-key', 'expected value')
 
 assert\_http\_XXX_\<status\_name\>(response, msg=None) - status code checking
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Another test you often need to do is check that a response has a certain
 HTTP status code. With Django's default TestCase you would write::
@@ -172,6 +172,7 @@ The ``response_###()`` methods that are deprecated, but still available for use,
 - ``response_403()``
 - ``response_404()``
 - ``response_405()``
+- ``response_409()``
 - ``response_410()``
 
 All of which take an optional Django test client response and a str msg argument that, if specified, is used as the error message when a failure occurs. Just like the ``assert_http_###_<status_name>()`` methods, these methods will use the last response if it's available.
@@ -243,6 +244,7 @@ You can check that a specific template was not used to render the last response:
 
 This is a convenience wrapper around Django's ``assertTemplateNotUsed`` that automatically
 uses ``self.last_response`` if no response is provided.
+
 assertResponseMessages(expected_messages, response=None, ordered=True)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -288,6 +290,16 @@ GETing and checking views return status 200 is a common test. This method makes 
 
     def test_even_better_status(self):
         response = self.get_check_200('my-url-name')
+
+print\_form\_errors(response\_or\_form=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A utility method for quickly debugging responses with form errors. It accepts
+either a response or a form instance, and defaults to ``self.last_response``::
+
+    def test_form_errors(self):
+        self.post('my-form-view', data={'name': ''})
+        self.print_form_errors()
 
 make\_user(username='testuser', password='password', perms=None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
