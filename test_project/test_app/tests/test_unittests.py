@@ -10,6 +10,7 @@ import factory.django
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
+from django.urls import NoReverseMatch
 
 try:
     from django.contrib.messages import Message
@@ -421,6 +422,16 @@ class TestPlusViewTests(TestCase):
 
     def test_reverse(self):
         self.assertEqual(self.reverse("view-200"), "/view/200/")
+
+    def test_request_with_plain_url(self):
+        self.get("/view/200/")
+        self.response_200()
+
+    def test_request_does_not_swallow_view_reverse_errors(self):
+        # A NoReverseMatch raised by the view itself must propagate rather
+        # than being mistaken for an unreversible url_name.
+        with self.assertRaises(NoReverseMatch):
+            self.get("view-bad-reverse")
 
     def test_assertgoodview(self):
         self.assertGoodView("view-200")

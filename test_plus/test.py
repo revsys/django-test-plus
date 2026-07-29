@@ -113,6 +113,18 @@ class BaseTestCase(StatusCodeAssertionMixin):
 
         print(form.errors.as_text())
 
+    def _resolve_url(self, url_name, *args, **kwargs):
+        """
+        Reverse url_name, falling back to treating it as a plain URL.
+
+        Resolution happens on its own so that exceptions raised by the
+        request itself are not chained onto an unrelated NoReverseMatch.
+        """
+        try:
+            return reverse(url_name, args=args, kwargs=kwargs)
+        except NoReverseMatch:
+            return url_name
+
     def request(self, method_name, url_name, *args, **kwargs):
         """
         Request url by name using reverse() through method
@@ -130,10 +142,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
         else:
             raise LookupError(f"Cannot find the method {method_name}")
 
-        try:
-            self.last_response = method(reverse(url_name, args=args, kwargs=kwargs), data=data, follow=follow, **extra)
-        except NoReverseMatch:
-            self.last_response = method(url_name, data=data, follow=follow, **extra)
+        self.last_response = method(self._resolve_url(url_name, *args, **kwargs), data=data, follow=follow, **extra)
 
         self.context = self.last_response.context
         return self.last_response
