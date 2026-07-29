@@ -1,9 +1,7 @@
 from django.test import TestCase as DjangoTestCase
 
-try:
-    from django.urls import NoReverseMatch, reverse
-except ImportError:
-    from django.core.urlresolvers import reverse, NoReverseMatch  # noqa
+# Re-exported for convenience so callers can import them from test_plus.compat.
+from django.urls import NoReverseMatch, reverse  # noqa: F401
 
 try:
     import rest_framework  # noqa
@@ -25,12 +23,7 @@ def get_api_client():
     return APIClient
 
 
-if hasattr(DjangoTestCase, "assertURLEqual"):
-    assertURLEqual = DjangoTestCase.assertURLEqual
-else:
-
-    def assertURLEqual(t, url1, url2, msg_prefix=""):
-        raise NotImplementedError("Your version of Django does not support `assertURLEqual`")
+assertURLEqual = DjangoTestCase.assertURLEqual
 
 
 try:

@@ -1,10 +1,3 @@
-import django
-
-try:
-    from packaging.version import parse as parse_version
-except ImportError:
-    from distutils.version import LooseVersion as parse_version
-
 from functools import partial
 
 from django.conf import settings
@@ -25,11 +18,6 @@ from .compat import NoReverseMatch, assertMessages, assertURLEqual, get_api_clie
 
 class NoPreviousResponse(Exception):
     pass
-
-
-# Build a real context
-
-CAPTURE = True
 
 
 class _AssertNumQueriesLessThanContext(CaptureQueriesContext):
@@ -163,13 +151,7 @@ class BaseTestCase(StatusCodeAssertionMixin):
         return self.request("head", url_name, *args, **kwargs)
 
     def trace(self, url_name, *args, **kwargs):
-        if parse_version(django.get_version()) >= parse_version("1.8.2"):
-            return self.request("trace", url_name, *args, **kwargs)
-        else:
-            raise LookupError(
-                "client.trace is not available for your version of django. Please\
-                               update your django version."
-            )
+        return self.request("trace", url_name, *args, **kwargs)
 
     def options(self, url_name, *args, **kwargs):
         return self.request("options", url_name, *args, **kwargs)
