@@ -9,6 +9,8 @@
         - APITestCase
         - NoPreviousResponse
 
+::: test_plus.status_codes.StatusCodeAssertionMixin
+
 ::: test_plus.runner.NoLoggingRunner
     options:
       members:
