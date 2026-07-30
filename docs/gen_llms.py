@@ -21,6 +21,7 @@ import pathlib
 import re
 import sys
 from html.parser import HTMLParser
+from typing import ClassVar
 
 SITE_URL = "https://django-test-plus.readthedocs.io/en/latest"
 NAME = "django-test-plus"
@@ -45,15 +46,15 @@ SKIP = {"404"}
 class Extractor(HTMLParser):
     """Pull the <article> body out of a rendered page and re-emit Markdown."""
 
-    BLOCK = {"p", "div", "section", "article", "ul", "ol", "table", "tr", "br"}
-    HEADING = {f"h{n}": n for n in range(1, 7)}
+    BLOCK: ClassVar[set[str]] = {"p", "div", "section", "article", "ul", "ol", "table", "tr", "br"}
+    HEADING: ClassVar[dict[str, int]] = {f"h{n}": n for n in range(1, 7)}
 
     def __init__(self) -> None:
         super().__init__()
-        self.depth = 0          # >0 once inside <article>
+        self.depth = 0  # >0 once inside <article>
         self.parts: list[str] = []
         self.title: str | None = None
-        self._skip = 0          # inside nav/script/style
+        self._skip = 0  # inside nav/script/style
         self._pre = 0
         self._heading: int | None = None
         self._buf: list[str] = []
@@ -131,9 +132,7 @@ class Extractor(HTMLParser):
         text = "\n".join(line.rstrip() for line in text.split("\n"))
         text = re.sub(r"\n{3,}", "\n\n", text)
         # Restore code blocks after normalisation, fenced.
-        text = re.sub(r"\x00(\d+)\x00",
-                      lambda m: f"```python\n{self.code[int(m.group(1))]}\n```",
-                      text)
+        text = re.sub(r"\x00(\d+)\x00", lambda m: f"```python\n{self.code[int(m.group(1))]}\n```", text)
         return text.strip() + "\n"
 
 
@@ -178,8 +177,7 @@ def main() -> int:
     (site / "llms-full.txt").write_text("\n".join(full), encoding="utf-8")
 
     words = len((site / "llms-full.txt").read_text().split())
-    print(f"wrote llms.txt ({len(ordered)} pages), llms-full.txt (~{words:,} words), "
-          f"and {len(ordered)} .md twins")
+    print(f"wrote llms.txt ({len(ordered)} pages), llms-full.txt (~{words:,} words), and {len(ordered)} .md twins")
     return 0
 
 
