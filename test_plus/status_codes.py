@@ -1,10 +1,10 @@
 class StatusCodeAssertionMixin:
     """
     The following `assert_http_###_status_name` methods were intentionally added statically instead of dynamically so
-    that code completion in IDEs like PyCharm would work. It is preferred to use these methods over the response_XXX
-    methods, which could be deprecated at some point. The assert methods contain both the number and the status name
-    slug so that people that remember them best by their numeric code and people that remember best by their name will
-    be able to easily find the assertion they need. This was also directly patterned off of what the `Django Rest
+    that code completion in IDEs like PyCharm would work. They are the preferred spelling, but the response_XXX
+    methods are supported permanently and are not deprecated. The assert methods contain both the number and the
+    status name slug so that people that remember them best by their numeric code and people that remember best by
+    their name will be able to easily find the assertion they need. This was also directly patterned off of what the `Django Rest
     Framework uses <https://github.com/encode/django-rest-framework/blob/main/rest_framework/status.py>`_.
     """
 
