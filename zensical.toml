@@ -12,7 +12,7 @@ edit_uri = "edit/main/docs/"
 # Without this, Zensical orders pages alphabetically, which buried Usage at the
 # end and led with the auth helpers. Same order as ORDER in scripts/gen_llms.py.
 nav = [
-  { "Home" = "index.md" },
+  { "Overview" = "index.md" },
   { "Usage" = "usage.md" },
   { "Methods" = "methods.md" },
   { "Authentication helpers" = "auth_helpers.md" },
