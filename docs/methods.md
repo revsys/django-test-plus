@@ -148,7 +148,7 @@ def test_better_status(self):
     self.assert_http_200_ok(response)
 ```
 
-Django-test-plus provides a majority of the status codes assertions for you. The status assertions can be found in their own [mixin](https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py) and should be searchable if you're using an IDE like pycharm. Earlier versions of django-test-plus used assertion methods in the pattern of `response_###()`. Those are still supported and are not going away, so there is no need to migrate existing tests. See below for a list of them.
+Django-test-plus provides an assertion for every status code documented in the [MDN HTTP status reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status), plus the non-standard 509. They live in their own [mixin](https://github.com/revsys/django-test-plus/blob/main/test_plus/status_codes.py), are listed in the [API reference](reference.md), and should be searchable if you're using an IDE like PyCharm. Earlier versions of django-test-plus used assertion methods in the pattern of `response_###()`. Those are still supported and are not going away, so there is no need to migrate existing tests. See below for a list of them.
 
 Each of the assertion methods takes an optional Django test client `response` and a string `msg` argument that, if specified, is used as the error message when a failure occurs. The methods, `assert_http_301_moved_permanently` and `assert_http_302_found` also take an optional `url` argument that if passed, will check to make sure the `response.url` matches.
 
