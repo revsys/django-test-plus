@@ -17,7 +17,7 @@ build:
         - zensical build
         # Zensical has no plugin API yet, so llms.txt, llms-full.txt and the
         # per-page .md twins are generated from the rendered output here.
-        - python docs/gen_llms.py site
+        - python scripts/gen_llms.py site
     post_build:
       - mkdir -p $READTHEDOCS_OUTPUT/html/
       - cp --recursive site/* $READTHEDOCS_OUTPUT/html/

@@ -12,18 +12,21 @@ reference page is a mkdocstrings directive in source form:
 Concatenating sources would put that literal text in llms-full.txt and teach a
 reader nothing about the API. Rendering first is the only way to capture it.
 
-Usage: python docs/gen_llms.py [site_dir]
+Usage: python scripts/gen_llms.py [site_dir]
 """
 
 from __future__ import annotations
 
+import os
 import pathlib
 import re
 import sys
 from html.parser import HTMLParser
 from typing import ClassVar
 
-SITE_URL = "https://django-test-plus.readthedocs.io/en/latest"
+# Read the Docs sets this per version, so /en/stable/ does not advertise
+# /en/latest/ URLs. Falls back to latest for local builds.
+SITE_URL = os.environ.get("READTHEDOCS_CANONICAL_URL", "https://django-test-plus.readthedocs.io/en/latest/").rstrip("/")
 NAME = "django-test-plus"
 SUMMARY = "Useful additions to Django's default TestCase."
 

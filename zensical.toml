@@ -9,6 +9,19 @@ site_description = "Useful additions to Django's default TestCase."
 repo_url = "https://github.com/revsys/django-test-plus"
 edit_uri = "edit/main/docs/"
 
+# Without this, Zensical orders pages alphabetically, which buried Usage at the
+# end and led with the auth helpers. Same order as ORDER in scripts/gen_llms.py.
+nav = [
+  { "Home" = "index.md" },
+  { "Usage" = "usage.md" },
+  { "Methods" = "methods.md" },
+  { "Authentication helpers" = "auth_helpers.md" },
+  { "Ensuring low query counts" = "low_query_counts.md" },
+  { "Testing class-based views" = "cbvtestcase.md" },
+  { "Disable logging" = "disable_logging.md" },
+  { "API reference" = "reference.md" },
+]
+
 # mkdocstrings analyses the source statically with griffe, so unlike Sphinx
 # autodoc it does not import test_plus and needs no django.setup().
 [project.plugins.mkdocstrings.handlers.python]
