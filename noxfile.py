@@ -46,8 +46,9 @@ def lint(session: nox.Session) -> None:
 
 @nox.session(venv_backend="uv")
 def docs(session: nox.Session) -> None:
-    session.install(".[docs]")
-    session.run("sphinx-build", "-b", "html", "docs", "docs/_build/html", *session.posargs)
+    session.install("zensical", "mkdocstrings-python")
+    session.run("zensical", "build", *session.posargs)
+    session.run("python", "docs/gen_llms.py", "site")
 
 
 @nox.session(venv_backend="uv")
