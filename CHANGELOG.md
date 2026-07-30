@@ -1,5 +1,16 @@
 # Changes
 
+## Version 2.5.1 - July 30th, 2026
+
+Documentation only; no changes to the package itself.
+
+  - Add a Read the Docs config so the docs build again. They had been serving
+    a 2018 build.
+  - Switch the docs to the furo theme and load sphinx-copybutton and
+    sphinx-prompt, all three of which were already declared as docs
+    dependencies but unused. Docstring references to Django and Python names
+    now link upstream via intersphinx.
+
 ## Version 2.5.0 - July 29th, 2026
 
   - `assertLoginRequired()` now accepts a plain URL, matching what `get()` and
