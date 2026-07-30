@@ -14,9 +14,25 @@ Guinslym <agmond@gmx.com.br>
 David Arcos - http://davidarcos.net
 Malik Junaid - https://www.facebook.com/malik.junaid27
 Jeff Triplett <jeff.triplett@gmail.com>
-Fábio C. Barrionuevo da Lu
+Fábio C. Barrionuevo da Luz <bnafta@gmail.com>
 Lacey Williams Henschel <laceynwilliams@gmail.com>
 Anton - https://github.com/singleton11
 Natalia Bidart - https://github.com/nessita
 KNiski - https://github.com/KaczuH
 Velda Kiara - https://github.com/VeldaKiara
+Audrey Roy Greenfeld <aroy@alum.mit.edu>
+Danny Wilson <dannywilson32@gmail.com>
+Daniel Hahler <git@thequod.de>
+Nikita Sobolev <mail@sobolevn.me>
+Darius Daftary <dariusdaftary@gmail.com>
+Davit Tovmasyan <davitovmasyan@gmail.com>
+Flavio Curella <flavio.curella@gmail.com>
+Samuel Bishop <lucractius@me.com>
+Tim Gates <tim.gates@iress.com>
+sebatyler - https://github.com/sebatyler
+Andreu Vallbona Plazas <avallbona@gmail.com>
+Nikolaos Michas - https://github.com/nikosmichas
+Kojo Idrissa - https://github.com/kojoidrissa
+Stephen Gilmore <stephen@gilmore.us>
+Chris Rose - https://github.com/offbyone
+Andrés Reverón Molina - https://github.com/andres-holvi
