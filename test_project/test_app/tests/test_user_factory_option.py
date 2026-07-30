@@ -85,5 +85,6 @@ def test_tp_uses_the_configured_factory(tmp_path):
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
+        check=False,  # the assertion below reports the output on failure
     )
     assert result.returncode == 0, result.stdout + result.stderr
