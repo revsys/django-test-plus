@@ -46,7 +46,7 @@ def test_url_reverse(tp):
     assert expected_url == reversed_url
 ```
 
-Everything documented in `methods`, `auth_helpers`, `low_query_counts` and `cbvtestcase` is available on `tp`. Anywhere those pages write `self.<method>()`, a pytest test writes `tp.<method>()`. The same test written both ways:
+Everything documented in `methods`, `auth_helpers`, `low_query_counts`, and `cbvtestcase` is available on `tp`. Anywhere those pages write `self.<method>()`, a pytest test writes `tp.<method>()`. The same test written both ways:
 
 ```python
 # unittest style

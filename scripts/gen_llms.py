@@ -1,4 +1,4 @@
-"""Generate per-page Markdown, llms.txt and llms-full.txt from a built site.
+"""Generate per-page Markdown, llms.txt, and llms-full.txt from a built site.
 
 Zensical has no plugin API yet (https://zensical.org/docs/community/faqs/) and
 no llms.txt support, so this runs as a post-build step instead. See

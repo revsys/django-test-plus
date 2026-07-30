@@ -27,7 +27,7 @@ def test_better_than_nothing(self):
     response = self.assertGoodView('my-url-name')
 ```
 
-Both helpers are available on the pytest `tp` fixture too (see [pytest usage](usage.md#pytest-usage)). Both count queries, so they need database access — ask for pytest-django's `db` fixture alongside `tp`:
+Both helpers are available on the pytest `tp` fixture too (see [pytest usage](usage.md#pytest-usage)). Both count queries, so they need database access. Ask for pytest-django's `db` fixture alongside `tp`:
 
 ```python
 def test_better_than_nothing(tp, db):
