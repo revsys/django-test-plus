@@ -48,7 +48,7 @@ def lint(session: nox.Session) -> None:
 def docs(session: nox.Session) -> None:
     session.install("zensical", "mkdocstrings-python")
     session.run("zensical", "build", *session.posargs)
-    session.run("python", "docs/gen_llms.py", "site")
+    session.run("python", "scripts/gen_llms.py", "site")
 
 
 @nox.session(venv_backend="uv")
