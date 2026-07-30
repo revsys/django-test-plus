@@ -68,14 +68,28 @@ def _make_test_case(config, client):
 
 @pytest.fixture
 def api_client():
+    """Django REST Framework's ``APIClient``, unwrapped.
+
+    Requires djangorestframework to be installed.
+    """
     return get_api_client()()
 
 
 @pytest.fixture
 def tp(client, pytestconfig):
+    """A ``TestCase`` instance, so every helper is available in pytest tests.
+
+    Anywhere the docs write ``self.get(...)``, a pytest test writes
+    ``tp.get(...)``. Ask for pytest-django's ``db`` fixture alongside it in any
+    test that touches the database.
+
+    Set the ``test_plus_user_factory`` ini option to a dotted path if
+    ``make_user()`` should build users through a factory.
+    """
     return _make_test_case(pytestconfig, client)
 
 
 @pytest.fixture
 def tp_api(api_client, pytestconfig):
+    """The ``tp`` fixture backed by DRF's ``APIClient``, for testing API views."""
     return _make_test_case(pytestconfig, api_client)
