@@ -1,6 +1,6 @@
 # Methods
 
-These examples are written in the unittest style, on a `TestCase` subclass. Every method here is also available on the pytest `tp` fixture — write `tp.get('my-url-name')` where these read `self.get('my-url-name')`. See [pytest usage](usage.md#pytest-usage) for the details.
+These examples are written in the unittest style, on a `TestCase` subclass. Every method here is also available on the pytest `tp` fixture. Write `tp.get('my-url-name')` where these read `self.get('my-url-name')`. See [pytest usage](usage.md#pytest-usage) for the details.
 
 ## reverse(url_name, \*args, \*\*kwargs)
 

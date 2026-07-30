@@ -25,7 +25,7 @@ already know still works and you can adopt the helpers one at a time.
 - **Skip the response variable.** The last response and its context are stored
   for you, so the assertion helpers default to them.
 - **Create users without ceremony.** [`make_user()`](methods.md) builds one with
-  a sensible username, email and password, takes a permission list, and honours a
+  a sensible username, email, and password, takes a permission list, and honours a
   factory-boy factory if your User model needs one.
 - **Check authentication in a line.** [`assertLoginRequired()`](auth_helpers.md)
   for any URL and HTTP method, plus a [`login()`](auth_helpers.md) context
@@ -34,10 +34,10 @@ already know still works and you can adopt the helpers one at a time.
   and [`assertGoodView()`](low_query_counts.md) catch N+1 regressions without
   pinning an exact number that churns on every change.
 - **Unit test class-based views directly.** [`CBVTestCase`](cbvtestcase.md)
-  invokes a view's methods without the URL resolution, middleware and template
+  invokes a view's methods without the URL resolution, middleware, and template
   stack, when that machinery is not what you are testing.
-- **Works with unittest, pytest and DRF.** The same helpers, three ways — see
-  below.
+- **Works with unittest, pytest, and DRF.** The same helpers, three ways.
+  See below.
 
 Maintained by [REVSYS](https://www.revsys.com/), who have been building and
 maintaining Django projects since before 1.0.
@@ -50,8 +50,8 @@ pip install django-test-plus
 
 ## Support
 
-- Python 3.10, 3.11, 3.12, 3.13 and 3.14, including the 3.14 free-threaded build (3.14t)
-- Django 4.2 LTS, 5.1, 5.2 LTS, 6.0 and 6.1
+- Python 3.10, 3.11, 3.12, 3.13, and 3.14, including the 3.14 free-threaded build (3.14t)
+- Django 4.2 LTS, 5.1, 5.2 LTS, 6.0, and 6.1
 
 ## The same test, three ways
 
@@ -95,16 +95,16 @@ def test_the_api(tp_api):
     assert response.status_code == 200
 ```
 
-Anything that touches the database — `make_user()`, the `login()` context and the
-query counting helpers — needs pytest-django's `db` fixture alongside `tp`. See
-[pytest usage](usage.md#pytest-usage) for the details.
+Anything that touches the database needs pytest-django's `db` fixture alongside
+`tp`. That covers `make_user()`, the `login()` context, and the query counting
+helpers. See [pytest usage](usage.md#pytest-usage) for the details.
 
 ## Where to next
 
-- [Usage](usage.md) — the pytest fixtures and testing DRF views
-- [Methods](methods.md) — requests, status assertions, response and context helpers
-- [Authentication helpers](auth_helpers.md) — `assertLoginRequired` and the `login()` context
-- [Ensuring low query counts](low_query_counts.md) — `assertNumQueriesLessThan` and `assertGoodView`
+- [Usage](usage.md): the pytest fixtures and testing DRF views
+- [Methods](methods.md): requests, status assertions, response, and context helpers
+- [Authentication helpers](auth_helpers.md): `assertLoginRequired` and the `login()` context
+- [Ensuring low query counts](low_query_counts.md): `assertNumQueriesLessThan` and `assertGoodView`
 - [Testing class-based views](cbvtestcase.md)
 - [Disable logging](disable_logging.md)
 - [API reference](reference.md)
@@ -116,10 +116,10 @@ Markdown convention suited to LLMs and AI coding assistants.
 
 Two files are published:
 
-- [`llms.txt`](https://django-test-plus.readthedocs.io/en/latest/llms.txt) — a
+- [`llms.txt`](https://django-test-plus.readthedocs.io/en/latest/llms.txt): a
   short description of the project plus links to each section of the
   documentation. The structure is described [here](https://llmstxt.org/#format).
-- [`llms-full.txt`](https://django-test-plus.readthedocs.io/en/latest/llms-full.txt) —
+- [`llms-full.txt`](https://django-test-plus.readthedocs.io/en/latest/llms-full.txt):
   the same index with the content of every page included inline, including the
   generated API reference.
 
