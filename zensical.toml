@@ -1,0 +1,25 @@
+# Zensical configuration — https://zensical.org/docs/
+#
+# Evaluation of a possible migration away from Sphinx. See issue #248.
+
+[project]
+site_name = "django-test-plus"
+site_url = "https://django-test-plus.readthedocs.io/en/latest/"
+site_description = "Useful additions to Django's default TestCase."
+repo_url = "https://github.com/revsys/django-test-plus"
+edit_uri = "edit/main/docs/"
+
+# mkdocstrings analyses the source statically with griffe, so unlike Sphinx
+# autodoc it does not import test_plus and needs no django.setup().
+[project.plugins.mkdocstrings.handlers.python]
+paths = [".", "test_project"]
+inventories = [
+  "https://docs.python.org/3/objects.inv",
+  "https://docs.djangoproject.com/en/stable/_objects/",
+]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "sphinx"
+show_source = false
+show_root_heading = true
+members_order = "source"
