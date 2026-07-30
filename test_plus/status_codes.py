@@ -22,6 +22,10 @@ class StatusCodeAssertionMixin:
         """Server is switching protocols as requested by the client."""
         self._assert_http_status(101, response=response, msg=msg)
 
+    def assert_http_102_processing(self, response=None, msg=None):
+        """Server has received the request and is still processing it (WebDAV)."""
+        self._assert_http_status(102, response=response, msg=msg)
+
     def assert_http_103_early_hints(self, response=None, msg=None):
         """Used to return some response headers before final HTTP message."""
         self._assert_http_status(103, response=response, msg=msg)
