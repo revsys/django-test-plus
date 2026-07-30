@@ -1,5 +1,11 @@
 # Changes
 
+## Unreleased
+
+  - Add a `test_plus_user_factory` pytest option, so the `tp` and `tp_api`
+    fixtures can build users through a factory the way `TestCase` subclasses
+    already could with the `user_factory` attribute
+
 ## Version 2.6.0 - July 30th, 2026
 
   - Add five HTTP status assertions, completing coverage of every status code
