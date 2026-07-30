@@ -62,7 +62,6 @@ push = false
 
 [tool.bumpver.file_patterns]
 "pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
-"docs/conf.py" = ['version = "{version}"']
 
 [tool.coverage.paths]
 source = ["test_plus"]

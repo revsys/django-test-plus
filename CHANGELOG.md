@@ -1,5 +1,18 @@
 # Changes
 
+## Version 2.6.0 - July 30th, 2026
+
+  - Add five HTTP status assertions, completing coverage of every status code
+    documented by MDN: `assert_http_102_processing()`,
+    `assert_http_103_early_hints()`, `assert_http_418_im_a_teapot()`,
+    `assert_http_421_misdirected_request()`, and `assert_http_425_too_early()`
+  - Add a docstring to every `assert_http_###` assertion, so they show up in
+    IDE tooltips and in the API reference
+  - Clarify that the `response_###()` methods are fully supported and are not
+    deprecated
+  - Rebuild the documentation with Zensical, publishing `llms.txt`,
+    `llms-full.txt`, and a Markdown version of every page
+
 ## Version 2.5.1 - July 30th, 2026
 
 Documentation only; no changes to the package itself.
