@@ -59,7 +59,9 @@ class Extractor(HTMLParser):
         self._heading: int | None = None
         self._buf: list[str] = []
         self._code: list[str] = []
-        self.code: list[str] = []
+        self._lang = ""
+        self._href: list[str] = []
+        self.code: list[tuple[str, str]] = []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -78,6 +80,17 @@ class Extractor(HTMLParser):
         if tag == "pre":
             self._pre += 1
             self._code = []
+        elif tag == "div" and "language-" in (a.get("class") or ""):
+            # Zensical wraps highlighted blocks in
+            # <div class="language-python highlight">; the language is only there.
+            m = re.search(r"language-(\w+)", a["class"])
+            self._lang = m.group(1) if m else ""
+            self.parts.append("\n")
+        elif tag == "a" and not self._pre:
+            href = a.get("href") or ""
+            self._href.append(href)
+            if href:
+                self.parts.append("[")
         elif tag in self.HEADING:
             self._heading = self.HEADING[tag]
             self._buf = []
@@ -93,6 +106,11 @@ class Extractor(HTMLParser):
         if tag == "a" and self._skip:
             self._skip = max(0, self._skip - 1)
             return
+        if tag == "a" and self.depth and not self._pre and self._href:
+            href = self._href.pop()
+            if href:
+                self.parts.append(f"]({href})")
+            return
         if tag == "article":
             self.depth = max(0, self.depth - 1)
             return
@@ -102,7 +120,7 @@ class Extractor(HTMLParser):
             self._pre = max(0, self._pre - 1)
             # Stash verbatim; whitespace normalisation below must not touch it,
             # or Python indentation in every example is destroyed.
-            self.code.append("".join(self._code).strip("\n"))
+            self.code.append((self._lang, "".join(self._code).strip("\n")))
             self.parts.append(f"\n\n\x00{len(self.code) - 1}\x00\n\n")
             self._code = []
         elif tag in self.HEADING and self._heading:
@@ -124,6 +142,10 @@ class Extractor(HTMLParser):
         else:
             self.parts.append(re.sub(r"[ \t]*\n[ \t]*", " ", data))
 
+    @staticmethod
+    def _fence(lang: str, code: str) -> str:
+        return f"```{lang}\n{code}\n```"
+
     def markdown(self) -> str:
         text = "".join(self.parts)
         text = re.sub(r"[ \t]{2,}", " ", text)
@@ -132,7 +154,7 @@ class Extractor(HTMLParser):
         text = "\n".join(line.rstrip() for line in text.split("\n"))
         text = re.sub(r"\n{3,}", "\n\n", text)
         # Restore code blocks after normalisation, fenced.
-        text = re.sub(r"\x00(\d+)\x00", lambda m: f"```python\n{self.code[int(m.group(1))]}\n```", text)
+        text = re.sub(r"\x00(\d+)\x00", lambda m: self._fence(*self.code[int(m.group(1))]), text)
         return text.strip() + "\n"
 
 
