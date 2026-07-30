@@ -23,7 +23,7 @@ author = "Frank Wiles"
 
 # The short X.Y version. Kept in sync by bumpver, see [tool.bumpver] in
 # pyproject.toml.
-version = "2.5.0"
+version = "2.5.1"
 # The full version, including alpha/beta/rc tags.
 release = version
 
