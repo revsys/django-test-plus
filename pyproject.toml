@@ -41,6 +41,7 @@ content-type = "text/markdown"
 
 [project.urls]
 Changelog = "https://github.com/revsys/django-test-plus/blob/main/CHANGELOG.md"
+Documentation = "https://django-test-plus.readthedocs.io"
 Homepage = "https://github.com/revsys/django-test-plus/"
 
 [project.entry-points]
