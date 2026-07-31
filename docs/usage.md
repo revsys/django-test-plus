@@ -121,4 +121,4 @@ class MyAPITestCase(APITestCase):
         self.response_200()
 ```
 
-Note that using `APITestCase` requires Django \>= 1.8 and having installed `django-rest-framework`.
+Note that using `APITestCase` requires having installed `django-rest-framework`.
