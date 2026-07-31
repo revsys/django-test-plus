@@ -1,5 +1,12 @@
 # Changes
 
+## Version 2.6.1 - July 31st, 2026
+
+  - Add PyPI, Python, and Django version badges to the README and docs
+  - Add a `Documentation` URL (Read the Docs) to the package metadata so it
+    appears on the PyPI project page
+  - Scrub stale Django 1.8 references from the documentation
+
 ## Version 2.6.0 - July 30th, 2026
 
   - Add five HTTP status assertions, completing coverage of every status code
