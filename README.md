@@ -4,6 +4,8 @@ Useful additions to Django's default TestCase from [REVSYS](https://www.revsys.c
 
 [![pypi](https://img.shields.io/pypi/v/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
 [![build matrix demo](https://github.com/revsys/django-test-plus/actions/workflows/actions.yml/badge.svg)](https://github.com/revsys/django-test-plus/actions/workflows/actions.yml)
+[![Python versions](https://img.shields.io/pypi/pyversions/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
+[![Django versions](https://img.shields.io/pypi/frameworkversions/django/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
 
 ## Rationale
 

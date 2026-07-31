@@ -1,5 +1,9 @@
 # Overview
 
+[![PyPI](https://img.shields.io/pypi/v/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
+[![Python versions](https://img.shields.io/pypi/pyversions/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
+[![Django versions](https://img.shields.io/pypi/frameworkversions/django/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
+
 > Useful additions to Django's default TestCase, from [REVSYS](https://www.revsys.com/).
 
 Let's face it, writing tests isn't always fun. Part of the reason for that is all
