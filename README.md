@@ -4,6 +4,8 @@ Useful additions to Django's default TestCase from [REVSYS](https://www.revsys.c
 
 [![pypi](https://img.shields.io/pypi/v/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
 [![build matrix demo](https://github.com/revsys/django-test-plus/actions/workflows/actions.yml/badge.svg)](https://github.com/revsys/django-test-plus/actions/workflows/actions.yml)
+[![Python versions](https://img.shields.io/pypi/pyversions/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
+[![Django versions](https://img.shields.io/pypi/frameworkversions/django/django-test-plus.svg)](https://pypi.org/project/django-test-plus/)
 
 ## Rationale
 
@@ -19,8 +21,9 @@ to help your team dramatically improve your productivity.
 
 ## Support
 
-- Python 3.10, 3.11, 3.12, 3.13, and 3.14, including the 3.14 free-threaded
-  build (3.14t).
+- Python 3.10, 3.11, 3.12, 3.13, 3.14, and 3.15, including the free-threaded
+  builds (3.14t and 3.15t). Python 3.15 is still in beta, so it is tested but
+  not yet promised.
 
 - Django 4.2 LTS, 5.1, 5.2 LTS, 6.0, and 6.1.
 

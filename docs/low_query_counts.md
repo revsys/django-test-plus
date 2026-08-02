@@ -2,7 +2,7 @@
 
 ## assertNumQueriesLessThan(number) - context
 
-Django provides [assertNumQueries](https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries) which is great when your code generates a specific number of queries. However, if this number varies due to the nature of your data, with this method you can still test to ensure the code doesn't start producing a ton more queries than you expect:
+Django provides [assertNumQueries](https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TransactionTestCase.assertNumQueries) which is great when your code generates a specific number of queries. However, if this number varies due to the nature of your data, with this method you can still test to ensure the code doesn't start producing a ton more queries than you expect:
 
 ```python
 def test_something_out(self):

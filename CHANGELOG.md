@@ -5,6 +5,16 @@
   - Add a `test_plus_user_factory` pytest option, so the `tp` and `tp_api`
     fixtures can build users through a factory the way `TestCase` subclasses
     already could with the `user_factory` attribute
+  - Test against Python 3.15, including the free-threaded build (3.15t). It is
+    still in beta, so the trove classifier is published but support is not
+    promised until the final release.
+
+## Version 2.6.1 - July 31st, 2026
+
+  - Add PyPI, Python, and Django version badges to the README and docs
+  - Add a `Documentation` URL (Read the Docs) to the package metadata so it
+    appears on the PyPI project page
+  - Scrub stale Django 1.8 references from the documentation
 
 ## Version 2.6.0 - July 30th, 2026
 

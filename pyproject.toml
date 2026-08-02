@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-test-plus"
-version = "2.6.0"
+version = "2.6.1"
 description = "django-test-plus provides useful additions to Django's default TestCase"
 authors = [
     { name = "Frank Wiles", email = "frank@revsys.com" },
@@ -30,6 +30,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: Free Threading :: 3 - Stable",
 ]
 dependencies = []
@@ -41,6 +42,7 @@ content-type = "text/markdown"
 
 [project.urls]
 Changelog = "https://github.com/revsys/django-test-plus/blob/main/CHANGELOG.md"
+Documentation = "https://django-test-plus.readthedocs.io"
 Homepage = "https://github.com/revsys/django-test-plus/"
 
 [project.entry-points]
@@ -53,7 +55,7 @@ test = ["factory-boy", "pytest", "pytest-cov", "pytest-django"]
 testing = ["django-test-plus[test]"]
 
 [tool.bumpver]
-current_version = "2.6.0"
+current_version = "2.6.1"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "Bump version {old_version} -> {new_version}"
 commit = true
