@@ -1,5 +1,11 @@
 # Changes
 
+## Unreleased
+
+  - Test against Python 3.15, including the free-threaded build (3.15t). It is
+    still in beta, so the trove classifier is published but support is not
+    promised until the final release.
+
 ## Version 2.6.1 - July 31st, 2026
 
   - Add PyPI, Python, and Django version badges to the README and docs
