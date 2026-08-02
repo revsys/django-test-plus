@@ -142,7 +142,7 @@ wheels = [
 
 [[package]]
 name = "django-test-plus"
-version = "2.6.1"
+version = "2.6.2"
 source = { editable = "." }
 
 [package.optional-dependencies]
