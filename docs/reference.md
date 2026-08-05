@@ -11,6 +11,13 @@
 
 ::: test_plus.status_codes.StatusCodeAssertionMixin
 
+::: test_plus.plugin
+    options:
+      members:
+        - tp
+        - tp_api
+        - api_client
+
 ::: test_plus.runner.NoLoggingRunner
     options:
       members:

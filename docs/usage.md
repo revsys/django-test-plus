@@ -78,6 +78,30 @@ def test_auth(tp, db):
         tp.get_check_200('my-protected-view')
 ```
 
+### A custom user factory
+
+`TestCase` subclasses can set a `user_factory` attribute so `make_user()` builds
+users through a factory rather than `User.objects.create_user()`. The pytest
+fixtures have no class of their own to set it on, so point at one with the
+`test_plus_user_factory` ini option and `tp.make_user()` will use it:
+
+```toml
+# pyproject.toml
+[tool.pytest.ini_options]
+test_plus_user_factory = "myapp.factories.UserFactory"
+```
+
+```ini
+# or pytest.ini / setup.cfg
+[pytest]
+test_plus_user_factory = myapp.factories.UserFactory
+```
+
+The value is a dotted path to the factory. Leave it unset and `make_user()`
+behaves exactly as before, calling `User.objects.create_user()`. This is worth
+setting if your `User` model has required fields, or no `username` field, so the
+default cannot build one.
+
 Note that `tp` does not manage database access for you the way `django.test.TestCase` does. Ask for pytest-django's `db` fixture (or apply `@pytest.mark.django_db`) in any test that touches the database. That includes `make_user()` and the `login()` context, and also the query counting helpers `assertNumQueriesLessThan()` and `assertGoodView()`, which open a database connection in order to count.
 
 The pytest plugin is auto-registered via `pytest11`, so no extra configuration is required beyond installing the package and pytest-django. In addition to `tp` and `tp_api`, the plugin also provides a raw `api_client` fixture:

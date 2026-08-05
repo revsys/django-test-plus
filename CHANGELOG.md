@@ -2,6 +2,9 @@
 
 ## Version 2.6.2 - August 1st, 2026
 
+  - Add a `test_plus_user_factory` pytest option, so the `tp` and `tp_api`
+    fixtures can build users through a factory the way `TestCase` subclasses
+    already could with the `user_factory` attribute
   - Test against Python 3.15, including the free-threaded build (3.15t). It is
     still in beta, so the trove classifier is published but support is not
     promised until the final release.
