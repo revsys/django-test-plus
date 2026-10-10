@@ -4,6 +4,8 @@
 
   - Officially support Python 3.15, including the free-threaded build (3.15t),
     now that 3.15.0 final has been released
+  - Drop support for Python 3.10, which has reached end of life. Python 3.11
+    or newer is now required
 
 ## Version 2.6.2 - August 1st, 2026
 
