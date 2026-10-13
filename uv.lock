@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.11"
 
 [[package]]
@@ -123,7 +123,7 @@ wheels = [
 
 [[package]]
 name = "django-test-plus"
-version = "2.6.2"
+version = "2.7.0"
 source = { editable = "." }
 
 [package.optional-dependencies]
