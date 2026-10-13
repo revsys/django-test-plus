@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## Version 2.7.0 - October 13th, 2026
 
   - Officially support Python 3.15, including the free-threaded build (3.15t),
     now that 3.15.0 final has been released
