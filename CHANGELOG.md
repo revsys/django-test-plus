@@ -1,5 +1,10 @@
 # Changes
 
+## Unreleased
+
+  - Officially support Python 3.15, including the free-threaded build (3.15t),
+    now that 3.15.0 final has been released
+
 ## Version 2.6.2 - August 1st, 2026
 
   - Test against Python 3.15, including the free-threaded build (3.15t). It is

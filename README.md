@@ -22,8 +22,7 @@ to help your team dramatically improve your productivity.
 ## Support
 
 - Python 3.10, 3.11, 3.12, 3.13, 3.14, and 3.15, including the free-threaded
-  builds (3.14t and 3.15t). Python 3.15 is still in beta, so it is tested but
-  not yet promised.
+  builds (3.14t and 3.15t).
 
 - Django 4.2 LTS, 5.1, 5.2 LTS, 6.0, and 6.1.
 
